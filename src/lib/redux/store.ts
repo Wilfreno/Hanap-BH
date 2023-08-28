@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userLocationReducer from "./slices/user-location-slice";
-import mapLoaderStateReducer from "./slices/map-is-loaded-slice";
+import mapLoaderStateReducer from "./slices/google -map-api-is-loaded-slice";
 import autoCompleteDetialReducer from "./slices/map-auto-complete-slice.";
 import searchSelectedReducer from "./slices/search-selected-slice"
 import { TypedUseSelectorHook, useSelector } from "react-redux";

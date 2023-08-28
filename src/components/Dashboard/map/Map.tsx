@@ -17,9 +17,6 @@ export default function Map({ center, options }: GoogleMapPropType) {
     mapRef.current = map;
   }, []);
 
-  const searchSelected = useAppSelector(
-    (state) => state.searchSelectedReducer.selected
-  );
 
   async function getNearbyPlace() {
     try {

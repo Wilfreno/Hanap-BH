@@ -2,6 +2,7 @@ import React from "react";
 import "./globals.css";
 import { Poppins } from "next/font/google";
 import ReduxProvider from "../lib/redux/ReduxProvider";
+import Script from "next/script";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -16,11 +17,10 @@ export const metadata = {
 
 export default function RootLayout({
   children,
-  modals,
 }: {
   children: React.ReactNode;
-  modals: React.ReactNode;
 }) {
+ 
   return (
     <ReduxProvider>
       <html lang="en">

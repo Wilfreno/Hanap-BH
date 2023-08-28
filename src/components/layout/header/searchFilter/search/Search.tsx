@@ -1,46 +1,37 @@
 import styles from "./Search.module.css";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import { AppDispatch } from "@/lib/redux/store";
-import usePlacesAutocomplete from "use-places-autocomplete";
-import { useDispatch } from "react-redux";
-import { setSearchSelected } from "@/lib/redux/slices/search-selected-slice";
-import { Libraries, useGoogleMapsScript } from "use-google-maps-script";
+import { useEffect, useState } from "react";
 
 export default function Search() {
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_PLACE_API_KEY;
-  if (!apiKey) throw new Error("NEXT_PUBLIC_GOOGLE_PLACE_API_KEY missing");
+  const [search, setSearch] = useState<string>("");
+  const [results, setResults] = useState([]);
 
-  const libraries: Libraries = ["places"];
+  async function getAutocomplete() {
+    try {
+      const result = await fetch("/api/map/autocomplete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ query: search }),
+      });
 
-  const { isLoaded, loadError } = useGoogleMapsScript({
-    googleMapsApiKey: apiKey,
-    libraries,
-  });
+      const data = await result.json();
+      setResults(data);
+    } catch (error) {
+      throw error;
+    }
+  }
 
-  const {
-    ready,
-    value,
-    setValue,
-    suggestions: { status, data },
-    clearSuggestions,
-  } = usePlacesAutocomplete({
-    debounce: 300,
-    requestOptions: {
-      componentRestrictions: { country: "PH" },
-      types: ["lodgings"],
-    },
-  });
-
-  const dispatch = useDispatch<AppDispatch>();
-
-  if (!isLoaded) return null;
-  if (loadError)
-    return (
-      <>
-        <h1>Error</h1>
-      </>
-    );
-
+  useEffect(() => {
+    setTimeout(() => {
+      if (search != "") {
+        getAutocomplete();
+      }
+    }, 300);
+    console.log("search:", search);
+  }, [search]);
+  console.log(results);
   return (
     <>
       <form className={styles.form} autoFocus={false} autoComplete="off">
@@ -50,12 +41,11 @@ export default function Search() {
         <input
           type="text"
           id="search"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          disabled={!ready}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
           className={styles.input}
         />
-        <section>
+        {/* <section>
           {status === "OK" &&
             data.map(({ place_id, description }) => (
               <div
@@ -69,9 +59,8 @@ export default function Search() {
                 <p>{description}</p>
               </div>
             ))}
-        </section>
+        </section> */}
       </form>
-      {console.log(JSON.stringify(data))}
     </>
   );
 }
