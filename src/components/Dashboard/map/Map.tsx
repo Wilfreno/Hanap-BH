@@ -17,7 +17,6 @@ export default function Map({ center, options }: GoogleMapPropType) {
     mapRef.current = map;
   }, []);
 
-
   async function getNearbyPlace() {
     try {
       const response = await fetch("/api/map/nearby-places", {
@@ -52,6 +51,7 @@ export default function Map({ center, options }: GoogleMapPropType) {
         <MarkerClusterer>
           {(clusterer) => (
             <div>
+              <Marker position={center} />
               {details?.map((place) =>
                 place.photos && place.photos.length > 0 ? (
                   <Marker

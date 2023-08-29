@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   background-color: transparent;
-  border-bottom: 1px solid #22222235;
+  border-bottom: 1px solid rgba(33, 33, 33, 0.208);
   min-height: 10vh;
   width: 100%;
   z-index: 2;

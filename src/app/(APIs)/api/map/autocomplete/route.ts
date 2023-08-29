@@ -1,3 +1,5 @@
+import { getGeocode } from "@/lib/google-api/geocode";
+import { AutocompleteType } from "@/lib/types/google-autocomplete-type";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -8,21 +10,21 @@ export async function POST(request: Request) {
   const { query } = await request.json();
 
   try {
-    console.log("query:", query);
     const response = await fetch(
       `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${apiKey}&input=${query}&radius=50000&components=country:ph&types=lodging`
     );
 
-    const {
-      description,
-      place_id,
-      structured_formatting: { secondary_text },
-    } = await response.json();
+    const { predictions } = await response.json();
 
-    return NextResponse.json(
-      { description, place_id, secondary_text },
-      { status: 200 }
-    );
+    const data = predictions.map((prediction: AutocompleteType) => ({
+      description: prediction.description,
+      place_id: prediction.place_id,
+      structured_formatting: {
+        secondary_text: prediction.structured_formatting.secondary_text,
+      },
+    }));
+
+    return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
     return NextResponse.json(error, { status: 500 });
   }

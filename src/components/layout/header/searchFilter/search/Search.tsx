@@ -1,3 +1,4 @@
+import { AutocompleteType } from "@/lib/types/google-autocomplete-type";
 import styles from "./Search.module.css";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { useEffect, useState } from "react";
@@ -5,6 +6,7 @@ import { useEffect, useState } from "react";
 export default function Search() {
   const [search, setSearch] = useState<string>("");
   const [results, setResults] = useState([]);
+  const [timer, setTimer] = useState<NodeJS.Timeout>();
 
   async function getAutocomplete() {
     try {
@@ -16,22 +18,13 @@ export default function Search() {
         body: JSON.stringify({ query: search }),
       });
 
-      const data = await result.json();
+      const { data } = await result.json();
       setResults(data);
     } catch (error) {
       throw error;
     }
   }
 
-  useEffect(() => {
-    setTimeout(() => {
-      if (search != "") {
-        getAutocomplete();
-      }
-    }, 300);
-    console.log("search:", search);
-  }, [search]);
-  console.log(results);
   return (
     <>
       <form className={styles.form} autoFocus={false} autoComplete="off">
@@ -42,24 +35,23 @@ export default function Search() {
           type="text"
           id="search"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            clearTimeout(timer!);
+            const newTimer = setTimeout(() => {
+              getAutocomplete();
+            }, 300);
+            setTimer(newTimer!);
+          }}
           className={styles.input}
         />
-        {/* <section>
-          {status === "OK" &&
-            data.map(({ place_id, description }) => (
-              <div
-                key={place_id}
-                className={styles.options}
-                onClick={async () => {
-                  dispatch(setSearchSelected(place_id));
-                  clearSuggestions();
-                }}
-              >
-                <p>{description}</p>
-              </div>
-            ))}
-        </section> */}
+        <div className={styles.results}>
+          {results.map((result: AutocompleteType) => (
+            <div key={result.place_id} className={styles.options}>
+              <p>{result.description}</p>
+            </div>
+          ))}
+        </div>
       </form>
     </>
   );
