@@ -3,32 +3,26 @@ import { LatLngLiteral } from "./google-map-type";
 
 export type PlaceDetailType = {
   owner?: mongoose.SchemaType.ObjectId;
-
   place_id: string;
+  description?: string;
+  secondary_text: string;
 
-  vicinity: string;
-
-  geometry?: {
-    location: LatLngLiteral;
+  photo: {
+    height: number;
+    width: number;
+    photo_reference: string;
   };
 
-  location?: {
-    province?: string;
-    monicipality?: string;
-    city?: string;
-    barangay?: string;
-    coordinate: LatLngLiteral;
+  price?: {
+    max: number;
+    min: number;
+  };
+  slots?: number;
+  contact?: {
+    email: string;
+    phone: number;
+    social: string;
   };
 
-  name: string;
-
-  photos?: [
-    {
-      height: number;
-      width: number;
-      photo_reference: string;
-    }
-  ];
-
-  new: boolean;
+  rating?: number;
 };

@@ -19,9 +19,7 @@ export async function POST(request: Request) {
     const data = predictions.map((prediction: AutocompleteType) => ({
       description: prediction.description,
       place_id: prediction.place_id,
-      structured_formatting: {
-        secondary_text: prediction.structured_formatting.secondary_text,
-      },
+      vicinity: prediction.vicinity,
     }));
 
     return NextResponse.json({ data }, { status: 200 });

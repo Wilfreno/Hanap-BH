@@ -1,18 +1,34 @@
 "use client";
 
-import { GoogleMap, Marker, MarkerClusterer } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  InfoWindow,
+  Marker,
+  MarkerClusterer,
+} from "@react-google-maps/api";
 import styles from "./Map.module.css";
+import ImageNotSupportedSharpIcon from "@mui/icons-material/ImageNotSupportedSharp";
 import { GoogleMapPropType } from "@/lib/types/prop-types";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { LatLngLiteral, MapType } from "@/lib/types/google-map-type";
-import { PlaceDetailType } from "@/lib/types/places-detail-types";
 import { useAppSelector } from "@/lib/redux/store";
 import { AutocompleteType } from "@/lib/types/google-autocomplete-type";
 import { getGeocode } from "@/lib/google-api/geocode";
+import {
+  NearbyPlaceAPIResponseType,
+  NearbyPlaceType,
+} from "@/lib/types/nearby-place-type";
+import Image from "next/image";
 
 export default function Map({ center, options }: GoogleMapPropType) {
+  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_PLACE_API_KEY;
+  if (!apiKey) throw new Error("NEXT_PUBLIC_GOOGLE_PLACE_API_KEY missing");
+
   const [selected, setSelected] = useState<AutocompleteType>();
-  const [details, setDetails] = useState<PlaceDetailType[]>([]);
+  const [nearbyPlaces, setNearbyPlaces] = useState<
+    NearbyPlaceAPIResponseType[]
+  >([]);
+  const [viewInfo, setViewInfo] = useState<boolean>(false);
 
   const mapRef = useRef<MapType>();
   const onLoad = useCallback((map: MapType) => {
@@ -31,9 +47,9 @@ export default function Map({ center, options }: GoogleMapPropType) {
         body: JSON.stringify(center),
       });
 
-      const { results } = await response.json();
+      const { data } = await response.json();
 
-      setDetails(results);
+      setNearbyPlaces(data);
     } catch (err) {
       throw err;
     }
@@ -46,10 +62,8 @@ export default function Map({ center, options }: GoogleMapPropType) {
       setSelected({
         description: searchResult.description,
         place_id: searchResult.place_id,
-        structured_formatting: {
-          secondary_text: searchResult.structured_formatting.secondary_text,
-        },
-        geocode,
+        vicinity: searchResult.vicinity,
+        location: geocode,
       });
       mapRef.current?.panTo(geocode);
     } catch (err) {
@@ -66,7 +80,6 @@ export default function Map({ center, options }: GoogleMapPropType) {
   useEffect(() => {
     getNearbyPlace();
   }, [center]);
-
   return (
     <>
       <GoogleMap
@@ -79,24 +92,49 @@ export default function Map({ center, options }: GoogleMapPropType) {
         <MarkerClusterer>
           {(clusterer) => (
             <div>
-              <Marker position={center} />
+              <Marker position={center}></Marker>
 
-              {searchResult.description != "" ? (
-                <Marker position={selected?.geocode!} />
+              {selected?.location != undefined ? (
+                <Marker position={selected?.location!}>
+                  <InfoWindow position={selected?.location!}>
+                    <section className={styles.info__window}>
+                      <h1>{selected?.description}</h1>
+                    </section>
+                  </InfoWindow>
+                </Marker>
               ) : null}
 
-              {details?.map((place) =>
-                place.photos && place.photos.length > 0 ? (
-                  <Marker
-                    key={place.place_id}
-                    position={place.geometry!.location}
-                    clusterer={clusterer}
-                    onClick={() =>
-                      mapRef.current?.panTo(place.geometry!.location)
-                    }
-                  />
-                ) : null
-              )}
+              {nearbyPlaces?.map((place) => (
+                <Marker
+                  key={place.place_id}
+                  position={place.location}
+                  clusterer={clusterer}
+                  onClick={() => {
+                    mapRef.current?.panTo(place.location);
+                    setViewInfo(true);
+                  }}
+                >
+                  <InfoWindow position={place.location} options={{maxWidth: 200}}>
+                    <section className={styles.info__window}>
+                     { place.photo.height < place.photo.width ?  <Image
+                        src={`https://maps.googleapis.com/maps/api/place/photo?key=${apiKey}&photo_reference=${place.photo.photo_reference}&maxwidth=${place.photo.width}`}
+                        alt="place_photo"
+                        width={1920}
+                        height={1080}
+                        quality={90}
+                        priority
+                        style={{
+                          height: "auto",
+                          width: "100%",
+                          objectFit: "cover",
+                          overflow: "hidden",
+                        }}
+                      /> : <ImageNotSupportedSharpIcon/>}
+                      <p>{place.description}</p>
+                    </section>
+                  </InfoWindow>
+                </Marker>
+              ))}
             </div>
           )}
         </MarkerClusterer>

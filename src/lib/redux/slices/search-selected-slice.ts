@@ -4,9 +4,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 const initialState: AutocompleteType = {
   description: "",
   place_id: "",
-  structured_formatting: {
-    secondary_text: "",
-  },
+  vicinity: "",
 };
 
 export const searchSelected = createSlice({
@@ -17,9 +15,7 @@ export const searchSelected = createSlice({
       return {
         description: action.payload.description,
         place_id: action.payload.place_id,
-        structured_formatting: {
-          secondary_text: action.payload.structured_formatting.secondary_text,
-        },
+        vicinity: action.payload.vicinity,
       };
     },
   },
