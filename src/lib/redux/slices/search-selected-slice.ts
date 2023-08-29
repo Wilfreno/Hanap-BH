@@ -1,15 +1,26 @@
+import { AutocompleteType } from "@/lib/types/google-autocomplete-type";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-  selected: "",
+const initialState: AutocompleteType = {
+  description: "",
+  place_id: "",
+  structured_formatting: {
+    secondary_text: "",
+  },
 };
 
 export const searchSelected = createSlice({
   name: "searchSelected",
   initialState,
   reducers: {
-    setSearchSelected: (_, action: PayloadAction<string>) => {
-      return { selected: action.payload };
+    setSearchSelected: (_, action: PayloadAction<AutocompleteType>) => {
+      return {
+        description: action.payload.description,
+        place_id: action.payload.place_id,
+        structured_formatting: {
+          secondary_text: action.payload.structured_formatting.secondary_text,
+        },
+      };
     },
   },
 });

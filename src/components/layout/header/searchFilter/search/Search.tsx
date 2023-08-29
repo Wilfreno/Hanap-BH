@@ -2,11 +2,17 @@ import { AutocompleteType } from "@/lib/types/google-autocomplete-type";
 import styles from "./Search.module.css";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/lib/redux/store";
+import { setSearchSelected } from "@/lib/redux/slices/search-selected-slice";
 
 export default function Search() {
   const [search, setSearch] = useState<string>("");
   const [results, setResults] = useState([]);
   const [timer, setTimer] = useState<NodeJS.Timeout>();
+  const [active, setActive] = useState<boolean>(false);
+
+  const dispatch = useDispatch<AppDispatch>();
 
   async function getAutocomplete() {
     try {
@@ -43,14 +49,24 @@ export default function Search() {
             }, 300);
             setTimer(newTimer!);
           }}
+          onFocus={() => setActive(true)}
           className={styles.input}
         />
         <div className={styles.results}>
-          {results.map((result: AutocompleteType) => (
-            <div key={result.place_id} className={styles.options}>
-              <p>{result.description}</p>
-            </div>
-          ))}
+          {active &&
+            results.map((result: AutocompleteType) => (
+              <div
+                key={result.place_id}
+                className={styles.options}
+                onClick={() => {
+                  console.log("result:", result);
+                  dispatch(setSearchSelected(result));
+                  setActive(false)
+                }}
+              >
+                <p>{result.description}</p>
+              </div>
+            ))}
         </div>
       </form>
     </>
