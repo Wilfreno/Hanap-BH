@@ -18,18 +18,40 @@ export async function POST(request: Request) {
     );
     const { results }: NearbyPlaceResponseType = await response.json();
 
-    const data = results.map((result: NearbyPlaceType) => ({
-      place_id: result.place_id,
-      location: result.geometry.location,
-      description: result.name,
-      vicinity: result.vicinity,
-      photo: {
-        height: result.photos[0].height,
-        width: result.photos[0].width,
-        photo_reference: result.photos[0].photo_reference,
-      },
-      rating: result.rating,
-    }));
+    const data = results.map((result: NearbyPlaceType): PlaceDetailType => {
+      const {
+        place_id,
+        geometry: { location },
+        name,
+        vicinity,
+        photos: [{ height, width, photo_reference }],
+        rating,
+      } = result;
+
+      return {
+        owner: undefined,
+        place_id,
+        description: name,
+        vicinity,
+        location,
+        photo: {
+          height,
+          width,
+          photo_reference,
+        },
+        price: {
+          max: undefined,
+          min: undefined,
+        },
+        vacant_rooms: undefined,
+        contact: {
+          email: "",
+          phone: undefined,
+          social_media: "",
+        },
+        rating,
+      };
+    });
     return NextResponse.json(
       {
         data,

@@ -1,0 +1,122 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 15%;
+  top: 20%;
+  width: 25%;
+  min-height: 50vh;
+  box-shadow: 5px 5px 8px -9px rgba(0, 0, 0, 0.75);
+  background-color: white;
+  border-radius: 1rem;
+}
+
+.close {
+  position: absolute;
+  right: 5%;
+  top: 4%;
+  color: white;
+  width: 2.8rem;
+  height: 2.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10rem;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+.close__icon {
+  padding: 0;
+  font-size: 1.2rem;
+}
+.close:hover {
+  cursor: pointer;
+}
+.ratings {
+  position: absolute;
+  color: #ffde22;
+  top: 4%;
+  left: 4%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.377);
+  padding: 0.3rem;
+  border-radius: 5rem;
+}
+.ratings p {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0 0.5rem;
+}
+
+.star__ratings {
+  font-size: 2rem;
+}
+
+.image__container {
+  width: 100%;
+  height: 30vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border-bottom: 1px solid rgba(33, 33, 33, 0.208); */
+  /* box-shadow: 5px 5px 8px -9px rgba(0, 0, 0, 0.4); */
+}
+
+.image {
+  height: 30vh;
+  object-fit: cover;
+  overflow: hidden;
+  border-radius: 1rem 1rem 0 0;
+}
+
+.no__image {
+  font-size: 15rem;
+}
+
+.details__container {
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid rgba(33, 33, 33, 0.208);
+  padding: 1rem;
+}
+
+.description h2 {
+  font-weight: 400;
+}
+.description h3 {
+  font-weight: 200;
+}
+
+.other__information {
+  display: flex;
+  /* flex-direction: column; */
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+  font-size: 1.2rem;
+}
+
+.owner,
+.room__available,
+.price {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.other__information p {
+  margin: 0 0.2rem;
+}
+
+.owner h3,
+.room__available h3,
+.price h3 {
+  font-weight: 400;
+}

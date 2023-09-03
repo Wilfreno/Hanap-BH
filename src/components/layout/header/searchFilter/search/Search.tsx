@@ -1,10 +1,10 @@
-import { AutocompleteType } from "@/lib/types/google-autocomplete-type";
 import styles from "./Search.module.css";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
-import { setSearchSelected } from "@/lib/redux/slices/search-selected-slice";
+import { setSelectedDetail } from "@/lib/redux/slices/selected-detail-slice";
+import { PlaceDetailType } from "@/lib/types/places-detail-types";
 
 export default function Search() {
   const [search, setSearch] = useState<string>("");
@@ -54,14 +54,14 @@ export default function Search() {
         />
         <div className={styles.results}>
           {active &&
-            results.map((result: AutocompleteType) => (
+            results.map((result: PlaceDetailType) => (
               <div
                 key={result.place_id}
                 className={styles.options}
                 onClick={() => {
                   console.log("result:", result);
-                  dispatch(setSearchSelected(result));
-                  setActive(false)
+                  dispatch(setSelectedDetail(result));
+                  setActive(false);
                 }}
               >
                 <p>{result.description}</p>

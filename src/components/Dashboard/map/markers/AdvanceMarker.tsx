@@ -26,6 +26,7 @@ export default function AdvanceMarker({
         position,
         content: container,
         zIndex: 5,
+        
       });
     }
     return () => {

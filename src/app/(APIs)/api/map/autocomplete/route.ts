@@ -1,5 +1,6 @@
 import { getGeocode } from "@/lib/google-api/geocode";
-import { AutocompleteType } from "@/lib/types/google-autocomplete-type";
+import { PlaceDetailType } from "@/lib/types/places-detail-types";
+import { ratingClasses } from "@mui/material";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -16,11 +17,34 @@ export async function POST(request: Request) {
 
     const { predictions } = await response.json();
 
-    const data = predictions.map((prediction: AutocompleteType) => ({
-      description: prediction.description,
-      place_id: prediction.place_id,
-      vicinity: prediction.vicinity,
-    }));
+    const data = predictions.map(
+      (prediction: PlaceDetailType): PlaceDetailType => {
+        const { place_id, description, vicinity } = prediction;
+
+        return {
+          owner: undefined,
+          place_id,
+          description,
+          vicinity,
+          photo: {
+            height: undefined,
+            width: undefined,
+            photo_reference: "",
+          },
+          price: {
+            max: undefined,
+            min: undefined,
+          },
+          vacant_rooms: undefined,
+          contact: {
+            email: "",
+            phone: undefined,
+            social_media: undefined,
+          },
+          rating: undefined,
+        };
+      }
+    );
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {

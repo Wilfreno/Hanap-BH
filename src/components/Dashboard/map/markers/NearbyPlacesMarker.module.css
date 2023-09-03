@@ -1,36 +1,9 @@
+
 .details {
-  width: 20%;
-  height: 50vh;
-  background-color: white;
-  border: 1px solid #222222;
-  border-radius: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  max-width: 70%;
+  /* max-height: 30vh; */
+  min-height: 30vh;
   position: relative;
-  cursor: pointer;
 }
 
-.details:hover {
-  background-color: red;
-}
-.details svg {
-  font-size: 9rem;
-  color: #222222;
-}
 
-.close__button {
-  color: white;
-  position: absolute;
-  right: 1rem;
-  top: 1rem;
-  padding: 1rem;
-  background-color: white;
-  z-index: 10;
-}
-
-.close__button:hover {
-  cursor: pointer;
-  color: #222222;
-  background-color: #222222;
-}

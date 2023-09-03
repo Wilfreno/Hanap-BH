@@ -7,8 +7,6 @@ import { useEffect, useMemo } from "react";
 import { setLocation } from "@/lib/redux/slices/user-location-slice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
-import { setAPIIsLoaded } from "@/lib/redux/slices/google -map-api-is-loaded-slice";
-import { useLoadScript } from "@react-google-maps/api";
 
 export default function DashboardLayout({
   children,

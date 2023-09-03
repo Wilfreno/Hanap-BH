@@ -5,23 +5,23 @@ export type PlaceDetailType = {
   owner?: mongoose.SchemaType.ObjectId;
   place_id: string;
   description?: string;
-  secondary_text: string;
-
+  vicinity: string;
+  location?: LatLngLiteral;
   photo: {
-    height: number;
-    width: number;
+    height?: number;
+    width?: number;
     photo_reference: string;
   };
 
-  price?: {
-    max: number;
-    min: number;
+  price: {
+    max?: number;
+    min?: number;
   };
-  slots?: number;
-  contact?: {
+  vacant_rooms?: number;
+  contact: {
     email: string;
-    phone: number;
-    social: string;
+    phone?: number;
+    social_media?: string;
   };
 
   rating?: number;
