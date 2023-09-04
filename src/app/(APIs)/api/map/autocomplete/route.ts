@@ -36,11 +36,7 @@ export async function POST(request: Request) {
             min: undefined,
           },
           vacant_rooms: undefined,
-          contact: {
-            email: "",
-            phone: undefined,
-            social_media: undefined,
-          },
+      
           rating: undefined,
         };
       }

@@ -1,48 +1,62 @@
+import { UserDetailType } from "@/lib/types/user-detail-type";
 import mongoose, { Schema } from "mongoose";
 
-const userSchema: Schema = new Schema({
-  firstName: {
+const userSchema: Schema = new Schema<UserDetailType>({
+  first_name: {
     type: String,
     required: true,
   },
-  middleName: {
+  middle_name: {
     type: String,
+    default: undefined,
   },
-  lastName: {
+  last_name: {
     type: String,
     required: true,
   },
+  place_owned: [
+    {
+      type: Schema.Types.ObjectId,
+      default: undefined,
+    },
+  ],
   gender: {
     type: String,
-    required: true,
+    default: undefined,
   },
-  birthDate: {
+  birth_date: {
     type: Date,
     required: true,
   },
-  address: {
-    type: String,
-  },
-  pfp: {
+  profile_pic: {
     type: String,
     default: "/img/pfp/default.png",
   },
-  bckg: {
-    type: String,
-    default: "/img/pfp/default.jpg",
-  },
-  tagName: {
-    type: String,
-  },
-  email: {
-    type: String,
-    required: true,
+  contact: {
+    social_media: {
+      facebok: {
+        type: String,
+        default: undefined,
+      },
+      twitter: {
+        type: String,
+        default: undefined,
+      },
+      instagram: {
+        type: String,
+        default: undefined,
+      },
+    },
+    phone_number: {
+      type: String,
+      default: undefined,
+    },
   },
   password: {
     type: String,
     required: true,
   },
-  created: {
+  date_created: {
     type: Date,
     default: Date.now,
   },

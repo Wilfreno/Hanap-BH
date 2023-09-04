@@ -4,9 +4,15 @@ import { LatLngLiteral } from "./google-map-type";
 export type PlaceDetailType = {
   owner?: mongoose.SchemaType.ObjectId;
   place_id: string;
-  description?: string;
+  name: string;
   vicinity: string;
-  location?: LatLngLiteral;
+  location?: {
+    province?: string;
+    municipality?: string;
+    barangay?: string;
+    street?: string;
+    coordinates: LatLngLiteral;
+  };
   photo: {
     height?: number;
     width?: number;
@@ -17,12 +23,6 @@ export type PlaceDetailType = {
     max?: number;
     min?: number;
   };
-  vacant_rooms?: number;
-  contact: {
-    email: string;
-    phone?: number;
-    social_media?: string;
-  };
-
+  vacant_rooms?: Schema.Types.ObjectId[];
   rating?: number;
 };
