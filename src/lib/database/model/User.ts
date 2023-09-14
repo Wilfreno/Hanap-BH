@@ -17,6 +17,7 @@ const userSchema: Schema = new Schema<UserDetailType>({
   place_owned: [
     {
       type: Schema.Types.ObjectId,
+      ref: "PlaceDetail",
       default: undefined,
     },
   ],

@@ -1,25 +1,32 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import styles from "./test.module.css";
+import { getGeocode, getReverseGeocode } from "@/lib/google-api/geocode";
 import { useAppSelector } from "@/lib/redux/store";
-import { LatLngLiteral } from "@/lib/types/google-map-type";
+import { LatLngLiteral } from "@/lib/types/google-maps-api-type";
+import { useEffect, useState } from "react";
 
 export default function test() {
-  const [userCoords, setUserCoords] = useState<LatLngLiteral>();
-  const userLocation = useAppSelector(
-    (state) => state.userLocationReducer.coordinates
-  );
-  const mapIsLoaded = useAppSelector(
-    (state) => state.mapLoaderStateReducer.mapLaodState
-  );
-  useEffect(() => {
-    setUserCoords(userLocation);
-  }, [userLocation]);
-  // const center = useMemo<LatLngLiteral>(() => userLocation, [userLocation]);
+  const [location, setLocation] = useState({});
+  const userLocation = useAppSelector((state) => state.userLocationReducer);
 
-  return <>
-  <pre>{JSON.stringify(userCoords)}</pre>
-  {mapIsLoaded && <h1>asdadasdasdasd</h1> }
-  </>;
+  async function getLocation() {
+    try {
+      const {
+        coordinates: { lat, lng },
+      } = userLocation;
+      if (lat !== undefined && lng !== undefined) {
+        const response = await getReverseGeocode({ lat, lng });
+        setLocation(response);
+        console.log("response: ", response);
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  useEffect(() => {
+    getLocation();
+  }, [userLocation]);
+
+  return <></>;
 }

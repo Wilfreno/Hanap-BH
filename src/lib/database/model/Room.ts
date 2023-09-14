@@ -6,26 +6,33 @@ const roomSchema: Schema = new Schema<RoomDetailType>({
     type: String,
     required: true,
   },
-  vacancy: {
-    type: Number,
-    required: true,
+  options: {
+    price: {
+      type: Number,
+      required: true,
+
+    },
+    occupant_count: {
+      type: Number,
+      required: true 
+    }
   },
   photo: [
     {
-      type: String,
-      required: true,
+      height: {
+        type: Number,
+        required: true
+      },
+      width: {
+        type: Number,
+        required: true
+      },
+      photo_reference: {
+        type: Number,
+        required: true
+      }
     },
   ],
-  price: {
-    max: {
-      type: Number,
-      required: true,
-    },
-    min: {
-      type: Number,
-      required: true,
-    },
-  },
 });
 
 export default mongoose.models.Room || mongoose.model("Room", roomSchema);

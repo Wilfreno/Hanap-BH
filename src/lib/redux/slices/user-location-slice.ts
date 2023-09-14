@@ -1,10 +1,10 @@
-import { UserLocation } from "@/lib/types/google-map-type";
+import { UserLocationType } from "@/lib/types/redux-slice-types";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-const initialState: UserLocation = {
+const initialState: UserLocationType = {
   coordinates: {
-    lat: 12.8797,
-    lng: 121.7740,
+    lat: undefined,
+    lng: undefined,
   },
 };
 
@@ -12,7 +12,7 @@ export const userLocation = createSlice({
   name: "Userlocation",
   initialState,
   reducers: {
-    setLocation: (_, action: PayloadAction<UserLocation>) => {
+    setLocation: (_, action: PayloadAction<UserLocationType>) => {
       return action.payload;
     },
   },

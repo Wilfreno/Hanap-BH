@@ -1,72 +1,23 @@
-import { PlaceDetailType } from "@/lib/types/places-detail-types";
+import { PlaceDetailType } from "@/lib/types/google-place-api-types";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-const initialState: PlaceDetailType = {
-  owner: "",
+type selectedDetailType = {
+  place_id: string;
+};
+
+const initialState: selectedDetailType = {
   place_id: "",
-  description: "",
-  vicinity: "",
-  location: undefined,
-  photo: {
-    height: undefined,
-    width: undefined,
-    photo_reference: "",
-  },
-  price: {
-    max: undefined,
-    min: undefined,
-  },
-  vacant_rooms: undefined,
-  contact: {
-    email: "",
-    phone: undefined,
-    social_media: "",
-  },
 };
 
 export const selectedDetail = createSlice({
   name: "selectedDetail",
   initialState,
   reducers: {
-    setSelectedDetail: (
-      _,
-      action: PayloadAction<PlaceDetailType>
-    ): PlaceDetailType => {
-      const {
-        owner,
-        place_id,
-        description,
-        vicinity,
-        location,
-        photo: { height, width, photo_reference },
-        price: { max, min },
-        vacant_rooms,
-        contact: { email, phone, social_media },
-        rating,
-      } = action.payload;
+    setSelectedDetail: (_, action: PayloadAction<selectedDetailType>) => {
+      const { place_id } = action.payload;
 
       return {
-        owner,
         place_id,
-        description,
-        vicinity,
-        location,
-        photo: {
-          height,
-          width,
-          photo_reference,
-        },
-        price: {
-          max,
-          min,
-        },
-        vacant_rooms,
-        contact: {
-          email,
-          phone,
-          social_media,
-        },
-        rating,
       };
     },
   },

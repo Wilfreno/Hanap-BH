@@ -1,5 +1,5 @@
+import PlacesDetail from "@/lib/database/model/Place-detail";
 import { getGeocode } from "@/lib/google-api/geocode";
-import { PlaceDetailType } from "@/lib/types/places-detail-types";
 import { ratingClasses } from "@mui/material";
 import { NextResponse } from "next/server";
 
@@ -18,27 +18,68 @@ export async function POST(request: Request) {
     const { predictions } = await response.json();
 
     const data = predictions.map(
-      (prediction: PlaceDetailType): PlaceDetailType => {
-        const { place_id, description, vicinity } = prediction;
+      async (prediction: {
+        place_id: string;
+        description: string;
+        vicinity: string;
+      }) => {
+        try {
+          const { place_id, description, vicinity } = prediction;
+          const coordinates = await getGeocode(place_id);
 
-        return {
-          owner: undefined,
-          place_id,
-          description,
-          vicinity,
-          photo: {
-            height: undefined,
-            width: undefined,
-            photo_reference: "",
-          },
-          price: {
-            max: undefined,
-            min: undefined,
-          },
-          vacant_rooms: undefined,
-      
-          rating: undefined,
-        };
+          if (!(await findDuplicate(place_id))) {
+            savePlace({
+              owner: undefined,
+              place_id,
+              name: prediction.description,
+              location: {
+                vicinity,
+                province: undefined,
+                municipality: undefined,
+                barangay: undefined,
+                street: undefined,
+                coordinates,
+              },
+              photo: {
+                height: undefined,
+                width: undefined,
+                photo_reference: "",
+              },
+              price: {
+                max: undefined,
+                min: undefined,
+              },
+              vacant_rooms: undefined,
+
+              rating: undefined,
+            });
+            return {
+              owner: undefined,
+              place_id,
+              name: prediction.description,
+              location: {
+                vicinity,
+                province: undefined,
+                municipality: undefined,
+                barangay: undefined,
+                street: undefined,
+                coordinates,
+              },
+              photo: {
+                height: undefined,
+                width: undefined,
+                photo_reference: "",
+              },
+              price: {
+                max: undefined,
+                min: undefined,
+              },
+              vacant_rooms: undefined,
+
+              rating: undefined,
+            } as PlaceDetailType;
+          }
+        } catch (error) {}
       }
     );
 
@@ -46,4 +87,11 @@ export async function POST(request: Request) {
   } catch (error) {
     return NextResponse.json(error, { status: 500 });
   }
+}
+
+async function findDuplicate(data: string) {
+  const result = await PlacesDetail.find({ place_id: data });
+  if (!result || result.length <= 0) return false;
+
+  return true;
 }

@@ -1,20 +1,21 @@
+import { PhotosType } from "./google-place-api-types";
+
 export type UserDetailType = {
   first_name: string;
   middle_name?: string;
   last_name: string;
-  place_owned?: Schema.Types.ObjectId[];
+  place_owned?: string[];
   gender?: string;
-  birth_date: Date;
-  address: string;
-  profile_pic: string;
+  birth_date?: Date;
+  profile_pic: PhotosType;
   contact: {
     social_media: {
-      facebok?: string;
+      facebook?: string;
       twitter?: string;
       instagram?: string;
     };
-    phone_number?: string;
+    phone_number?: string[];
   };
-  password: string;
-  date_created: Date;
+  password?: string;
+  date_created?: Date;
 };

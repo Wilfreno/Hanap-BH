@@ -1,12 +1,11 @@
 import styles from "./NearbyPlacesMarker.module.css";
-import { NearbyPlaceAPIResponseType } from "@/lib/types/nearby-place-type";
-import { LatLngLiteral, MapType } from "@/lib/types/google-map-type";
 import { useEffect, useState } from "react";
 import { InfoWindow, Marker } from "@react-google-maps/api";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
 import { setSelectedDetail } from "@/lib/redux/slices/selected-detail-slice";
-import { PlaceDetailType } from "@/lib/types/places-detail-types";
+import { LatLngLiteral, MapType } from "@/lib/types/google-maps-api-type";
+import { PlaceDetailType } from "@/lib/types/google-place-api-types";
 export default function NearbyPlacesMarker({
   user_location,
   map,
@@ -16,7 +15,7 @@ export default function NearbyPlacesMarker({
 }) {
   const dispatch = useDispatch<AppDispatch>();
 
-  const [nearbyPlaces, setNearbyPlaces] = useState<PlaceDetailType[]>([]);
+  const [nearby_places, setNearbyPlaces] = useState<PlaceDetailType[]>([]);
 
   async function getNearbyPlace() {
     try {
@@ -40,27 +39,16 @@ export default function NearbyPlacesMarker({
     getNearbyPlace();
   }, [user_location]);
   return (
-    
     <>
-      {nearbyPlaces?.map((place) => (
+      {nearby_places?.map((place) => (
         <Marker
           key={place.place_id}
-          position={place.location!}
+          position={place.location.coordinates}
           onClick={() => {
-            console.log("location: ", place.location);
-            map?.panTo(place.location!);
+            map?.panTo(place.location.coordinates);
             dispatch(
               setSelectedDetail({
-                owner: place.owner,
                 place_id: place.place_id,
-                description: place.description,
-                vicinity: place.vicinity,
-                location: place.location,
-                photo: place.photo,
-                price: place.price,
-                vacant_rooms: place.vacant_rooms,
-                contact: place.contact,
-                rating: place.rating,
               })
             );
           }}
