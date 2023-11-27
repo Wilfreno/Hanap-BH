@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { PlaceDetailsType } from "../types/place-detail";
-import { set } from "mongoose";
 
 export default function useAutoComplete(value: string){
   const [result, setResult] = useState<PlaceDetailsType[]>();

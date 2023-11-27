@@ -2,10 +2,10 @@
 import Image from "next/image";
 import loadingSVG from "../../../../public/loading-transparent.svg";
 import dynamic from "next/dynamic";
-import { APIProvider } from "@vis.gl/react-google-maps";
 import DetailPopUpMobile from "@/components/page/map/detail-popup/DetailPopUpMobile";
 import { useAppSelector } from "@/lib/redux/store";
 import { useEffect } from "react";
+import { APIProvider } from "@vis.gl/react-google-maps";
 const MapSection = dynamic(() => import("@/components/page/map/MapSection"), {
   loading: () => (
     <section className="h-screen w-screen flex items-center justify-center bg-gray-500">
