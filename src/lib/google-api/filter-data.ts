@@ -48,6 +48,7 @@ export default function fiterData(
       { lat: user_location?.lat!, lng: user_location?.lng! },
       { lng: details.geometry.location.lng, lat: details.geometry.location.lat }
     ),
+    database: "GOOGLE",
     date_created: undefined,
   };
 

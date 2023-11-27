@@ -1,29 +1,23 @@
-// import "@/components/Dashboard/map/markers/InfoWindow.css";
-
+"use client";
 import { LatLngLiteral } from "@/lib/types/google-maps-api-type";
-import BoySharpIcon from "@mui/icons-material/BoySharp";
-import { InfoWindow, Marker } from "@react-google-maps/api";
-import { useState } from "react";
+import { ChevronDoubleDownIcon } from "@heroicons/react/24/solid";
+import { AdvancedMarker, useMap } from "@vis.gl/react-google-maps";
+import { useEffect, useState } from "react";
 export default function UserMarker({
   user_location,
 }: {
   user_location: LatLngLiteral;
 }) {
-  const [clicked, setClicked] = useState<boolean>(false);
+  const [location, setLocation] = useState(user_location);
+  useEffect(() => {
+    setLocation(user_location);
+  }, [user_location]);
   return (
-    <>
-      {clicked ? (
-        <InfoWindow
-          position={user_location}
-          onCloseClick={() => setClicked(false)}
-        >
-          <div>
-            <h1>You are Hereeeeeeeeeee!</h1>
-          </div>
-        </InfoWindow>
-      ) : (
-        <Marker position={user_location} onClick={() => setClicked(true)} />
-      )}
-    </>
+    <AdvancedMarker position={{ lat: location.lat, lng: location.lng }}>
+      <section className="flex flex-col items-center justify-center text-gray-900 animate-bounce cursor-pointer">
+        <p className="text-lg">You are here</p>
+        <ChevronDoubleDownIcon className="h-5 cursor-pointer" />
+      </section>
+    </AdvancedMarker>
   );
 }

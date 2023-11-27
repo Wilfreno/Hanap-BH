@@ -6,6 +6,8 @@ export type NominatimReverseAPiResponse = {
   address: {
     city?: string;
     town?: string;
+    country?: string;
+    country_code?: string
   };
 };
 export type PlacesAPIResponseDetails = {
@@ -53,5 +55,6 @@ export type PlaceDetailsType = {
   };
   rooms: number;
   distance?: number;
+  database?: string;
   date_created?: Date;
 };
