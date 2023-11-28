@@ -14,7 +14,7 @@ export default function BestOfferSection({
   token,
 }: {
   token: string;
-  data: PlaceDetailsType[];
+  data?: PlaceDetailsType[];
 }) {
   return (
     <section className="flex flex-col space-y-5 mt-10">

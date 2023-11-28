@@ -11,10 +11,9 @@ export default function page() {
   const next_page_token = useAppSelector(
     (state) => state.next_page_token_reducer.next_page_token
   );
-  useEffect(() => {}, [next_page_token, place_details]);
   return (
     <section className="dark:text-white text-gray-900 mb-20 mt-[10vh] space-y-5 md:mb-0 ">
-      <NearbySection data={place_details!} />
+      <NearbySection data={place_details} />
       <BestOfferSection token={next_page_token!} data={place_details!} />
     </section>
   );

@@ -8,7 +8,7 @@ export default function BestOfferList({
   token,
 }: {
   token: string;
-  data: PlaceDetailsType[];
+  data?: PlaceDetailsType[];
 }) {
   if (data && data[0].place_id !== "") {
     return (
