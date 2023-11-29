@@ -1,7 +1,7 @@
 import { PlaceDetailsType } from "@/lib/types/place-detail";
 import DetailPopUPCard from "./DetailPopUPCard";
 import { HomeIcon } from "@heroicons/react/24/solid";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMap } from "@vis.gl/react-google-maps";
 export default function DetailPopUPMain({
@@ -26,7 +26,6 @@ export default function DetailPopUPMain({
       map?.setZoom(18);
     }
   }
-
   return (
     <>
       {!on_mobile && place_id === data.place_id ? (

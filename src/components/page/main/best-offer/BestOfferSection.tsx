@@ -11,9 +11,7 @@ const BestOfferList = dynamic(
 );
 export default function BestOfferSection({
   data,
-  token,
 }: {
-  token: string;
   data?: PlaceDetailsType[];
 }) {
   return (
@@ -29,7 +27,7 @@ export default function BestOfferSection({
         <MapIcon className="h-8 cursor-pointer text-gray-700 animate-bounce sm:group-hover:animate-bounce " />
       </Link>
       <div className="flex flex-col sm:flex-row sm:flex-wrap sm:justify-center cursor-pointer">
-        <BestOfferList token={token} data={data} />
+        <BestOfferList data={data} />
       </div>
     </section>
   );
