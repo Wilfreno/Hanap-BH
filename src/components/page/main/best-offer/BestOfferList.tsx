@@ -4,7 +4,7 @@ import React from "react";
 import noIMG from "../../../../../public/image-square-xmark-svgrepo-com.svg";
 import Image from "next/image";
 export default function BestOfferList({ data }: { data?: PlaceDetailsType[] }) {
-  if (data && data[0].place_id !== "") {
+  if (data) {
     return (
       <>
         {data?.map((details: PlaceDetailsType) => (

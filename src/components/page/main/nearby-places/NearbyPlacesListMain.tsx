@@ -26,7 +26,7 @@ export default function NearbyPlacesListMain({
       setWidth(div_ref.current.scrollWidth - div_ref.current.offsetWidth);
     }
   }, [div_ref.current, page_width, data]);
-  if (data && data[0].place_id !== "") {
+  if (data) {
     return (
       <>
         <motion.div

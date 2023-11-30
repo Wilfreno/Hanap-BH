@@ -7,7 +7,7 @@ export default function NearbyPlaceListMobile({
 }: {
   data?: PlaceDetailsType[];
 }) {
-  if (data && data[0].place_id !== "") {
+  if (data) {
     return (
       <>
         {quickSort(data)?.map((details) => (
