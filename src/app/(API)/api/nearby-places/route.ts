@@ -17,7 +17,6 @@ export async function GET(request: NextRequest) {
     const search_params = request.nextUrl.searchParams;
     const lat = search_params.get("lat");
     const lng = search_params.get("lng");
-    const next_page_token = search_params.get("next_page-token");
     const nomitatim_response = await fetch(
       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
     );
@@ -33,29 +32,7 @@ export async function GET(request: NextRequest) {
         { status: 400 }
       );
     }
-    if (next_page_token) {
-      const next_page_response = await fetch(
-        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=${next_page_token}&key=${api_key}`
-      );
-      const next_page_data = await next_page_response.json();
-      const restructured_next_page_data = next_page_data.results.map(
-        (details: PlacesAPIResponseDetails) => {
-          return filterData(details, nominatim_data, {
-            lat: Number(lat),
-            lng: Number(lng),
-          });
-        }
-      );
-
-      return NextResponse.json(
-        {
-          data: restructured_next_page_data,
-          next_page_token: next_page_data.next_page_token,
-        },
-        { status: 200 }
-      );
-    }
-
+   
     await dbConnect();
     let db_data;
     if (nominatim_data.address.city) {

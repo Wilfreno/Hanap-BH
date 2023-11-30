@@ -13,7 +13,7 @@ const NearbyPlaceListMobile = dynamic(
   () => import("@/components/page/main/nearby-places/NearbyPlaceListMobile"),
   { loading: () => <NearbyLoadingSkeleton /> }
 );
-export default function NearbySection({ data }: { data: PlaceDetailsType[] }) {
+export default function NearbySection({ data }: { data?: PlaceDetailsType[] }) {
   const router = useRouter();
   const [page_width, setPageWidth] = useState(0);
   useEffect(() => {

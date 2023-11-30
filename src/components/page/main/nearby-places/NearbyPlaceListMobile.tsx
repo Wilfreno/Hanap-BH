@@ -5,9 +5,9 @@ import { PlaceDetailsType } from "@/lib/types/place-detail";
 export default function NearbyPlaceListMobile({
   data,
 }: {
-  data: PlaceDetailsType[];
+  data?: PlaceDetailsType[];
 }) {
-  if (data && data[0].place_id !== "") {
+  if (data) {
     return (
       <>
         {quickSort(data)?.map((details) => (
@@ -36,4 +36,5 @@ export default function NearbyPlaceListMobile({
       </>
     );
   }
+  return null;
 }

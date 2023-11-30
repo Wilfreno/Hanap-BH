@@ -15,7 +15,7 @@ export default function NearbyPlacesListMain({
   page_width,
 }: {
   page_width: number;
-  data: PlaceDetailsType[];
+  data?: PlaceDetailsType[];
 }) {
   const [width, setWidth] = useState(0);
   const div_ref = useRef<HTMLDivElement>(null);
@@ -26,7 +26,7 @@ export default function NearbyPlacesListMain({
       setWidth(div_ref.current.scrollWidth - div_ref.current.offsetWidth);
     }
   }, [div_ref.current, page_width, data]);
-  if (data && data[0].place_id !== "" ) {
+  if (data) {
     return (
       <>
         <motion.div
@@ -84,4 +84,5 @@ export default function NearbyPlacesListMain({
       </>
     );
   }
+  return null;
 }
