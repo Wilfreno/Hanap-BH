@@ -1,15 +1,10 @@
 import { useEffect, useState } from "react";
 import { LatLngLiteral } from "../types/google-maps-api-type";
+import useErrorHandler from "./useErrorHandler";
 
 export default function useLocation() {
   const [coordinates, setCoordinates] = useState<LatLngLiteral>();
-  const [location_error, setError] = useState<GeolocationPositionError>();
-  function getLocationSession() {
-    const session_data = sessionStorage.getItem("UserLocation");
-    if (session_data !== null) setCoordinates(JSON.parse(session_data));
-    else setCoordinates(undefined);
-    return coordinates;
-  }
+  const { errorHandler } = useErrorHandler();
   useEffect(() => {
     if (!navigator.geolocation.getCurrentPosition) {
       throw new Error("Location detector is not supported in your browser");
@@ -23,15 +18,19 @@ export default function useLocation() {
         });
       },
       (error) => {
-        setError(error);
+        errorHandler(400);
+        throw error;
       }
     );
   }, []);
 
   return {
-    lat: coordinates?.lat,
-    lng: coordinates?.lng,
-    location_error,
+    getSession: () => {
+      const session_data = sessionStorage.getItem("UserLocation");
+      if (session_data !== null) return JSON.parse(session_data);
+      else return null;
+    },
+    location: { lat: coordinates?.lat, lng: coordinates?.lng },
     saveLocation: ({ lat, lng }: LatLngLiteral) =>
       sessionStorage.setItem(
         "userLocation",
@@ -40,6 +39,5 @@ export default function useLocation() {
           lng,
         })
       ),
-    locationSession: getLocationSession(),
   };
 }

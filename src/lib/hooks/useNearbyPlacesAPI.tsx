@@ -3,42 +3,44 @@ import { PlaceDetailsType } from "../types/place-detail";
 import usePlaceSession from "./usePlaceSession";
 import useNextPageSession from "./useNextPageSession";
 import useLocation from "./useLocation";
+import useErrorHandler from "./useErrorHandler";
 
 export default function useNearbyPlacesAPI() {
-  const [error, setError] = useState<number>();
   const [data, setData] = useState<PlaceDetailsType[]>();
   const [next_page_token, setNextPageToken] = useState<string>();
 
-  const { lat, lng, location_error, saveLocation, locationSession } =
-    useLocation();
+  const { location, getSession, saveLocation } = useLocation();
+  const location_session = getSession();
   const place_session = usePlaceSession();
   const next_page_token_session = useNextPageSession();
+  const { errorHandler } = useErrorHandler();
+
   async function getNearbyPlaces() {
-    if (lat && lng) {
-      if (locationSession?.lat === lat && locationSession?.lng === lng) {
+    if (location.lat && location.lng) {
+      if (
+        location_session &&
+        location_session.lat === location.lat &&
+        location_session.lng === location.lng
+      )
         return;
-      }
       try {
         const api_response = await fetch(
-          `/api/nearby-places?lat=${lat}&lng=${lng}`,
+          `/api/nearby-places?lat=${location.lat}&lng=${location.lng}`,
           { cache: "no-store" }
         );
-        if (api_response.status === 408) {
-          setError(408);
+        if (api_response.status !== 200) {
+          errorHandler(api_response.status);
           return;
         }
-        if (api_response.status === 500) {
-          setError(500);
-          return;
-        }
+
         const { data, next_page_token } = await api_response.json();
         setData(data);
         setNextPageToken(next_page_token);
         place_session.save(data);
         next_page_token_session.save(next_page_token);
         saveLocation({
-          lat: locationSession?.lat!,
-          lng: locationSession?.lng!,
+          lat: location.lat,
+          lng: location.lng,
         });
       } catch (error) {
         throw error;
@@ -48,5 +50,5 @@ export default function useNearbyPlacesAPI() {
   useEffect(() => {
     getNearbyPlaces();
   }, [location]);
-  return { data, next_page_token, error, location_error };
+  return { data, next_page_token };
 }

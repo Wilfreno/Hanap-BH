@@ -27,7 +27,6 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <ReduxProvider>
           <SessionProvider session={session}>
             <NextTopLoader
               color="#222222"
@@ -42,7 +41,6 @@ export default async function RootLayout({
             {children}
             <Analytics />
           </SessionProvider>
-        </ReduxProvider>
       </body>
     </html>
   );
