@@ -32,7 +32,7 @@ export default async function RootLayout({
               color="#222222"
               initialPosition={0.1}
               crawlSpeed={200}
-              // crawl={true}
+              crawl={true}
               showSpinner={false}
               height={3}
               easing="ease"

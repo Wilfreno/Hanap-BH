@@ -1,17 +1,15 @@
 import User from "@/lib/database/model/User";
 import nextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
-import CredentialsProvider from "next-auth/providers/credentials";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "@/lib/database/mongoclient";
 import dbConnect from "@/lib/database/connect";
-import bcrypt from "bcrypt";
+import FacebookProvider from "next-auth/providers/facebook";
+const google_client_id = process.env.GOOGLE_CLIENT_ID;
+if (!google_client_id) throw new Error("Missing GOOGLE_CLIENT_ID");
 
-const clientId = process.env.GOOGLE_CLIENT_ID;
-if (!clientId) throw new Error("Missing GOOGLE_CLIENT_ID");
-
-const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
-if (!clientSecret) throw new Error("Missing GOOGLE_CLIENT_SECRET");
+const google_client_secret = process.env.GOOGLE_CLIENT_SECRET;
+if (!google_client_secret) throw new Error("Missing GOOGLE_CLIENT_SECRET");
 
 const secret = process.env.NEXTAUTH_SECRET;
 if (!secret) throw new Error("Missing NEXTAUTH_SECRET");
@@ -24,53 +22,12 @@ const handler = nextAuth({
   }),
   providers: [
     GoogleProvider({
-      clientId,
-      clientSecret,
+      clientId: google_client_id,
+      clientSecret: google_client_secret,
     }),
-    CredentialsProvider({
-      name: "credentials",
-      credentials: {
-        user: {
-          label: "user",
-          type: "text",
-          placeholder: "Email or Username",
-        },
-        password: {
-          label: "password",
-          type: "password",
-          placeholder: "password",
-        },
-      },
-      async authorize(credentials) {
-        try {
-          if (!credentials?.user && !credentials?.password)
-            throw new Error("0");
-          if (!credentials.user) throw new Error("1");
-          if (!credentials.password) throw new Error("2");
-
-          await dbConnect();
-
-          const user = await User.findOne({
-            $or: [
-              { "contact.email": credentials?.user },
-              { "auth.user_name": credentials?.user },
-            ],
-          }).select("-__v");
-
-          if (!user) {
-            throw new Error("400");
-          }
-          if (!(await bcrypt.compare(credentials?.password!, user.password))) {
-            throw new Error("401");
-          }
-          const filtered_user = user.toJSON();
-          delete filtered_user.password;
-
-          return filtered_user;
-        } catch (error) {
-          throw error;
-        }
-      },
+    FacebookProvider({
+      clientId: facebook_client_id,
+      clientSecret: facebok_client_secret,
     }),
   ],
   session: {
