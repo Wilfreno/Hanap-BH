@@ -5,21 +5,21 @@ import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "@/lib/database/mongoclient";
 import dbConnect from "@/lib/database/connect";
 import FacebookProvider from "next-auth/providers/facebook";
+
 const google_client_id = process.env.GOOGLE_CLIENT_ID;
 if (!google_client_id) throw new Error("Missing GOOGLE_CLIENT_ID");
-
 const google_client_secret = process.env.GOOGLE_CLIENT_SECRET;
 if (!google_client_secret) throw new Error("Missing GOOGLE_CLIENT_SECRET");
+
+const facebook_client_id = process.env.FACEBOOK_CLIENT_ID;
+if (!facebook_client_id) throw new Error("FACEBOOK_CLIENT_ID");
+const facebook_client_secret = process.env.FACEBOOK_CLIENT_SECRET;
+if (!facebook_client_secret) throw new Error("FACEBOOK_CLIENT_SECRET");
 
 const secret = process.env.NEXTAUTH_SECRET;
 if (!secret) throw new Error("Missing NEXTAUTH_SECRET");
 
 const handler = nextAuth({
-  adapter: MongoDBAdapter(clientPromise, {
-    collections: {
-      Users: "generated-users",
-    },
-  }),
   providers: [
     GoogleProvider({
       clientId: google_client_id,
@@ -27,16 +27,9 @@ const handler = nextAuth({
     }),
     FacebookProvider({
       clientId: facebook_client_id,
-      clientSecret: facebok_client_secret,
+      clientSecret: facebook_client_secret,
     }),
   ],
-  session: {
-    strategy: "jwt",
-    maxAge: 60 * 60 * 24 * 30,
-  },
-  pages: {
-    signIn: "/auth/login",
-  },
   secret,
   debug: process.env.NODE_ENV === "development",
   callbacks: {
