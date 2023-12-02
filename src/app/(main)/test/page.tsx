@@ -11,5 +11,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 export default function page() {
   const images = [img1, img2, img3, img4, img5];
-  return null;
+  return <code>{ JSON.stringify([])}</code>
 }
+
+
