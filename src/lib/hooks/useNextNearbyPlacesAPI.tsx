@@ -10,7 +10,9 @@ export default function useNextNearbyPlacesAPI() {
   const next_page_token_session = useNextPageSession();
   const [next_page, setNextPageToken] = useState<string | null>();
   const place_session = usePlaceSession();
-  const { lat, lng } = useLocation();
+  const {
+    location: { lat, lng },
+  } = useLocation();
   async function getNextPage() {
     if (!next_page) return;
     try {
