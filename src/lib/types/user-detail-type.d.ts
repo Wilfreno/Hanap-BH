@@ -7,7 +7,7 @@ export type UserDetailType = {
   family_name: string;
   place_owned: {
     [{
-      place_id: string,
+      id: string,
     }];
   };
   gender?: string;
