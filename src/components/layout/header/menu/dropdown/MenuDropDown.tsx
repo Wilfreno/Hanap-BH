@@ -22,12 +22,8 @@ export default function MenuDropDown() {
       document.removeEventListener("click", clickHandler);
     };
   }, []);
-  const section_mobile =
-    "fixed w-screen bg-white rounded-lg z-20 flex flex-col border-2";
-  const section_pc =
-    "sm:w-1/3 sm:right-4 sm:shadow-lg sm:top-16 mt-1 md:right-8 lg:right-12 lg:w-1/5";
   return (
-    <section className={`${section_mobile} ${section_pc}`} ref={section_ref}>
+    <section className="hidden fixed bg-white rounded-lg z-20 top-[9vh] sm:flex flex-col border-2 w-[18rem] text-gray-700 text-sm font-medium sm:right-4 sm:shadow-lg mt-1 md:right-8 lg:right-8 ">
       {session.status === "authenticated" ? (
         <LoggedInDropDown />
       ) : (

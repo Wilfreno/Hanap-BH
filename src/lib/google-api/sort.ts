@@ -1,6 +1,6 @@
-import { PlaceDetailType } from "../types/place-detail";
+import { PlaceDetailsType } from "../types/place-detail";
 
-export default function quickSort(arr: PlaceDetailType[]): PlaceDetailType[] {
+export default function quickSort(arr: PlaceDetailsType[]): PlaceDetailsType[] {
   if (arr.length <= 1) {
     return arr;
   }
@@ -9,7 +9,7 @@ export default function quickSort(arr: PlaceDetailType[]): PlaceDetailType[] {
   const right = [];
 
   for (let i = 1; i < arr.length; i++) {
-    if (arr[i].distance < pivot.distance) {
+    if (arr[i].distance! < pivot.distance!) {
       left.push(arr[i]);
     } else {
       right.push(arr[i]);

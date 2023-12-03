@@ -1,39 +1,18 @@
 "use client";
+export const dynamic = "force-dynamic";
 
-import images from "./test";
-import Image from "next/image";
-import styles from "./test.module.css";
-import { useState } from "react";
+import Error408 from "@/components/page/error/Error408";
+
+import img1 from "../../../../public/img/wallpaperflare.com_wallpaper (1).jpg";
+import img2 from "../../../../public/img/wallpaperflare.com_wallpaper (2).jpg";
+import img3 from "../../../../public/img/wallpaperflare.com_wallpaper (3).jpg";
+import img4 from "../../../../public/img/wallpaperflare.com_wallpaper (4).jpg";
+import img5 from "../../../../public/img/wallpaperflare.com_wallpaper.jpg";
+import {useSession } from "next-auth/react";
 export default function page() {
-  const [index, setIndex] = useState<number>(0);
+  const images = [img1, img2, img3, img4, img5];
+  const session = useSession();
 
-  return (
-    <div className={styles.test}>
-      <div className={styles.image__container}>
-        <div className={styles.outer__main__image__container}>
-          <div className={styles.main__image__container}>
-            <Image
-              src={images[index]}
-              alt={`${images[index]}`}
-              className={styles.main__image}
-            />
-          </div>
-        </div>
-        { 
-          <div className={styles.outer__mini__images__container}>
-            {images.slice(0, 4).map((image, index) => (
-              <div key={index} className={styles.mini__images__container}>
-                <Image
-                  src={image}
-                  alt={`${image}`}
-                  className={styles.mini__image}
-                  onClick={() => setIndex(index)}
-                />
-              </div>
-            ))}
-          </div>
-        }
-      </div>
-    </div>
-  );
+  console.log(session);
+  return <code></code>;
 }
