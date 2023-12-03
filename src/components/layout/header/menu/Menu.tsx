@@ -18,8 +18,8 @@ export default function Menu() {
   return (
     <>
       <div
-        className={`hidden sm:flex items-center rounded-full p-1 cursor-pointer hover:shadow-lg sm:space-x-2 sm:border-2 ${
-          active ? "shadow-lg" : ""
+        className={`hidden sm:flex items-center rounded-full p-1 cursor-pointer text-gray-700 hover:shadow-lg sm:space-x-2 sm:border ${
+          active ? "shadow-lg border-gray-300" : ""
         }`}
         ref={ref}
         onClick={() => setActive((prev) => !prev)}
