@@ -26,8 +26,8 @@ export default function DetailPopUpMobile({
     }
   }, [navigator.userAgent]);
   useEffect(() => {
-    const place_filter = data.filter((place) => place.place_id === place_id);
-    if (place_filter.length > 0) {
+    const place_filter = data?.filter((place) => place.place_id === place_id);
+    if (place_filter?.length > 0) {
       setDetails(place_filter[0]);
       setView(true);
     }
