@@ -1,11 +1,9 @@
 export const dynamic = "force-dynamic";
 import dbConnect from "@/lib/database/connect";
 import PlaceDetail from "@/lib/database/model/Place-detail";
-import getDistance from "@/lib/google-api/distance";
-import { PlaceDetailsType } from "@/lib/types/place-detail";
 import { NextResponse, type NextRequest } from "next/server";
 
-export async function POST(request: NextRequest) {
+export async function GET(request: NextRequest) {
   const search_params = request.nextUrl.searchParams;
   const place_id = search_params.get("place_id");
   try {
