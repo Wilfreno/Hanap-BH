@@ -59,16 +59,6 @@ const userSchema: Schema = new Schema({
       },
     ],
   },
-  auth: {
-    user_name: {
-      type: String,
-      required: true,
-    },
-    password: {
-      type: String,
-      default: undefined,
-    },
-  },
   date_created: {
     type: Date,
     default: Date.now,

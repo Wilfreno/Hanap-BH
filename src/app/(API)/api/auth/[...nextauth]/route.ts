@@ -1,8 +1,6 @@
 import User from "@/lib/database/model/User";
 import nextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
-import { MongoDBAdapter } from "@auth/mongodb-adapter";
-import clientPromise from "@/lib/database/mongoclient";
 import dbConnect from "@/lib/database/connect";
 import FacebookProvider from "next-auth/providers/facebook";
 
@@ -33,33 +31,53 @@ const handler = nextAuth({
   secret,
   debug: process.env.NODE_ENV === "development",
   callbacks: {
-    async signIn({ user, profile, account }) {
-      const {} = user 
+    async signIn({ user, profile }) {
       try {
-       
+        const { email } = user;
+        await dbConnect();
+        const db_user = await User.findOne({ "contact.email": email });
+        if (!db_user) {
+          const new_user = new User({
+            given_name: profile?.given_name,
+            family_name: profile?.family_name,
+            profile_pic: profile?.image,
+            contact: {
+              email,
+            },
+          });
+          await new_user.save();
+        }
         return true;
       } catch (error) {
         return false;
       }
     },
-    async jwt({ token, user, profile, account }) {
-      // if (user) {
-      //   return {
-      //     token: {
-      //       ...user,
-      //     },
-      //   };
-      // }
-      console.log("Session token: ", token);
-      console.log("JWT  user:", user);
-      console.log("JWT profile: ", profile);
-      console.log("JWT account: ", account);
+    async jwt({ token }) {
+      const { email } = token;
+      await dbConnect();
+      const db_user = await User.findOne({ "contact.email": email });
+
+      delete token.name;
+      delete token.email;
+      delete token.image;
+      token.id = db_user._id;
+      token.given_name = db_user.given_name;
+      token.middle_name = db_user.middle_anme;
+      token.family_name = db_user.family_name;
+      token.place_owned = db_user.place_owned;
+      token.gender = db_user.gender;
+      token.birth_date = db_user.birth_date;
+      token.profile_pic = db_user.profile_pick;
+      token.contact.email = db_user.contact.email;
+      token.contact.phone_number = db_user.contact.phone_number;
+      token.contact.social_media.facebook =
+        db_user.contact.social_media.facebook;
+      token.contact.social_media.twitter = db_user.contact.social_media.twitter;
+      token.contact.social_media.instagram =
+        db_user.contact.social_media.instagram;
       return token;
     },
     async session({ session, token, user }) {
-      console.log("Session : user", user);
-      console.log("Session token: ", token);
-      console.log("Session session: ", session);
       return session;
     },
   },

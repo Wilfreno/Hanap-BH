@@ -1,25 +1,4 @@
-{Signin  user: {
-  id: '114215465264359972285',
-  name: 'Wilfreno Gayongan',
-  email: 'w.gayongan@gmail.com',
-  image: 'https://lh3.googleusercontent.com/a/ACg8ocISU_um_CGBKf-E-UZY2wA5eSOxusYwQA_qDZJfHxxp=s96-c'
-}
-Signin profile:  {
-  iss: 'https://accounts.google.com',
-  azp: '665388032896-c8665q13csr2l20ao38unhm9iicunk30.apps.googleusercontent.com',
-  aud: '665388032896-c8665q13csr2l20ao38unhm9iicunk30.apps.googleusercontent.com',
-  sub: '114215465264359972285',
-  email: 'w.gayongan@gmail.com',
-  email_verified: true,
-  at_hash: 'iu0J7oYB5-nsdQQo4VmcYw',
-  name: 'Wilfreno Gayongan',
-  picture: 'https://lh3.googleusercontent.com/a/ACg8ocISU_um_CGBKf-E-UZY2wA5eSOxusYwQA_qDZJfHxxp=s96-c',
-  given_name: 'Wilfreno',
-  family_name: 'Gayongan',
-  locale: 'en',
-  iat: 1701511585,
-  exp: 1701515185
-}
+
 
 JWT token:  {
   name: 'Wilfreno Gayongan',

@@ -3,7 +3,7 @@ import { PhotosType } from "./google-place-api/room-types";
 export type UserDetailType = {
   id: string;
   given_name: string;
-  midd_name?: string;
+  middle_name?: string;
   family_name: string;
   place_owned: {
     [{
@@ -21,13 +21,5 @@ export type UserDetailType = {
       twitter: string;
       instagram: string;
     };
-  };
-  location: UserLocationType;
-};
-
-export type UserLocationType = {
-  coordinates: {
-    lat?: number;
-    lng?: number;
   };
 };
