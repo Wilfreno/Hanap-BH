@@ -34,7 +34,7 @@ export default function page() {
           />
         </APIProvider>
       </section>
-      <DetailPopUpMobile data={place_data!} />
+      {/* <DetailPopUpMobile data={place_data!} /> */}
     </>
   );
 }
