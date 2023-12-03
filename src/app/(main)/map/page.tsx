@@ -21,20 +21,20 @@ const MapSection = dynamic(() => import("@/components/page/map/MapSection"), {
 export default function page() {
   const api_key: string = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!;
   if (!api_key) throw new Error("NEXT_PUBLIC_GOOGLE_MAPS_API_KEY missing");
-  const { lat, lng } = useLocation();
+  const { location } = useLocation();
   const { place_data, error } = useNextNearbyPlacesAPI();
   return (
     <>
       <section className="h-screen w-screen">
         <APIProvider apiKey={api_key}>
           <MapSection
-            map_center={{ lat: lat!, lng: lng! }}
-            user_location={{ lat: lat!, lng: lng! }}
+            map_center={{ lat: location.lat!, lng: location.lng! }}
+            user_location={{ lat: location.lat!, lng: location.lng! }}
             data={place_data!}
           />
         </APIProvider>
       </section>
-      <DetailPopUpMobile data={place_data!} />
+      {/* <DetailPopUpMobile data={place_data!} /> */}
     </>
   );
 }

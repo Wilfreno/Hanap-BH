@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
         { status: 400 }
       );
     }
-   
+
     await dbConnect();
     let db_data;
     if (nominatim_data.address.city) {
@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
     if (places_api_data.status === "OVER_QUERY_LIMIT") {
       return NextResponse.json(
         { message: "too many request" },
-        { status: 408 }
+        { status: 429 }
       );
     }
     const resturctured_places_api_data = places_api_data.results.map(
@@ -76,6 +76,7 @@ export async function GET(request: NextRequest) {
         });
       }
     );
+    let n = 1;
     return NextResponse.json(
       {
         data: [...restructured_DB_data!, ...resturctured_places_api_data],

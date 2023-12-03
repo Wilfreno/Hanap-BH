@@ -33,6 +33,7 @@ export default function MapSection({
   }
 
   useEffect(() => {
+    console.log(data);
     if (place_id !== null && data[0].place_id !== "") {
       const filter = data.filter((place) => place.place_id === place_id);
       if (filter.length <= 0) {

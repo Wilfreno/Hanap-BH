@@ -16,9 +16,8 @@ const userSchema: Schema = new Schema({
   },
   place_owned: [
     {
-      type: Schema.Types.ObjectId,
-      ref: "PlaceDetail",
-      default: undefined,
+      type: String,
+      default: "",
     },
   ],
   gender: {
@@ -58,16 +57,6 @@ const userSchema: Schema = new Schema({
         default: "",
       },
     ],
-  },
-  auth: {
-    user_name: {
-      type: String,
-      required: true,
-    },
-    password: {
-      type: String,
-      default: undefined,
-    },
   },
   date_created: {
     type: Date,
