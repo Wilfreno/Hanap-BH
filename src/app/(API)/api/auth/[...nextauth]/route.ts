@@ -67,7 +67,6 @@ const handler = nextAuth({
         delete session.user._id;
         delete session.user.__v;
         session.user.id = db_user._id;
-        console.log("Session: ", session);
         return session;
       } catch (error) {
         throw error;

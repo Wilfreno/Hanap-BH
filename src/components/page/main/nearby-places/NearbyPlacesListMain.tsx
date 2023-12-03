@@ -6,9 +6,7 @@ import { PlaceDetailsType } from "@/lib/types/place-detail";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/lib/redux/store";
 import Link from "next/link";
-import { setSelectedDetail } from "@/lib/redux/slices/selected-detail-slice";
 
 export default function NearbyPlacesListMain({
   data,
@@ -19,7 +17,6 @@ export default function NearbyPlacesListMain({
 }) {
   const [width, setWidth] = useState(0);
   const div_ref = useRef<HTMLDivElement>(null);
-  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     if (div_ref.current) {
@@ -53,7 +50,6 @@ export default function NearbyPlacesListMain({
                 <Link
                   href={`/place-detail/${details.place_id}`}
                   target="_blank"
-                  onClick={() => dispatch(setSelectedDetail(details))}
                   className="flex flex-col space-y-1 px-2 group m-3"
                 >
                   <strong className="group-hover:underline text-gray-900 text-lg flex items-center">
