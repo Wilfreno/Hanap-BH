@@ -3,12 +3,14 @@ import useNextPageSession from "./useNextPageSession";
 import usePlaceSession from "./usePlaceSession";
 import useLocation from "./useLocation";
 import { PlaceDetailsType } from "../types/place-detail";
+import useNearbyPlacesAPI from "./useNearbyPlacesAPI";
 
 export default function useNextNearbyPlacesAPI() {
   const [error, setError] = useState<number>();
-  const { savePlace, getPlace } = usePlaceSession();
+  const { savePlace, place_session } = usePlaceSession();
+  const nearby_places_api = useNearbyPlacesAPI();
   const [place_data, setPlaceData] = useState<PlaceDetailsType[]>();
-  const { saveToken, getToken } = useNextPageSession();
+  const { saveToken, token_session } = useNextPageSession();
   const [next_page, setNextPageToken] = useState<string | null>();
   const {
     location: { lat, lng },
@@ -40,8 +42,12 @@ export default function useNextNearbyPlacesAPI() {
     }
   }
   useEffect(() => {
-    setPlaceData(getPlace());
-    setNextPageToken(getToken());
+    if (!place_session) {
+      setPlaceData(nearby_places_api.data);
+    } else {
+      setPlaceData(place_session);
+    }
+    setNextPageToken(token_session);
     getNextPage();
   }, []);
   return {

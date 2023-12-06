@@ -14,7 +14,7 @@ export default function DetailPopUpMobile({
 
   const search_params = useSearchParams();
   const place_id = search_params.get("place_id");
-  const selected_place = useSelectedPlaceSession();
+  const {selected_place} = useSelectedPlaceSession();
   useEffect(() => {
     if (
       /Mobi|Android/i.test(navigator.userAgent) ||
@@ -24,15 +24,15 @@ export default function DetailPopUpMobile({
     } else {
       setOnMobile(false);
     }
-  }, [navigator.userAgent]);
+  }, []);
   useEffect(() => {
     const place_filter = data?.filter((place) => place.place_id === place_id);
     if (place_filter?.length > 0) {
       setDetails(place_filter[0]);
       setView(true);
     }
-    if (selected_place.data?.place_id === place_id) {
-      setDetails(selected_place.data);
+    if (selected_place?.place_id === place_id) {
+      setDetails(selected_place);
       setView(true);
     } else setView(false);
   }, [place_id, data]);

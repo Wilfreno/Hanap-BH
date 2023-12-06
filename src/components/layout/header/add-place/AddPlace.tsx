@@ -3,7 +3,8 @@ import { PlusIcon } from "@heroicons/react/24/solid";
 export default function AddPlace() {
   return (
     <Link
-      href="/test"
+      href="/hosting"
+      as="/hosting"
       className="hidden md:inline-flex items-center space-x-2 whitespace-nowrap "
     >
       <p className="text-xs lg:text-base">Add Your boarding House</p>

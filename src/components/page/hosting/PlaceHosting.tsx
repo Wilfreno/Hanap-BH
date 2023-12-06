@@ -1,7 +1,11 @@
+import { APIProvider, Map } from "@vis.gl/react-google-maps";
+
 export default function PlaceHosting() {
   return (
-    <section className="" id="place-detail">
-      PlaceHosting
-    </section>
+    <>
+      <div>
+       
+      </div>
+    </>
   );
 }
