@@ -5,6 +5,7 @@ export default function AddPlace() {
     <Link
       href="/hosting"
       as="/hosting"
+      prefetch={true}
       className="hidden md:inline-flex items-center space-x-2 whitespace-nowrap "
     >
       <p className="text-xs lg:text-base">Add Your boarding House</p>

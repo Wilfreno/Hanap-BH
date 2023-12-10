@@ -5,8 +5,14 @@ import React from "react";
 
 export default function ReusableMap({
   children,
+  style,
+  setSelectedLocation,
 }: {
   children?: React.ReactNode;
+  style?: string;
+  setSelectedLocation?: React.Dispatch<
+    React.SetStateAction<google.maps.LatLngLiteral | undefined>
+  >;
 }) {
   const is_loaded = useApiIsLoaded();
 
@@ -30,11 +36,10 @@ export default function ReusableMap({
       mapId="671365b374be82"
       zoom={15}
       center={{ lat: location.lat!, lng: location.lng! }}
-      className="w-full h-full"
+      className={`w-full h-full ${style}`}
+      onClick={(e) => setSelectedLocation!(e.detail.latLng!)}
     >
       {children}
     </Map>
-  ) : (
-    <h1 className="text-7xl">Loading</h1>
-  );
+  ) : null;
 }

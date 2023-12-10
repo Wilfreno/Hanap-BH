@@ -1,10 +1,10 @@
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
-
+import { motion } from "framer-motion";
 export default function MainHosting() {
   const router = useRouter();
   return (
-    <>
+    <section className="flex items-center justify-between w-screen flex-col text-gray-900 whitespace-nowrap">
       <h1 className=" text-7xl mt-20">
         Welcome to{" "}
         <strong>
@@ -29,11 +29,11 @@ export default function MainHosting() {
       </p>
       <div
         onClick={() => router.replace("/hosting?page=place-detail")}
-        className="border rounded-lg text-xl bg-gray-800 text-white flex items-center hover:scale-110"
+        className="border rounded-lg text-xl bg-gray-800 text-white flex items-center hover:scale-110 hover:cursor-pointer"
       >
         <p className="m-2 ">Proceed</p>
         <ChevronRightIcon className="h-8" />
       </div>
-    </>
+    </section>
   );
 }
