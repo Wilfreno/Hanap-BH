@@ -2,7 +2,7 @@ import { APIProvider, AdvancedMarker } from "@vis.gl/react-google-maps";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import React, { useState } from "react";
-import loadingSVG from "../../../../../public/loading-transparent.svg";
+import loadingSVG from "../../../../../../public/icons/loading-transparent.svg";
 import {
   ArrowsPointingInIcon,
   ArrowsPointingOutIcon,

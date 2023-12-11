@@ -1,41 +1,41 @@
+"use client";
 import React, { InputHTMLAttributes, useState } from "react";
-import { text } from "stream/consumers";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
-  label_size?: number;
-  children: React.ReactNode;
+  label_size?: string;
+  children?: React.ReactNode;
   id: string;
-  div_style?: string;
+  div_width?: string;
 }
 
 export default function CustomInput({
   children,
   label_size,
   id,
-  div_style,
+  div_width,
   ...props
 }: Props) {
   const [focus, setFocus] = useState(false);
   const [value, setValue] = useState("");
   return (
     <div
-      className={`relative border-gray-500
+      className={`relative border-gray-400
     ${focus ? "border-2 rounded-lg" : "border-b"}
-    ${div_style ? div_style : "w-full"}`}
+    ${div_width ? div_width : "w-full"}`}
     >
       <input
         {...props}
         type="text"
         maxLength={100}
         id={id}
-        className={`flex items-center w-full text-xl outline-none px-5 py-2 text-gray-700`}
+        className={`flex items-center w-full text-xl outline-none px-5 py-2 text-gray-900 font-semibold`}
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onFocus={() => setFocus(true)}
         onBlur={() => (value === "" ? setFocus(false) : setFocus(true))}
       />
       <label
-        className={`absolute bg-white   mx-2 transform translate duration-200 ease-in
+        className={`absolute bg-white   mx-2 transform translate duration-200 ease-in cursor-text
          ${
            focus
              ? "-top-[35%] left-1 text-base text-gray-900"

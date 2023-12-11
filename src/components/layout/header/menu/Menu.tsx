@@ -1,3 +1,4 @@
+"use client"
 import { Bars3Icon, UserCircleIcon } from "@heroicons/react/24/solid";
 import MenuDropDown from "./dropdown/MenuDropDown";
 import { useEffect, useRef, useState } from "react";

@@ -1,4 +1,3 @@
-"use client";
 import HostingHeader from "@/components/layout/header/HostingHeader";
 import React from "react";
 
