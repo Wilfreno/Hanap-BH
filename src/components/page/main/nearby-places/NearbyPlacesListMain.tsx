@@ -1,7 +1,7 @@
 import quickSort from "@/lib/google-api/sort";
 import { LinkIcon, StarIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import noIMG from "../../../../../public/image-square-xmark-svgrepo-com.svg";
+import noIMG from "../../../../../public/icons/image-square-xmark-svgrepo-com.svg";
 import { PlaceDetailsType } from "@/lib/types/place-detail";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";

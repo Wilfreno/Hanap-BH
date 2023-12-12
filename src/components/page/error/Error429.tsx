@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import errorSVG from "../../../../public/laptop-exclamation-alt-svgrepo-com.svg";
+import errorSVG from "../../../../public/icons/laptop-exclamation-alt-svgrepo-com.svg";
 import { ArrowPathIcon } from "@heroicons/react/24/solid";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";

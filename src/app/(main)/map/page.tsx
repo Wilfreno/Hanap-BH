@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import loadingSVG from "../../../../public/loading-transparent.svg";
+import loadingSVG from "../../../../public/icons/loading-transparent.svg";
 import dynamic from "next/dynamic";
 import DetailPopUpMobile from "@/components/page/map/detail-popup/DetailPopUpMobile";
 import useLocation from "@/lib/hooks/useLocation";
@@ -60,7 +60,7 @@ export default function page() {
     location: { lat, lng },
   } = useLocation();
   const { place_data } = useNextNearbyPlacesAPI();
-  
+
   return (
     <>
       <section className="h-screen w-screen">

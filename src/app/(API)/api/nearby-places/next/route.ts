@@ -1,8 +1,9 @@
+import getDistance from "@/lib/google-api/distance";
 import {
   NominatimReverseAPiResponse,
+  PlaceDetailsType,
   PlacesAPIResponseDetails,
 } from "@/lib/types/place-detail";
-import filterData from "@/lib/google-api/filter-data";
 import { type NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -46,10 +47,41 @@ export async function GET(request: NextRequest) {
     }
     const restructured_next_page_data = next_page_data.results.map(
       (details: PlacesAPIResponseDetails) => {
-        return filterData(details, nominatim_data, {
-          lat: Number(lat),
-          lng: Number(lng),
-        });
+        const data: PlaceDetailsType = {
+          owner: "",
+          place_id: details.place_id,
+          name: details.name,
+          photos: details.photos.map((photo) => photo.photo_reference),
+          location: {
+            vicinity: details.vicinity,
+            province: "",
+            town: {
+              city: nominatim_data.address.city || "",
+              municipality: nominatim_data.address.town || "",
+            },
+            barangay: "",
+            street: "",
+            coordinates: details.geometry.location,
+          },
+          price: {
+            max: undefined,
+            min: undefined,
+          },
+          rating: {
+            count: 1,
+            average: details.rating,
+          },
+          rooms: 0,
+          distance: getDistance(
+            { lat: Number(lat), lng: Number(lng) },
+            {
+              lng: details.geometry.location.lng,
+              lat: details.geometry.location.lat,
+            }
+          ),
+          database: "GOOGLE",
+        };
+        return data;
       }
     );
 

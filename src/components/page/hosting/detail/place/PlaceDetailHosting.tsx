@@ -4,7 +4,7 @@ import PlaceContactForm from "./place-form/contact/PlaceContactForm";
 import PlaceNameForm from "./place-form/PlaceNameForm";
 import PLaceImageUpload from "./place-form/upload-image/PlaceImageUpload";
 import PlaceSpecificationForm from "./place-form/specification/PlaceSpecificationForm";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export type FormState = {
@@ -42,6 +42,10 @@ export type FormState = {
 };
 
 export default function PlaceDetailHosting() {
+  const router = useRouter();
+  const path_name = usePathname();
+  const search_params = useSearchParams();
+  const page = search_params.get("page");
   const [form, setForm] = useState<FormState>({
     owner: "",
     place_id: "",
@@ -75,16 +79,15 @@ export default function PlaceDetailHosting() {
       description: "",
     },
   });
-  const search_params = useSearchParams();
-  const page = search_params.get("page");
 
+  if (form.name === "") router.replace(`${path_name}?page=place-name`);
   return (
-    <form className="flex flex-col p-5 m-5 border border-gray-200 shadow-lg rounded-lg">
-      {page === "1" ? <PlaceNameForm setForm={setForm} /> : null}
-      {page === "2" ? <PlaceAddressForm setForm={setForm} /> : null}
-      {page === "3" ? <PLaceImageUpload setForm={setForm} /> : null}
-      {page === "4" ? <PlaceContactForm setForm={setForm} /> : null}
-      {page === "5" ? <PlaceSpecificationForm setForm={setForm} /> : null}
+    <form className="flex top-[10vh] left-[45%] " autoComplete="off">
+      <PlaceNameForm page={page!} setForm={setForm} />
+      <PlaceAddressForm page={page!} setForm={setForm} />
+      <PLaceImageUpload page={page!} setForm={setForm} />
+      <PlaceContactForm page={page!} setForm={setForm} />
+      <PlaceSpecificationForm page={page!} setForm={setForm} />
     </form>
   );
 }

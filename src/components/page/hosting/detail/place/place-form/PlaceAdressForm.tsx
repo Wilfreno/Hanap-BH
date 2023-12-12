@@ -4,23 +4,32 @@ import CustomButton from "@/components/reusables/CustomButton";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { Dispatch, SetStateAction } from "react";
 import { FormState } from "../PlaceDetailHosting";
+import { usePathname } from "next/navigation";
 
 export default function PlaceAddressForm({
   setForm,
+  page,
 }: {
+  page: string;
   setForm: Dispatch<SetStateAction<FormState>>;
 }) {
+  const path_name = usePathname();
   return (
-    <>
+    <div
+      className={`${
+        page === "address" ? "flex" : "hidden"
+      } flex-col p-5 m-5 border border-gray-200 shadow-lg rounded-lg`}
+      id="address"
+    >
       <div className="flex items-center justify-between">
         <CustomButton
-          redirect="/hosting/detail/place?page=1"
+          redirect={`${path_name}?page=place-name`}
           style={{ width: "5rem" }}
         >
           <ChevronLeftIcon className="h-5" />
           <p>Back</p>
         </CustomButton>
-        <CustomButton redirect="/hosting/detail/place?page=3">
+        <CustomButton redirect={`${path_name}?page=image-upload`}>
           <p>Next</p>
           <ChevronRightIcon className="h-5" />
         </CustomButton>
@@ -111,6 +120,6 @@ export default function PlaceAddressForm({
         </CustomInput>
       </div>
       <HostinMap setForm={setForm} />
-    </>
+    </div>
   );
 }

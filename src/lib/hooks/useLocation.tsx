@@ -17,7 +17,6 @@ export default function useLocation() {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         });
-        console.log("yeahh");
       },
       (error) => {
         errorHandler(400);

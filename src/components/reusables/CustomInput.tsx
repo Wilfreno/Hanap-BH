@@ -6,6 +6,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   children?: React.ReactNode;
   id: string;
   div_width?: string;
+  set_value?: string;
   input_value?: (t: string) => void;
 }
 
@@ -15,6 +16,7 @@ export default function CustomInput({
   id,
   div_width,
   input_value,
+  set_value,
   ...props
 }: Props) {
   const [focus, setFocus] = useState(false);
@@ -23,6 +25,9 @@ export default function CustomInput({
   useEffect(() => {
     input_value!(value);
   }, [value]);
+  useEffect(() => {
+    if (set_value) setValue(set_value);
+  }, [set_value]);
   return (
     <div
       className={`relative border-gray-400

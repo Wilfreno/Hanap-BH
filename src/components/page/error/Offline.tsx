@@ -1,5 +1,5 @@
 import Image from "next/image";
-import offline from "../../../../public/laptop-xmark-alt-svgrepo-com.svg";
+import offline from "../../../../public/icons/laptop-xmark-alt-svgrepo-com.svg";
 import { ArrowPathIcon } from "@heroicons/react/24/solid";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";

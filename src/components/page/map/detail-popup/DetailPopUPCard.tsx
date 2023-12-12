@@ -1,7 +1,7 @@
 import { PlaceDetailsType } from "@/lib/types/place-detail";
 import { StarIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import svgIMG from "../../../../../public/image-square-xmark-svgrepo-com.svg";
+import svgIMG from "../../../../../public/icons/image-square-xmark-svgrepo-com.svg";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 

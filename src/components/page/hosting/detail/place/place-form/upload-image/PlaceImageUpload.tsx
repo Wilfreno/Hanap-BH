@@ -4,11 +4,15 @@ import CustomButton from "@/components/reusables/CustomButton";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { FormState } from "../../PlaceDetailHosting";
+import { usePathname } from "next/navigation";
 export default function PLaceImageUpload({
   setForm,
+  page,
 }: {
+  page: string;
   setForm: Dispatch<SetStateAction<FormState>>;
 }) {
+  const path_name = usePathname();
   const [id, setId] = useState([]);
 
   useEffect(() => {
@@ -17,13 +21,18 @@ export default function PLaceImageUpload({
     });
   }, [id]);
   return (
-    <>
+    <div
+      className={`${
+        page === "image-upload" ? "flex" : "hidden"
+      } flex-col p-5 m-5 border border-gray-200 shadow-lg rounded-lg`}
+      id="image-upload"
+    >
       <div className="flex items-center justify-between">
-        <CustomButton redirect="/hosting/detail/place?page=2">
+        <CustomButton redirect={`${path_name}?page=address`}>
           <ChevronLeftIcon className="h-5" />
           <p>Back</p>
         </CustomButton>
-        <CustomButton redirect="/hosting/detail/place?page=4">
+        <CustomButton redirect={`${path_name}?page=contact`}>
           <p>Next</p>
           <ChevronRightIcon className="h-5" />
         </CustomButton>
@@ -34,6 +43,6 @@ export default function PLaceImageUpload({
 
         <UploadedImageSection></UploadedImageSection>
       </div>
-    </>
+    </div>
   );
 }

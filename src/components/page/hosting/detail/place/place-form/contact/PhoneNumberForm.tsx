@@ -8,7 +8,7 @@ export default function PhoneNumberForm({
 }: {
   setForm: Dispatch<SetStateAction<FormState>>;
 }) {
-  const [number, setNumber] = useState<string[]>([]);
+  const [number, setNumber] = useState<string[]>([""]);
 
   useEffect(() => {
     setForm((prev) => {
@@ -26,6 +26,7 @@ export default function PhoneNumberForm({
               numbers[index] = value;
               setNumber(numbers);
             }}
+            set_value={number[index]}
             id="phone-number"
             label_size="xl"
             div_width="w-[30vw]"
@@ -35,8 +36,10 @@ export default function PhoneNumberForm({
           <TrashIcon
             className="h-10 m-2 aspect-square  border border-gray-200 shadow-sm rounded-lg p-2 hover:shadow-lg hover:cursor-pointer hover:text-red-600"
             onClick={() => {
+              if(number.length === 1) return
               const numbers = [...number];
               numbers.splice(index, 1);
+              console.log(numbers);
               setNumber(numbers);
             }}
           />

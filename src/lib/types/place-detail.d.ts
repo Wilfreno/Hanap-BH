@@ -33,8 +33,8 @@ export type PlaceDetailsType = {
     vicinity: string;
     province: string;
     town: {
-      city: string;
-      municipality: string;
+      city?: string;
+      municipality?: string;
     };
     barangay: string;
     street: string;
@@ -52,7 +52,7 @@ export type PlaceDetailsType = {
     average: number;
   };
   rooms: number;
-  distance?: number;
-  database?: string;
+  distance: number;
+  database: string;
   date_created?: Date;
 };

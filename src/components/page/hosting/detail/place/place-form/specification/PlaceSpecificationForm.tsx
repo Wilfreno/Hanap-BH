@@ -3,14 +3,21 @@ import { FormState } from "../../PlaceDetailHosting";
 
 export default function PlaceSpecificationForm({
   setForm,
+  page,
 }: {
+  page: string;
   setForm: Dispatch<SetStateAction<FormState>>;
 }) {
   return (
-    <section className="bg-white border border-gray-200 shadow-lg rounded-lg p-5">
+    <div
+      className={`${
+        page === "specification" ? "flex" : "hidden"
+      } flex-col p-5 m-5 border border-gray-200 shadow-lg rounded-lg`}
+      id="specification"
+    >
       <h1 className="text-2xl">
         <strong>Specification / Add - ons</strong>
       </h1>
-    </section>
+    </div>
   );
 }

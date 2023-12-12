@@ -2,9 +2,9 @@ export const dynamic = "force-dynamic";
 import dbConnect from "@/lib/database/connect";
 import PlaceDetail from "@/lib/database/model/Place-detail";
 import getDistance from "@/lib/google-api/distance";
-import filterData from "@/lib/google-api/filter-data";
 import {
   NominatimReverseAPiResponse,
+  PlaceDetailsType,
   PlacesAPIResponseDetails,
 } from "@/lib/types/place-detail";
 import { type NextRequest } from "next/server";
@@ -55,6 +55,7 @@ export async function GET(request: NextRequest) {
             lat: details.geometry.location.lat,
           }
         ),
+        database: "MONGODB",
       };
     });
     const places_api_response = await fetch(
@@ -70,13 +71,43 @@ export async function GET(request: NextRequest) {
     }
     const resturctured_places_api_data = places_api_data.results.map(
       (details: PlacesAPIResponseDetails) => {
-        return filterData(details, nominatim_data, {
-          lat: Number(lat),
-          lng: Number(lng),
-        });
+        const data: PlaceDetailsType = {
+          owner: "",
+          place_id: details.place_id,
+          name: details.name,
+          photos: details.photos.map((photo) => photo.photo_reference),
+          location: {
+            vicinity: details.vicinity,
+            province: "",
+            town: {
+              city: nominatim_data.address.city || "",
+              municipality: nominatim_data.address.town || "",
+            },
+            barangay: "",
+            street: "",
+            coordinates: details.geometry.location,
+          },
+          price: {
+            max: undefined,
+            min: undefined,
+          },
+          rating: {
+            count: 1,
+            average: details.rating,
+          },
+          rooms: 0,
+          distance: getDistance(
+            { lat: Number(lat), lng: Number(lng) },
+            {
+              lng: details.geometry.location.lng,
+              lat: details.geometry.location.lat,
+            }
+          ),
+          database: "GOOGLE",
+        };
+        return data;
       }
     );
-    let n = 1;
     return NextResponse.json(
       {
         data: [...restructured_DB_data!, ...resturctured_places_api_data],

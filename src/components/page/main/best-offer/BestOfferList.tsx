@@ -1,7 +1,7 @@
 import { PlaceDetailsType } from "@/lib/types/place-detail";
 import { StarIcon } from "@heroicons/react/24/solid";
 import React from "react";
-import noIMG from "../../../../../public/image-square-xmark-svgrepo-com.svg";
+import noIMG from "../../../../../public/icons/image-square-xmark-svgrepo-com.svg";
 import Image from "next/image";
 export default function BestOfferList({ data }: { data?: PlaceDetailsType[] }) {
   if (data) {
