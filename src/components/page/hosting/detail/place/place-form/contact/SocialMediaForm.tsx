@@ -3,7 +3,13 @@ import fbIcon from "../../../../../../../../public/icons/social-media/facebook-c
 import intsaIcon from "../../../../../../../../public/icons/social-media/instagram-svgrepo-com.svg";
 import xIcon from "../../../../../../../../public/icons/social-media/icons8-twitterx.svg";
 import Image from "next/image";
-export default function SocialMediaForm() {
+import { Dispatch, SetStateAction } from "react";
+import { FormState } from "../../PlaceDetailHosting";
+export default function SocialMediaForm({
+  setForm,
+}: {
+  setForm: Dispatch<SetStateAction<FormState>>;
+}) {
   return (
     <div className=" flex flex-col space-y-5">
       <h2 className="text-3xl font-semibold">Social Media</h2>
@@ -15,7 +21,24 @@ export default function SocialMediaForm() {
           >
             <Image className="object-contain" src={fbIcon} alt="Faceboook" />
           </label>
-          <CustomInput id="facebook" div_width="w-[18vw]">
+          <CustomInput
+            id="facebook"
+            div_width="w-[18vw]"
+            input_value={(value) =>
+              setForm((prev) => {
+                return {
+                  ...prev,
+                  contact: {
+                    ...prev.contact,
+                    social_media: {
+                      ...prev.contact.social_media,
+                      facebook: value,
+                    },
+                  },
+                };
+              })
+            }
+          >
             <p>Facebook</p>
           </CustomInput>
         </div>
@@ -26,7 +49,24 @@ export default function SocialMediaForm() {
           >
             <Image className="object-contain" src={intsaIcon} alt="Instagram" />
           </label>
-          <CustomInput id="instagram" div_width="w-[18vw]">
+          <CustomInput
+            input_value={(value) =>
+              setForm((prev) => {
+                return {
+                  ...prev,
+                  contact: {
+                    ...prev.contact,
+                    social_media: {
+                      ...prev.contact.social_media,
+                      instagram: value,
+                    },
+                  },
+                };
+              })
+            }
+            id="instagram"
+            div_width="w-[18vw]"
+          >
             <p>Instagram</p>
           </CustomInput>
         </div>
@@ -37,7 +77,24 @@ export default function SocialMediaForm() {
           >
             <Image className="object-contain" src={xIcon} alt="Twitter / X" />
           </label>
-          <CustomInput id="twitter" div_width="w-[18vw]">
+          <CustomInput
+            id="twitter"
+            div_width="w-[18vw]"
+            input_value={(value) =>
+              setForm((prev) => {
+                return {
+                  ...prev,
+                  contact: {
+                    ...prev.contact,
+                    social_media: {
+                      ...prev.contact.social_media,
+                      twitter: value,
+                    },
+                  },
+                };
+              })
+            }
+          >
             <p>Twitter / X</p>
           </CustomInput>
         </div>

@@ -1,7 +1,7 @@
 import { APIProvider, AdvancedMarker } from "@vis.gl/react-google-maps";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import loadingSVG from "../../../../../../public/icons/loading-transparent.svg";
 import {
   ArrowsPointingInIcon,
@@ -10,6 +10,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/solid";
 import { LatLngLiteral } from "@/lib/types/google-maps-api-type";
+import { FormState } from "./PlaceDetailHosting";
 const Map = dynamic(() => import("@/components/reusables/ReusableMap"), {
   loading: () => (
     <section className="h-screen w-screen flex items-center justify-center bg-gray-500">
@@ -22,12 +23,31 @@ const Map = dynamic(() => import("@/components/reusables/ReusableMap"), {
     </section>
   ),
 });
-export default function HostinMap() {
+export default function HostinMap({
+  setForm,
+}: {
+  setForm: Dispatch<SetStateAction<FormState>>;
+}) {
   const [selected_location, setSelectedLocation] = useState<LatLngLiteral>();
   const [icon_toggle, setToggle] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const api_key: string = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!;
   if (!api_key) throw new Error("NEXT_PUBLIC_GOOGLE_MAPS_API_KEY missing");
+
+  useEffect(() => {
+    setForm((prev) => {
+      return {
+        ...prev,
+        location: {
+          ...prev.location,
+          coordinates: {
+            lat: selected_location?.lat!,
+            lng: selected_location?.lng!,
+          },
+        },
+      };
+    });
+  }, [selected_location]);
   return (
     <div
       className={` aspect-video cursor-pointer text-gray-900 border border-gray-300 rounded-lg shadow-lg

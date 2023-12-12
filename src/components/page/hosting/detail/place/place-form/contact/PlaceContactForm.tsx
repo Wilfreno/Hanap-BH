@@ -9,8 +9,14 @@ import {
 import PhoneNumber from "./PhoneNumberForm";
 import SocialMediaForm from "./SocialMediaForm";
 import CustomButton from "@/components/reusables/CustomButton";
+import { Dispatch, SetStateAction } from "react";
+import { FormState } from "../../PlaceDetailHosting";
 
-export default function PlaceContactForm() {
+export default function PlaceContactForm({
+  setForm,
+}: {
+  setForm: Dispatch<SetStateAction<FormState>>;
+}) {
   return (
     <>
       <div className="flex items-center justify-between">
@@ -25,8 +31,8 @@ export default function PlaceContactForm() {
       </div>
       <h1 className="text-5xl font-bold mx-auto my-5">Contact</h1>
       <section className="flex flex-col">
-        <SocialMediaForm />
-        <PhoneNumber />
+        <SocialMediaForm setForm={setForm} />
+        <PhoneNumber setForm={setForm}/>
       </section>
     </>
   );

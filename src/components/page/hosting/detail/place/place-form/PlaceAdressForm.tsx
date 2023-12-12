@@ -2,8 +2,14 @@ import CustomInput from "@/components/reusables/CustomInput";
 import HostinMap from "../HostinMap";
 import CustomButton from "@/components/reusables/CustomButton";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import { Dispatch, SetStateAction } from "react";
+import { FormState } from "../PlaceDetailHosting";
 
-export default function PlaceAddressForm() {
+export default function PlaceAddressForm({
+  setForm,
+}: {
+  setForm: Dispatch<SetStateAction<FormState>>;
+}) {
   return (
     <>
       <div className="flex items-center justify-between">
@@ -21,23 +27,90 @@ export default function PlaceAddressForm() {
       </div>
       <h1 className="text-5xl font-bold my-10 mx-auto">Address</h1>
       <div className="flex flex-wrap items-center">
-        <CustomInput div_width="w-[50vh] mx-10 my-5" id="provice">
+        <CustomInput
+          input_value={(value) =>
+            setForm((prev) => {
+              return {
+                ...prev,
+                location: { ...prev.location, province: value },
+              };
+            })
+          }
+          div_width="w-[50vh] mx-10 my-5"
+          id="provice"
+        >
           <p>Province</p>
         </CustomInput>
-        <CustomInput div_width="w-[40vh] mx-10 my-5" id="city">
+        <CustomInput
+          div_width="w-[40vh] mx-10 my-5"
+          id="city"
+          input_value={(value) =>
+            setForm((prev) => {
+              return {
+                ...prev,
+                location: {
+                  ...prev.location,
+                  town: { ...prev.location.town, city: value },
+                },
+              };
+            })
+          }
+        >
           <p>City</p>
         </CustomInput>
-        <CustomInput div_width="w-[40vh] mx-10 my-5" id="municipality">
+        <CustomInput
+          div_width="w-[40vh] mx-10 my-5"
+          id="municipality"
+          input_value={(value) =>
+            setForm((prev) => {
+              return {
+                ...prev,
+                location: {
+                  ...prev.location,
+                  town: { ...prev.location.town, municipality: value },
+                },
+              };
+            })
+          }
+        >
           <p>Municipality</p>
         </CustomInput>
-        <CustomInput div_width="w-[40vh] mx-10 my-5" id="barangay">
+        <CustomInput
+          div_width="w-[40vh] mx-10 my-5"
+          id="barangay"
+          input_value={(value) =>
+            setForm((prev) => {
+              return {
+                ...prev,
+                location: {
+                  ...prev.location,
+                  barangay: value,
+                },
+              };
+            })
+          }
+        >
           <p>Barangay</p>
         </CustomInput>
-        <CustomInput div_width="w-[40vh] mx-10 my-5" id="street">
+        <CustomInput
+          div_width="w-[40vh] mx-10 my-5"
+          id="street"
+          input_value={(value) =>
+            setForm((prev) => {
+              return {
+                ...prev,
+                location: {
+                  ...prev.location,
+                  street: value,
+                },
+              };
+            })
+          }
+        >
           <p>Street</p>
         </CustomInput>
       </div>
-      <HostinMap />
+      <HostinMap setForm={setForm} />
     </>
   );
 }

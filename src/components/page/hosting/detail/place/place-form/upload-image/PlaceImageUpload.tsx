@@ -2,7 +2,20 @@ import ImageUpload from "@/components/reusables/ImageUpload";
 import UploadedImageSection from "./UploadedImageSection";
 import CustomButton from "@/components/reusables/CustomButton";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
-export default function PLaceImageUpload() {
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { FormState } from "../../PlaceDetailHosting";
+export default function PLaceImageUpload({
+  setForm,
+}: {
+  setForm: Dispatch<SetStateAction<FormState>>;
+}) {
+  const [id, setId] = useState([]);
+
+  useEffect(() => {
+    setForm((prev) => {
+      return { ...prev, photos: id };
+    });
+  }, [id]);
   return (
     <>
       <div className="flex items-center justify-between">

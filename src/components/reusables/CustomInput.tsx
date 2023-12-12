@@ -1,11 +1,12 @@
 "use client";
-import React, { InputHTMLAttributes, useState } from "react";
+import React, { InputHTMLAttributes, useEffect, useState } from "react";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   label_size?: string;
   children?: React.ReactNode;
   id: string;
   div_width?: string;
+  input_value?: (t: string) => void;
 }
 
 export default function CustomInput({
@@ -13,10 +14,15 @@ export default function CustomInput({
   label_size,
   id,
   div_width,
+  input_value,
   ...props
 }: Props) {
   const [focus, setFocus] = useState(false);
   const [value, setValue] = useState("");
+
+  useEffect(() => {
+    input_value!(value);
+  }, [value]);
   return (
     <div
       className={`relative border-gray-400
