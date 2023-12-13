@@ -17,8 +17,14 @@ export default function PhoneNumberForm({
   }, [number]);
   return (
     <div className="my-10">
-      <h2 className="text-3xl font-semibold">Phone Number</h2>
-      {number?.map((num, index) => (
+      <div className="flex">
+        <h2 className="text-3xl font-semibold">Phone Number</h2>
+        <PlusIcon
+          className="h-10 m-2  aspect-square border border-gray-200 shadow-sm rounded-lg p-2 hover:shadow-lg  hover:cursor-pointer hover:text-gray-200 hover:bg-gray-700"
+          onClick={() => setNumber((prev) => [...prev, ""])}
+        />
+      </div>
+      {number?.map((_, index) => (
         <div className="my-5 flex items-center">
           <CustomInput
             input_value={(value) => {
@@ -27,7 +33,7 @@ export default function PhoneNumberForm({
               setNumber(numbers);
             }}
             set_value={number[index]}
-            id="phone-number"
+            id={`phone-number-${index}`}
             label_size="xl"
             div_width="w-[30vw]"
           >
@@ -36,16 +42,12 @@ export default function PhoneNumberForm({
           <TrashIcon
             className="h-10 m-2 aspect-square  border border-gray-200 shadow-sm rounded-lg p-2 hover:shadow-lg hover:cursor-pointer hover:text-red-600"
             onClick={() => {
-              if(number.length === 1) return
+              if (number.length === 1) return;
               const numbers = [...number];
               numbers.splice(index, 1);
               console.log(numbers);
               setNumber(numbers);
             }}
-          />
-          <PlusIcon
-            className="h-10 m-2  aspect-square border border-gray-200 shadow-sm rounded-lg p-2 hover:shadow-lg  hover:cursor-pointer hover:text-gray-200 hover:bg-gray-700"
-            onClick={() => setNumber((prev) => [...prev, ""])}
           />
         </div>
       ))}
