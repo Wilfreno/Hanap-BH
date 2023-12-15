@@ -1,5 +1,5 @@
 import Image from "next/image";
-import fbImg from "../../../../../public/facebook-svgrepo-com.svg";
+import fbImg from "../../../../../public/icons/social-media/facebook-svgrepo-com.svg";
 import { signIn } from "next-auth/react";
 
 export default function FbLogin({ callback }: { callback: string }) {

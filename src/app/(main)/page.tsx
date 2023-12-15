@@ -7,7 +7,7 @@ export default function page() {
   const { data } = useNearbyPlacesAPI();
 
   return (
-    <section className="dark:text-white text-gray-900 mb-20 mt-[10vh] space-y-5 md:mb-0 ">
+    <section className=" text-gray-900 mb-20 mt-[10vh] space-y-5 md:mb-0 ">
       <NearbySection data={data} />
       <BestOfferSection data={data} />
     </section>

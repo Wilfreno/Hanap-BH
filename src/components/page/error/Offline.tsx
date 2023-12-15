@@ -1,5 +1,5 @@
 import Image from "next/image";
-import offline from "../../../../public/laptop-xmark-alt-svgrepo-com.svg";
+import offline from "../../../../public/icons/laptop-xmark-alt-svgrepo-com.svg";
 import { ArrowPathIcon } from "@heroicons/react/24/solid";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -16,6 +16,7 @@ export default function Offline() {
           <Link
             href={path_name}
             as={path_name}
+            prefetch
             className="flex items-center justify-center p-2 border text-white bg-gray-900 rounded-lg text-base my-3 hover:scale-105 transition transform duration-200 ease-in-out"
           >
             Refresh

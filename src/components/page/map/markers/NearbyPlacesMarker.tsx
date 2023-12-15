@@ -9,7 +9,6 @@ export default function NearbyPlacesMarker({
   datas: PlaceDetailsType[];
 }) {
   const [on_mobile, setOnMobile] = useState(false);
-
   useEffect(() => {
     if (
       /Mobi|Android/i.test(navigator.userAgent) ||
