@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+"use client";
+import { useEffect, useMemo, useState } from "react";
 import { PlaceDetailsType } from "../types/place-detail";
 import usePlaceSession from "./usePlaceSession";
 import useNextPageSession from "./useNextPageSession";
@@ -18,8 +19,9 @@ export default function useNearbyPlacesAPI() {
         location_session &&
         location_session?.lat! === location.lat &&
         location_session?.lng! === location.lng
-      )
+      ) {
         return;
+      }
       try {
         const api_response = await fetch(
           `/api/nearby-places?lat=${location.lat}&lng=${location.lng}`,
@@ -45,6 +47,8 @@ export default function useNearbyPlacesAPI() {
   }
   useEffect(() => {
     getNearbyPlaces();
+    console.log("session", location_session);
+    console.log("location", location);
   }, [location]);
   return { data };
 }

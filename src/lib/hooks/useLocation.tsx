@@ -17,6 +17,7 @@ export default function useLocation() {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         });
+        console.log("Location");
       },
       (error) => {
         errorHandler(400);
@@ -32,13 +33,15 @@ export default function useLocation() {
   return {
     location_session: session,
     location: { lat: coordinates?.lat, lng: coordinates?.lng },
-    saveLocation: ({ lat, lng }: LatLngLiteral) =>
+    saveLocation: ({ lat, lng }: LatLngLiteral) => {
+      setSession({ lat, lng });
       sessionStorage.setItem(
         "userLocation",
         JSON.stringify({
           lat,
           lng,
         })
-      ),
+      );
+    },
   };
 }

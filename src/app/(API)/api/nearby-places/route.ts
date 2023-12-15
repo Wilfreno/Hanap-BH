@@ -14,6 +14,8 @@ export async function GET(request: NextRequest) {
   const api_key = process.env.NEXT_PUBLIC_GOOGLE_PLACE_API_KEY;
   if (!api_key) throw new Error("NEXT_PUBLIC_GOOGLE_PLACE_API_KEY is missing");
   try {
+    let count = 0;
+    console.log("Count: ", ++count);
     const search_params = request.nextUrl.searchParams;
     const lat = search_params.get("lat");
     const lng = search_params.get("lng");
