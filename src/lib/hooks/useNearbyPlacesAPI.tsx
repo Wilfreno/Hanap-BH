@@ -47,8 +47,6 @@ export default function useNearbyPlacesAPI() {
   }
   useEffect(() => {
     getNearbyPlaces();
-    console.log("session", location_session);
-    console.log("location", location);
   }, [location]);
   return { data };
 }

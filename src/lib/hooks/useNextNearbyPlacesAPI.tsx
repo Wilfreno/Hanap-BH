@@ -11,15 +11,14 @@ export default function useNextNearbyPlacesAPI() {
   const nearby_places_api = useNearbyPlacesAPI();
   const [place_data, setPlaceData] = useState<PlaceDetailsType[]>();
   const { saveToken, token_session } = useNextPageSession();
-  const [next_page, setNextPageToken] = useState<string | null>();
   const {
     location: { lat, lng },
   } = useLocation();
   async function getNextPage() {
-    if (!next_page) return;
+    if (!token_session) return;
     try {
       const api_response = await fetch(
-        `/api/nearby-places/next?pagetoken=${next_page}&lat=${lat}&lng=${lng}`,
+        `/api/nearby-places/next?page_token=${token_session}&lat=${lat}&lng=${lng}`,
         { cache: "no-store" }
       );
       if (api_response.status === 408) {
@@ -31,25 +30,19 @@ export default function useNextNearbyPlacesAPI() {
         return;
       }
       const { data, next_page_token } = await api_response.json();
-      console.log(data);
       setPlaceData((prev) => [...prev!, ...data]);
-      setNextPageToken(next_page_token);
       savePlace(place_data!);
-      saveToken(next_page!);
-      getNextPage();
+      saveToken(next_page_token);
     } catch (error) {
       throw error;
     }
   }
+
   useEffect(() => {
-    if (!place_session) {
-      setPlaceData(nearby_places_api.data);
-    } else {
-      setPlaceData(place_session);
-    }
-    setNextPageToken(token_session);
+    setPlaceData(place_session);
     getNextPage();
-  }, []);
+  }, [nearby_places_api.data, token_session]);
+
   return {
     error,
     place_data,

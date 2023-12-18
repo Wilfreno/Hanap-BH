@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import getDistance from "@/lib/google-api/distance";
 import {
   NominatimReverseAPiResponse,
@@ -11,7 +12,7 @@ export async function GET(request: NextRequest) {
   if (!api_key) throw new Error("NEXT_PUBLIC_GOOGLE_PLACE_API_KEY is missing");
 
   const search_params = request.nextUrl.searchParams;
-  const next_page_token = search_params.get("next_page_token");
+  const page_token = search_params.get("page_token");
   const lat = search_params.get("lat");
   const lng = search_params.get("lng");
   try {
@@ -30,9 +31,9 @@ export async function GET(request: NextRequest) {
         { status: 400 }
       );
     }
-
+    console.log("token", page_token);
     const next_page_response = await fetch(
-      `https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=${next_page_token}&key=${api_key}`
+      `https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=${page_token}&key=${api_key}`
     );
     const next_page_data = await next_page_response.json();
 
@@ -51,7 +52,9 @@ export async function GET(request: NextRequest) {
           owner: "",
           place_id: details.place_id,
           name: details.name,
-          photos: details.photos.map((photo) => photo.photo_reference),
+          photos: details.photos
+            ? details.photos.map((photo) => photo.photo_reference)
+            : [],
           location: {
             vicinity: details.vicinity,
             province: "",
@@ -84,7 +87,6 @@ export async function GET(request: NextRequest) {
         return data;
       }
     );
-
     return NextResponse.json(
       {
         data: restructured_next_page_data,
@@ -93,6 +95,7 @@ export async function GET(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
+    console.log(error);
     return NextResponse.json({ message: error }, { status: 500 });
   }
 }

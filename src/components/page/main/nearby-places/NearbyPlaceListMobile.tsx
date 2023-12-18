@@ -2,20 +2,36 @@
 import quickSort from "@/lib/google-api/sort";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { PlaceDetailsType } from "@/lib/types/place-detail";
+import CustomImage from "@/components/reusables/CustomImage";
+import noIMG from "../../../../../public/icons/image-square-xmark-svgrepo-com.svg";
+import Image from "next/image";
 export default function NearbyPlaceListMobile({
   data,
 }: {
   data?: PlaceDetailsType[];
 }) {
-  if (data) {
-    return (
+  return (
+    data && (
       <>
         {quickSort(data)?.map((details) => (
           <div
             className="flex flex-col mx-3 justify-between rounded-lg shadow-xl bg-white"
             key={details.place_id}
           >
-            <div className="aspect-video h-40 w-auto rounded-lg bg-gray-900"></div>
+            <div className="aspect-video h-40 w-auto rounded-lg flex items-center justify-center shadow-lg sm:h-[12] lg:h-[15rem]">
+              {details.photos.length > 0 ? (
+                <CustomImage
+                  photo_reference={details.photos[0]}
+                  database={details.database}
+                />
+              ) : (
+                <Image
+                  src={noIMG}
+                  alt="no Image"
+                  className="object-contain h-20 w-auto  pointer-events-none"
+                />
+              )}
+            </div>
             <div className="flex flex-col space-y-1 px-2">
               <strong className=" text-gray-900 text-lg">{details.name}</strong>
               <p className="text-gray-700 text-sm">
@@ -34,7 +50,7 @@ export default function NearbyPlaceListMobile({
           </div>
         ))}
       </>
-    );
-  }
+    )
+  );
   return null;
 }
