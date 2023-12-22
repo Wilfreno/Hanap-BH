@@ -4,6 +4,7 @@ import Image from "next/image";
 import svgIMG from "../../../../../public/icons/image-square-xmark-svgrepo-com.svg";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import CustomImage from "@/components/reusables/CustomImage";
 
 export default function DetailPopUPCard({ data }: { data: PlaceDetailsType }) {
   const router = useRouter();
@@ -13,30 +14,37 @@ export default function DetailPopUPCard({ data }: { data: PlaceDetailsType }) {
         onClick={() => {
           router.replace("/map");
         }}
-        className="z-10 absolute top-2 right-2 h-6 cursor-pointer hover:scale-125 transform translate duration-300 ease-out"
+        className="absolute z-10 h-6 duration-300 ease-out transform cursor-pointer top-2 right-2 hover:scale-125 translate"
       />
-      <div className="relative aspect-square w-full flex items-center justify-center rounded-lg shadow-md">
-        <Image
-          src={svgIMG}
-          alt="no image"
-          className="object-contain h-[40%] w-auto"
-        />
+      <div className="relative flex items-center justify-center w-full rounded-lg shadow-md aspect-square">
+        {data.photos.length > 0 ? (
+          <CustomImage
+            photo_reference={data.photos[0]}
+            database={data.database}
+          />
+        ) : (
+          <Image
+            src={svgIMG}
+            alt="no image"
+            className="object-contain h-[40%] w-auto"
+          />
+        )}
       </div>
-      <div className="my-2 px-3">
+      <div className="px-3 my-2">
         <p className="text-lg font-semibold whitespace-nowrap">
           {data.name.length > 25 ? `${data.name.slice(0, 25)}...` : data.name}
         </p>
-        <p className="text-md font-medium text-gray-800">
+        <p className="font-medium text-gray-800 text-md">
           {data.location.vicinity.length > 45
             ? `${data.location.vicinity.slice(0, 45)}...`
             : data.location.vicinity}
         </p>
       </div>
       <div className="flex items-center justify-between px-3 mt-5">
-        <p className="text-md font-semibold">
+        <p className="font-semibold text-md">
           <strong>{data.distance?.toFixed(2)}</strong> Km away
         </p>
-        <div className="flex items-center space-x-1 mx-3 my-2">
+        <div className="flex items-center mx-3 my-2 space-x-1">
           <p>{data.rating.average}</p>
           <StarIcon className="h-3" />
         </div>
@@ -44,7 +52,7 @@ export default function DetailPopUPCard({ data }: { data: PlaceDetailsType }) {
       <hr className="w-[90%] ml-[5%] self-center h-[2px] rounded-full bg-gray-700" />
       {data.database === "GOOGLE" ? (
         <>
-          <section className="p-3  space-y-1 ">
+          <section className="p-3 space-y-1 ">
             <p className="text-xs text-justify text-gray-700">
               The information above comes from googles database, no more further
               usefull information for this stablishment. If this place is yours,
@@ -52,7 +60,7 @@ export default function DetailPopUPCard({ data }: { data: PlaceDetailsType }) {
               <Link
                 href={`/place/register?palce_id=${data.place_id}`}
                 target="_blank"
-                className="text-sm text-gray-900 font-semibold hover:underline hover:text-gray-700"
+                className="text-sm font-semibold text-gray-900 hover:underline hover:text-gray-700"
               >
                 Here.
               </Link>
@@ -61,7 +69,7 @@ export default function DetailPopUPCard({ data }: { data: PlaceDetailsType }) {
         </>
       ) : (
         <>
-          <div className="flex items-center justify-center space-x-5 w-full text-base my-3">
+          <div className="flex items-center justify-center w-full my-3 space-x-5 text-base">
             <div className="flex items-center justify-center space-x-2">
               <p className="font-bold">₱</p>
               {data.price.min ? (

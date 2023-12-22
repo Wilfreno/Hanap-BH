@@ -3,11 +3,17 @@ import { AdvancedMarker } from "@vis.gl/react-google-maps";
 import { useEffect, useState } from "react";
 import DetailPopUPMain from "../detail-popup/DetailPopUPMain";
 import { useSearchParams } from "next/navigation";
+import usePlaceSession from "@/lib/hooks/usePlaceSession";
+import useLocation from "@/lib/hooks/useLocation";
 
-export default function SearchMarker({ data }: { data: PlaceDetailsType }) {
+export default function SearchMarker() {
   const [on_mobile, setOnMobile] = useState(false);
-  const [place_detail, setPalceDetail] = useState<PlaceDetailsType>();
+  const { place_session } = usePlaceSession();
+  const {
+    location: { lat, lng },
+  } = useLocation();
 
+  const [place_detail, setPalceDetail] = useState<PlaceDetailsType>();
   const search_params = useSearchParams();
   const place_id = search_params.get("place_id");
   async function getPlaceData() {
@@ -33,22 +39,22 @@ export default function SearchMarker({ data }: { data: PlaceDetailsType }) {
     }
   }, [navigator.userAgent]);
   useEffect(() => {
-    if (place_id && place_data) {
-      const filtered_data = place_data!.filter(
+    if (place_id && place_session) {
+      const filtered_data = place_session.filter(
         (place) => place.place_id === place_id
       );
       if (filtered_data.length <= 0) {
         getPlaceData();
       }
     }
-  }, [place_id, place_data]);
-  return data ? (
+  }, [place_id, place_session]);
+  return place_detail ? (
     <AdvancedMarker
-      key={data.place_id}
-      position={data.location.coordinates}
+      key={place_detail.place_id}
+      position={place_detail.location.coordinates}
       className="cursor-pointer"
     >
-      <DetailPopUPMain key={data.place_id} data={data} on_mobile={on_mobile} />
+      <DetailPopUPMain data={place_detail} on_mobile={on_mobile} />
     </AdvancedMarker>
   ) : null;
 }

@@ -17,11 +17,11 @@ const ReusableMap = dynamic(
   () => import("@/components/reusables/ReusableMap"),
   {
     loading: () => (
-      <section className="h-screen w-screen flex items-center justify-center bg-gray-500">
+      <section className="flex items-center justify-center w-screen h-screen bg-gray-500">
         <Image
           src={loadingSVG}
           alt="Loading..."
-          className="h-50 w-auto"
+          className="w-auto h-50"
           priority
         />
       </section>
@@ -39,23 +39,20 @@ export default function page() {
   } = useLocation();
   const { place_data } = useNextNearbyPlacesAPI();
 
-
-
   return (
     <>
-      <section className="h-screen w-screen">
+      <section className="w-screen h-screen">
         <APIProvider apiKey={api_key}>
           <ReusableMap
             selected_location={(location) => setSelectedLocation(location)}
           >
-            
-              <Directions
-                origin={{ lat: lat!, lng: lng! }}
-                destination={selected_location}
-              />
-            )
+            <Directions
+              origin={{ lat: lat!, lng: lng! }}
+              destination={selected_location!}
+            />
+
             <NearbyPlacesMarker datas={place_data!} />
-            <SearchMarker data={place_detail!} />
+            <SearchMarker  />
             <UserMarker user_location={{ lat: lat!, lng: lng! }} />
           </ReusableMap>
         </APIProvider>

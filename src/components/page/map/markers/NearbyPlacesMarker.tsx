@@ -8,7 +8,6 @@ export default function NearbyPlacesMarker({
 }: {
   datas: PlaceDetailsType[];
 }) {
-  const map = useMap()
   const [on_mobile, setOnMobile] = useState(false);
   useEffect(() => {
     if (

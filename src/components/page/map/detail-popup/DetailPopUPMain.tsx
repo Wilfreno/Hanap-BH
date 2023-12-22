@@ -17,7 +17,7 @@ export default function DetailPopUPMain({
   const place_id = search_params.get("place_id");
   const router = useRouter();
 
-  if (data && place_id !== "" && data.place_id === place_id) {
+  if (data && data.place_id === place_id) {
     map?.panTo({
       lat: data.location.coordinates.lat + 0.0013,
       lng: data.location.coordinates.lng,
