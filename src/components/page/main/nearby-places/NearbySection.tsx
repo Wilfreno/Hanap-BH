@@ -39,10 +39,10 @@ export default function NearbySection({ data }: { data?: PlaceDetailsType[] }) {
         <MapIcon className="h-8 before:cursor-pointer text-gray-700 animate-bounce sm:group-hover:animate-bounce" />
       </Link>
       {page_width > 640 ? (
-        <NearbyPlaceListMain page_width={page_width} data={data} />
+        <NearbyPlaceListMain page_width={page_width} data={data!} />
       ) : (
         <div className="flex overflow-x-auto scrollbar-hide">
-          <NearbyPlaceListMobile data={data} />
+          <NearbyPlaceListMobile data={data!} />
         </div>
       )}
     </section>

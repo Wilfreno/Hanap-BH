@@ -6,6 +6,7 @@ import PLaceImageUpload from "./place-form/upload-image/PlaceImageUpload";
 import PlaceSpecificationForm from "./place-form/specification/PlaceSpecificationForm";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import PlaceVerification from "./place-verification/PlaceVerification";
 
 export type FormState = {
   owner: string;
@@ -88,6 +89,7 @@ export default function PlaceDetailHosting() {
       <PLaceImageUpload page={page!} setForm={setForm} />
       <PlaceContactForm page={page!} setForm={setForm} />
       <PlaceSpecificationForm page={page!} setForm={setForm} />
+      <PlaceVerification page={page!} setForm={setForm} form={form} />
     </form>
   );
 }

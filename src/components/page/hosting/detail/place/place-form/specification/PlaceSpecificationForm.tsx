@@ -2,7 +2,6 @@ import { Dispatch, SetStateAction } from "react";
 import { FormState } from "../../PlaceDetailHosting";
 import AddOns from "./AddOns";
 import ResidenceContsraints from "./ResidenceContsraints";
-import PlaceDescriptio from "./PlaceDescription";
 import PlaceDescription from "./PlaceDescription";
 
 export default function PlaceSpecificationForm({

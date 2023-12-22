@@ -23,6 +23,6 @@ export default function PlaceDescription({
         value={value}
         onChange={(e) => setValue(e.target.value)}
       ></textarea>
-    </div>
+    </div> 
   );
 }

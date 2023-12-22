@@ -49,7 +49,7 @@ export default function useNextNearbyPlacesAPI() {
     }
     setNextPageToken(token_session);
     getNextPage();
-  }, []);
+  }, [next_page]);
   return {
     error,
     place_data,
