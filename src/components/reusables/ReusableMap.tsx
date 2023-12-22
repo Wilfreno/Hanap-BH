@@ -1,22 +1,26 @@
 "use client";
 import useLocation from "@/lib/hooks/useLocation";
+import { LatLngLiteral } from "@/lib/types/google-maps-api-type";
 import { APIProvider, Map, useApiIsLoaded } from "@vis.gl/react-google-maps";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function ReusableMap({
   children,
   style,
-  setSelectedLocation,
+  selected_location,
 }: {
   children?: React.ReactNode;
   style?: string;
-  setSelectedLocation?: React.Dispatch<
-    React.SetStateAction<google.maps.LatLngLiteral | undefined>
-  >;
+  selected_location?: (s: LatLngLiteral) => void;
 }) {
+  const [selected, setSelected] = useState<LatLngLiteral>();
   const is_loaded = useApiIsLoaded();
-
   const { location } = useLocation();
+
+  useEffect(() => {
+    selected_location!(selected!);
+  }, [selected]);
+
   return is_loaded && location.lat && location.lng ? (
     <Map
       restriction={{
@@ -37,7 +41,7 @@ export default function ReusableMap({
       zoom={15}
       center={{ lat: location.lat!, lng: location.lng! }}
       className={`w-full h-full ${style}`}
-      onClick={(e) => setSelectedLocation!(e.detail.latLng!)}
+      onClick={(e) => setSelected(e.detail.latLng!)}
     >
       {children}
     </Map>

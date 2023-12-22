@@ -1,5 +1,5 @@
 import { PlaceDetailsType } from "@/lib/types/place-detail";
-import { AdvancedMarker } from "@vis.gl/react-google-maps";
+import { AdvancedMarker, useMap } from "@vis.gl/react-google-maps";
 import DetailPopUPMain from "../detail-popup/DetailPopUPMain";
 import { useEffect, useState } from "react";
 
@@ -8,6 +8,7 @@ export default function NearbyPlacesMarker({
 }: {
   datas: PlaceDetailsType[];
 }) {
+  const map = useMap()
   const [on_mobile, setOnMobile] = useState(false);
   useEffect(() => {
     if (
@@ -29,11 +30,7 @@ export default function NearbyPlacesMarker({
           onClick={() => {}}
           className="cursor-pointer"
         >
-          <DetailPopUPMain
-            key={data.place_id}
-            data={data}
-            on_mobile={on_mobile}
-          />
+          <DetailPopUPMain data={data} on_mobile={on_mobile} />
         </AdvancedMarker>
       ))}
     </>

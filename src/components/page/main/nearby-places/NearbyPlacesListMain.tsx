@@ -6,7 +6,6 @@ import { PlaceDetailsType } from "@/lib/types/place-detail";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Photos from "@/lib/database/model/Photos";
 import CustomImage from "@/components/reusables/CustomImage";
 
 export default function NearbyPlacesListMain({
@@ -42,7 +41,7 @@ export default function NearbyPlacesListMain({
                 key={details.place_id}
               >
                 <div className="aspect-video h-40 w-auto rounded-lg flex items-center justify-center shadow-md sm:h-[12] lg:h-[15rem]">
-                  {details.photos.length > 0 ? (
+                  {details.photos.length > 0 ? (  
                     <CustomImage
                       photo_reference={details.photos[0]}
                       database={details.database}
@@ -88,5 +87,4 @@ export default function NearbyPlacesListMain({
       </>
     )
   );
-  return null;
 }
