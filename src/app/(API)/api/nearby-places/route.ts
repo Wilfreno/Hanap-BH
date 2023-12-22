@@ -14,8 +14,6 @@ export async function GET(request: NextRequest) {
   const api_key = process.env.NEXT_PUBLIC_GOOGLE_PLACE_API_KEY;
   if (!api_key) throw new Error("NEXT_PUBLIC_GOOGLE_PLACE_API_KEY is missing");
   try {
-    let count = 0;
-    console.log("Count: ", ++count);
     const search_params = request.nextUrl.searchParams;
     const lat = search_params.get("lat");
     const lng = search_params.get("lng");
@@ -35,36 +33,12 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    await dbConnect();
-    let db_data;
-    if (nominatim_data.address.city) {
-      db_data = await PlaceDetail.find({
-        "location.town.city": nominatim_data.address.city,
-      });
-    } else if (nominatim_data.address.town) {
-      db_data = await PlaceDetail.find({
-        "location.town.": nominatim_data.address.town,
-      });
-    }
-    const filtered_DB_data = db_data?.map((detail) => detail.toJSON());
-    const restructured_DB_data = filtered_DB_data?.map((details) => {
-      return {
-        ...details,
-        distance: getDistance(
-          { lat: Number(lat), lng: Number(lng) },
-          {
-            lng: details.geometry.location.lng,
-            lat: details.geometry.location.lat,
-          }
-        ),
-        database: "MONGODB",
-      };
-    });
     const places_api_response = await fetch(
       `https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=${api_key}&location=${lat}%2C${lng}&type=lodging&radius=50000`
     );
 
     const places_api_data = await places_api_response.json();
+
     if (places_api_data.status === "OVER_QUERY_LIMIT") {
       return NextResponse.json(
         { message: "too many request" },
@@ -72,12 +46,14 @@ export async function GET(request: NextRequest) {
       );
     }
     const resturctured_places_api_data = places_api_data.results.map(
-      (details: PlacesAPIResponseDetails) => {
+      (details: PlacesAPIResponseDetails, index: number) => {
         const data: PlaceDetailsType = {
           owner: "",
           place_id: details.place_id,
           name: details.name,
-          photos: details.photos.map((photo) => photo.photo_reference),
+          photos: details.photos
+            ? details.photos.map((photo) => photo.photo_reference)
+            : [],
           location: {
             vicinity: details.vicinity,
             province: "",
@@ -110,14 +86,50 @@ export async function GET(request: NextRequest) {
         return data;
       }
     );
+
+    await dbConnect();
+    let db_data;
+    if (nominatim_data.address.city) {
+      db_data = await PlaceDetail.find({
+        "location.town.city": nominatim_data.address.city,
+      });
+    } else if (nominatim_data.address.town) {
+      db_data = await PlaceDetail.find({
+        "location.town.": nominatim_data.address.town,
+      });
+    }
+    if (db_data) {
+      const filtered_DB_data = db_data?.map((detail) => detail.toJSON());
+      const restructured_DB_data = filtered_DB_data?.map((details) => {
+        return {
+          ...details,
+          distance: getDistance(
+            { lat: Number(lat), lng: Number(lng) },
+            {
+              lng: details.geometry.location.lng,
+              lat: details.geometry.location.lat,
+            }
+          ),
+          database: "MONGODB",
+        };
+      });
+      return NextResponse.json(
+        {
+          data: [...restructured_DB_data!, ...resturctured_places_api_data],
+          next_page_token: places_api_data.next_page_token,
+        },
+        { status: 200 }
+      );
+    }
     return NextResponse.json(
       {
-        data: [...restructured_DB_data!, ...resturctured_places_api_data],
+        data: places_api_data,
         next_page_token: places_api_data.next_page_token,
       },
       { status: 200 }
     );
   } catch (error) {
+    console.log(error);
     return NextResponse.json({ message: error }, { status: 500 });
   }
 }

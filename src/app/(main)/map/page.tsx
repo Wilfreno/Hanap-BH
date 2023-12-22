@@ -28,16 +28,22 @@ const ReusableMap = dynamic(
   }
 );
 export default function page() {
+  const api_key: string = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!;
+  if (!api_key) throw new Error("NEXT_PUBLIC_GOOGLE_MAPS_API_KEY missing");
+
   const search_params = useSearchParams();
   const map = useMap();
   const place_id = search_params.get("place_id");
   const [place_detail, setPalceDetail] = useState<PlaceDetailsType>();
-  const api_key: string = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!;
-  if (!api_key) throw new Error("NEXT_PUBLIC_GOOGLE_MAPS_API_KEY missing");
+  const {
+    location: { lat, lng },
+  } = useLocation();
+  const { place_data } = useNextNearbyPlacesAPI();
+
   async function getPlaceData() {
     try {
       const api_response = await fetch(
-        `/api/place-detail/search?place_id=${place_id}`
+        `/api/place/detail/search?place_id=${place_id}&lat=${lat}&lng=${lng}`
       );
       const api_data = await api_response.json();
       setPalceDetail(api_data);
@@ -45,22 +51,19 @@ export default function page() {
       throw error;
     }
   }
-  if (!place_id) map?.setZoom(15);
 
   useEffect(() => {
-    if (place_id !== null && place_data?.[0].place_id !== "") {
-      const filter = place_data!.filter((place) => place.place_id === place_id);
-      if (filter.length <= 0) {
+    if (place_id && place_data) {
+      const filtered_data = place_data!.filter(
+        (place) => place.place_id === place_id
+      );
+      if (filtered_data.length <= 0) {
         getPlaceData();
       }
     }
-  }, [place_id]);
+  }, [place_id, place_data]);
 
-  const {
-    location: { lat, lng },
-  } = useLocation();
-  const { place_data } = useNextNearbyPlacesAPI();
-
+  if (!place_id) map?.setZoom(15);
   return (
     <>
       <section className="h-screen w-screen">

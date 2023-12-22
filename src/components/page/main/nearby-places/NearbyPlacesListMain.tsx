@@ -5,8 +5,9 @@ import noIMG from "../../../../../public/icons/image-square-xmark-svgrepo-com.sv
 import { PlaceDetailsType } from "@/lib/types/place-detail";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
 import Link from "next/link";
+import Photos from "@/lib/database/model/Photos";
+import CustomImage from "@/components/reusables/CustomImage";
 
 export default function NearbyPlacesListMain({
   data,
@@ -24,7 +25,11 @@ export default function NearbyPlacesListMain({
     }
   }, [div_ref.current, page_width, data]);
   return (
+<<<<<<< HEAD
     data && (agher
+=======
+    data && (
+>>>>>>> refs/remotes/origin/main
       <>
         <motion.div
           className="cursor-grab overflow-x-hidden bg-white"
@@ -41,11 +46,18 @@ export default function NearbyPlacesListMain({
                 key={details.place_id}
               >
                 <div className="aspect-video h-40 w-auto rounded-lg flex items-center justify-center shadow-md sm:h-[12] lg:h-[15rem]">
-                  <Image
-                    src={noIMG}
-                    alt="No Image"
-                    className="object-contain h-20 w-auto  pointer-events-none"
-                  />
+                  {details.photos.length > 0 ? (
+                    <CustomImage
+                      photo_reference={details.photos[0]}
+                      database={details.database}
+                    />
+                  ) : (
+                    <Image
+                      src={noIMG}
+                      alt="No Image"
+                      className="object-contain h-20 w-auto  pointer-events-none"
+                    />
+                  )}
                 </div>
                 <Link
                   href={`/place-detail/${details.place_id}`}
