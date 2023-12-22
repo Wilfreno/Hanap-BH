@@ -1,14 +1,8 @@
 import { PlaceDetailsType } from "@/lib/types/place-detail";
 import BestOfferLoadingSkeleton from "./BestOfferLoadingSkeleton";
-import dynamic from "next/dynamic";
 import { MapIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
-const BestOfferList = dynamic(
-  () => import("@/components/page/main/best-offer/BestOfferList"),
-  {
-    loading: () => <BestOfferLoadingSkeleton />,
-  }
-);
+import BestOfferList from "./BestOfferList";
 export default function BestOfferSection({
   data,
 }: {
@@ -27,7 +21,7 @@ export default function BestOfferSection({
         <MapIcon className="h-8 cursor-pointer text-gray-700 animate-bounce sm:group-hover:animate-bounce " />
       </Link>
       <div className="flex flex-col sm:flex-row sm:flex-wrap sm:justify-center cursor-pointer">
-        <BestOfferList data={data} />
+        {data ? <BestOfferList data={data} /> : <BestOfferLoadingSkeleton />}
       </div>
     </section>
   );

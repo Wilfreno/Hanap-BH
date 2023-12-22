@@ -30,7 +30,7 @@ export default function useNextNearbyPlacesAPI() {
         return;
       }
       const { data, next_page_token } = await api_response.json();
-      setPlaceData((prev) => [...prev!, ...data]);
+      setPlaceData((prev) => Array.from(new Set([...prev!, ...data])));
       savePlace(place_data!);
       saveToken(next_page_token);
     } catch (error) {

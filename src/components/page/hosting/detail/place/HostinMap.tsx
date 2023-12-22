@@ -60,7 +60,7 @@ export default function HostinMap({
       <APIProvider apiKey={api_key}>
         <Map
           style="rounded-lg cursor-pointer"
-          setSelectedLocation={setSelectedLocation}
+          selected_location={(selected) => setSelectedLocation(selected)}
         >
           {selected_location ? (
             <AdvancedMarker

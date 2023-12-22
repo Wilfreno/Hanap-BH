@@ -1,7 +1,6 @@
 "use client";
 export const dynamic = "force-dynamic";
 
-import Error408 from "@/components/page/error/Error429";
 
 import img1 from "../../../../public/img/wallpaperflare.com_wallpaper (1).jpg";
 import img2 from "../../../../public/img/wallpaperflare.com_wallpaper (2).jpg";
@@ -13,6 +12,11 @@ export default function page() {
   const images = [img1, img2, img3, img4, img5];
   const session = useSession();
 
-  console.log(session);
-  return <code></code>;
+  return (
+    <div className="flex justify-center items-center w-screen h-screen">
+      <div className="aspect-square h-20 w-auto bg-red-500 rounded-full">
+        <span className="border-5 "></span>
+      </div>
+    </div>
+  );
 }

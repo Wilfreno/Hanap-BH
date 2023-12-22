@@ -1,4 +1,3 @@
-"use client"
 import MainHeader from "@/components/layout/header/MainHeader";
 import Navigation from "@/components/layout/mobile/Navigation";
 

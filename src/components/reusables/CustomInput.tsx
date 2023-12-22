@@ -23,10 +23,10 @@ export default function CustomInput({
   const [value, setValue] = useState("");
 
   useEffect(() => {
-    if (input_value) input_value(value);
+    input_value!(value);
   }, [value]);
   useEffect(() => {
-    if (set_value) setValue(set_value);
+    setValue(set_value!);
   }, [set_value]);
   return (
     <div
