@@ -1,34 +1,68 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<p align="center">
+<a href="https://hanap-bh.vercel.app/" target="_blank">
+<img src="https://github.com/Wilfreno09/Hanap-BH/blob/ce8c61423060c93d5c7a0d9827b2f6a10bdb99a6/public/logo.png" alt="Hanap-BH" style="height:7vw;" /><a/>
+<p/>
 
-## Getting Started
+<p align="center">
+<a href="https://hanap-bh.vercel.app/"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=1000&pause=1000&color=222222&center=true&vCenter=true&repeat=false&random=false&width=435&lines=%F0%9D%99%83%F0%9D%99%96%F0%9D%99%A3%F0%9D%99%96%F0%9D%99%A5-%F0%9D%98%BD%F0%9D%99%83" alt="Hanap-BH" /></a>
+<p/>
 
-First, run the development server:
+ 
+ <p>
+ "Welcome to 𝙃𝙖𝙣𝙖𝙥-𝘽𝙃, your go-to portal for hassle-free accommodation hunting in the Philippines! 🏠✨ Discover the perfect boarding houses and lodgings near you. Our user-friendly interface and advanced mapping technology make finding your ideal home away from home a breeze. Explore the vibrant map, pinpointing the closest options tailored to your preferences. Say goodbye to the stress of searching — 𝙃𝙖𝙣𝙖𝙥-𝘽𝙃 is here to make your stay as comfortable as can be. Start your journey to a convenient and cozy living experience today!"
+ <p/>  
+  
+<hr/>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+# Table of Contents
+- [Summary](#summary)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Project Structure](#project-structure)
+<hr/>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Summary
+ **Hanap-BH is a Web app that displays your nearby boarding houses and lodgings based on your location in the Philippines.**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+# Features
+  𝗜𝗻𝘁𝗲𝗿𝗮𝗰𝘁𝗶𝘃𝗲 𝗠𝗮𝗽
 
-To learn more about Next.js, take a look at the following resources:
+  
+  `` Hanap-BH uses the GOOGLE's Maps JavaScript API to display an interactive map on your screen ``
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+  
+   𝗥𝗲𝘀𝗽𝗼𝗻𝘀𝗶𝘃𝗲 𝗗𝗲𝘀𝗶𝗴𝗻
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+   
+  `` Hanap-BH utilizes tailwind-css to make the website responsive to any screen size ``
 
-## Deploy on Vercel
+  
+   𝗨𝘀𝗲𝗿 𝗔𝘂𝘁𝗵𝗲𝗻𝘁𝗶𝗰𝗮𝘁𝗶𝗼𝗻
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   
+  `` Users are not inclined to authenticate before accessing the website, but if the user is to claim or add a place, they need to authenticate themselves to proceed ``
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+  
+  𝗦𝗲𝗮𝗿𝗰𝗵 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻𝗮𝗹𝗶𝘁𝘆
+
+  
+  `` You have a specific place in your mind? feel free to use the search bar! ``
+
+<hr/>
+
+
+# Technologies used
+
+## Tools, Libraries & Framework used
+
+- [Next.js](https://nextjs.org/)
+ - [React.js](https://react.dev/)
+ - [React-Redux](https://react-redux.js.org/)
+ - [Mongoose.js](https://mongoosejs.com/)
+ - [React-google-maps](https://github.com/visgl/react-google-maps)
+ - [Tailwind-css](https://tailwindcss.com/)
+
+
+   

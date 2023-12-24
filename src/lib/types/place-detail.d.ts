@@ -6,6 +6,8 @@ export type NominatimReverseAPiResponse = {
   address: {
     city?: string;
     town?: string;
+    country?: string;
+    country_code?: string;
   };
 };
 export type PlacesAPIResponseDetails = {
@@ -26,15 +28,13 @@ export type PlaceDetailsType = {
   owner: string;
   place_id: string;
   name: string;
-  photos: {
-    photo_url: string;
-  }[];
+  photos: string[];
   location: {
     vicinity: string;
     province: string;
     town: {
-      city: string;
-      municipality: string;
+      city?: string;
+      municipality?: string;
     };
     barangay: string;
     street: string;
@@ -52,6 +52,7 @@ export type PlaceDetailsType = {
     average: number;
   };
   rooms: number;
-  distance?: number;
+  distance: number;
+  database: string;
   date_created?: Date;
 };

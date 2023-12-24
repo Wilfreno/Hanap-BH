@@ -1,9 +1,13 @@
 import Image from "next/image";
-import fbImg from "../../../../../public/icons8-facebook-f.svg";
+import fbImg from "../../../../../public/icons/social-media/facebook-svgrepo-com.svg";
+import { signIn } from "next-auth/react";
 
-export default function FbLogin() {
+export default function FbLogin({ callback }: { callback: string }) {
   return (
-    <button className="flex items-center justify-center border rounded-lg w-10/12 mx-auto shadow-md py-2 space-x-5">
+    <button
+      className="flex items-center justify-center border rounded-lg w-10/12 mx-auto shadow-sm hover:shadow-md py-2 space-x-5"
+      onClick={() => signIn("facebook", { callbackUrl: callback })}
+    >
       <div className="relative">
         <Image
           src={fbImg}
@@ -11,7 +15,7 @@ export default function FbLogin() {
           className="h-10 w-auto text-white object-contain"
         />
       </div>
-      <p>Log in with Facebook</p>
+      <p>Continue with Facebook</p>
     </button>
   );
 }

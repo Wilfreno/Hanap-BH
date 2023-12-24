@@ -1,13 +1,13 @@
-import React from "react";
+import React, { Suspense } from "react";
 import "./globals.css";
 import { Manrope } from "next/font/google";
-import ReduxProvider from "@/lib/redux/ReduxProvider";
-import SessionProvider from "@/components/page/auth/SessionProvider";
-import { getServerSession } from "next-auth";
 import { Analytics } from "@vercel/analytics/react";
+import NextTopLoader from "nextjs-toploader";
+import Provider from "@/components/page/auth/Provider";
+import TopLoader from "@/components/reusables/TopLoader";
 const poppins = Manrope({
   subsets: ["latin"],
-  weight: ["300", "400"],
+  weight: ["300", "400", "700"],
 });
 
 export const metadata = {
@@ -21,17 +21,13 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession();
-
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <ReduxProvider>
-          <SessionProvider session={session}>
-            {children}
-            <Analytics />
-          </SessionProvider>
-        </ReduxProvider>
+        <Provider>
+          {children}
+          <Analytics />
+        </Provider>
       </body>
     </html>
   );
