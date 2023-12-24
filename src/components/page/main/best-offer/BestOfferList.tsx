@@ -1,23 +1,32 @@
 import { PlaceDetailsType } from "@/lib/types/place-detail";
 import { StarIcon } from "@heroicons/react/24/solid";
 import React from "react";
-import noIMG from "../../../../../public/image-square-xmark-svgrepo-com.svg";
+import noIMG from "../../../../../public/icons/image-square-xmark-svgrepo-com.svg";
 import Image from "next/image";
+import CustomImage from "@/components/reusables/CustomImage";
+import NoResult from "@/components/reusables/NoResult";
 export default function BestOfferList({ data }: { data?: PlaceDetailsType[] }) {
-  if (data) {
-    return (
-      <>
-        {data?.map((details: PlaceDetailsType) => (
+  return (
+    <>
+      {data ? (
+        data.map((details: PlaceDetailsType) => (
           <div
             className="flex flex-col my-5 p-1 shadow-lg w-full rounded-lg space-y-5 sm:w-[13rem] md:w-[18rem] md:mx-5 md:p-0 hover:scale-105 transform transition duration-300 ease-out"
             key={details.place_id}
           >
-            <div className="relative aspect-square h-auto w-full rounded-lg flex items-center justify-center shadow-md">
-              <Image
-                src={noIMG}
-                alt="No image"
-                className="object-contain h-20 w-auto"
-              />
+            <div className="relative aspect-square w-full overflow-hidden rounded-lg flex items-center justify-center shadow-md">
+              {details.photos.length > 0 ? (
+                <CustomImage
+                  photo_reference={details.photos[0]}
+                  database={details.database}
+                />
+              ) : (
+                <Image
+                  src={noIMG}
+                  alt="No image"
+                  className="object-contain h-20 w-auto"
+                />
+              )}
             </div>
             <div className="relative group flex flex-col space-y-1 p-3 ">
               {details.name.length > 25 ? (
@@ -46,8 +55,10 @@ export default function BestOfferList({ data }: { data?: PlaceDetailsType[] }) {
               </div>
             </div>
           </div>
-        ))}
-      </>
-    );
-  }
+        ))
+      ) : (
+        <NoResult />
+      )}
+    </>
+  );
 }

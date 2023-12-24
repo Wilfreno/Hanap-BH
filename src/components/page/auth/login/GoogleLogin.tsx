@@ -1,5 +1,5 @@
 import Image from "next/image";
-import googleImg from "../../../../../public/google-color-svgrepo-com.svg";
+import googleImg from "../../../../../public/icons/social-media/google-color-svgrepo-com.svg";
 import { signIn } from "next-auth/react";
 
 export default function GoogleLogin({ callback }: { callback: string }) {

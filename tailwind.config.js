@@ -9,7 +9,14 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        pageLoadingBar: {
+          "0%": { width: "0" },
+          "100%": { width: "100vw" },
+        },
+      },
+    },
   },
   plugins: [require("tailwind-scrollbar-hide")],
 };

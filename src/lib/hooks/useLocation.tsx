@@ -4,6 +4,7 @@ import useErrorHandler from "./useErrorHandler";
 
 export default function useLocation() {
   const [coordinates, setCoordinates] = useState<LatLngLiteral>();
+  const [session, setSession] = useState<LatLngLiteral>();
   const { errorHandler } = useErrorHandler();
   useEffect(() => {
     if (!navigator.geolocation.getCurrentPosition) {
@@ -23,21 +24,23 @@ export default function useLocation() {
       }
     );
   }, []);
+  useEffect(() => {
+    const session_data = sessionStorage.getItem("UserLocation");
+    if (session_data) return setSession(JSON.parse(session_data));
+  }, [coordinates]);
 
   return {
-    getSession: () => {
-      const session_data = sessionStorage.getItem("UserLocation");
-      if (session_data !== null) return JSON.parse(session_data);
-      else return null;
-    },
+    location_session: session,
     location: { lat: coordinates?.lat, lng: coordinates?.lng },
-    saveLocation: ({ lat, lng }: LatLngLiteral) =>
+    saveLocation: ({ lat, lng }: LatLngLiteral) => {
+      setSession({ lat, lng });
       sessionStorage.setItem(
         "userLocation",
         JSON.stringify({
           lat,
           lng,
         })
-      ),
+      );
+    },
   };
 }

@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+"use client";
+import { useEffect, useMemo, useState } from "react";
 import { PlaceDetailsType } from "../types/place-detail";
 import usePlaceSession from "./usePlaceSession";
 import useNextPageSession from "./useNextPageSession";
@@ -7,22 +8,20 @@ import useErrorHandler from "./useErrorHandler";
 
 export default function useNearbyPlacesAPI() {
   const [data, setData] = useState<PlaceDetailsType[]>();
-  const [next_page_token, setNextPageToken] = useState<string>();
-
-  const { location, getSession, saveLocation } = useLocation();
-  const location_session = getSession();
-  const place_session = usePlaceSession();
-  const next_page_token_session = useNextPageSession();
+  const { location, location_session, saveLocation } = useLocation();
+  const { savePlace } = usePlaceSession();
+  const { saveToken } = useNextPageSession();
   const { errorHandler } = useErrorHandler();
 
   async function getNearbyPlaces() {
     if (location.lat && location.lng) {
       if (
         location_session &&
-        location_session.lat === location.lat &&
-        location_session.lng === location.lng
-      )
+        location_session?.lat! === location.lat &&
+        location_session?.lng! === location.lng
+      ) {
         return;
+      }
       try {
         const api_response = await fetch(
           `/api/nearby-places?lat=${location.lat}&lng=${location.lng}`,
@@ -35,9 +34,8 @@ export default function useNearbyPlacesAPI() {
 
         const { data, next_page_token } = await api_response.json();
         setData(data);
-        setNextPageToken(next_page_token);
-        place_session.save(data);
-        next_page_token_session.save(next_page_token);
+        savePlace(data);
+        saveToken(next_page_token);
         saveLocation({
           lat: location.lat,
           lng: location.lng,
@@ -50,5 +48,5 @@ export default function useNearbyPlacesAPI() {
   useEffect(() => {
     getNearbyPlaces();
   }, [location]);
-  return { data, next_page_token };
+  return { data };
 }
