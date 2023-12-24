@@ -9,14 +9,14 @@ import CustomImage from "@/components/reusables/CustomImage";
 export default function DetailPopUPCard({ data }: { data: PlaceDetailsType }) {
   const router = useRouter();
   return (
-    <section className="absolute left-0 top-[8vh] h-screen w-[30vw] bg-white p-2 shadow-lg overflow-y-auto">
-      <XMarkIcon
-        onClick={() => {
-          router.replace("/map");
-        }}
-        className="absolute z-10 h-6 duration-300 ease-out transform cursor-pointer top-2 right-2 hover:scale-125 translate"
-      />
-      <div className="relative flex items-center justify-center w-full rounded-lg shadow-md aspect-square my-1">
+    <section className="h-screen w-[35vw] bg-white p-2 shadow-lg overflow-y-auto overflow-x-visible">
+      <div className="relative flex items-center justify-center w-full my-1 rounded-lg shadow-md aspect-square">
+        <XMarkIcon
+          onClick={() => {
+            router.replace("/map");
+          }}
+          className="absolute z-10 h-8 duration-300 ease-out transform bg-white rounded-full shadow-lg cursor-pointer top-1 right-1 hover:scale-125 translate"
+        />
         {data.photos.length > 0 ? (
           <CustomImage
             photo_reference={data.photos[0]}
@@ -26,7 +26,7 @@ export default function DetailPopUPCard({ data }: { data: PlaceDetailsType }) {
           <Image
             src={svgIMG}
             alt="no image"
-            className="object-contain h-full w-full"
+            className="object-contain w-full h-full"
           />
         )}
       </div>

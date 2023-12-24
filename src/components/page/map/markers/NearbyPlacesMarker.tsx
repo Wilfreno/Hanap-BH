@@ -1,14 +1,18 @@
 import { PlaceDetailsType } from "@/lib/types/place-detail";
 import { HomeIcon } from "@heroicons/react/24/solid";
-import { AdvancedMarker } from "@vis.gl/react-google-maps";
-import { useRouter } from "next/navigation";
+import { AdvancedMarker, useMap } from "@vis.gl/react-google-maps";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function NearbyPlacesMarker({
   datas,
 }: {
   datas: PlaceDetailsType[];
 }) {
+  const search_params = useSearchParams();
+  const place_id = search_params.get("place_id");
+  const map = useMap();
   const router = useRouter();
+  if (!place_id) map?.setZoom(17);
   return (
     <>
       {datas?.map((data) => (
@@ -18,9 +22,8 @@ export default function NearbyPlacesMarker({
           onClick={() => {
             router.push(`/map?place_id=${data.place_id}`);
           }}
-          className="cursor-pointer"
         >
-          <HomeIcon className="h-12 p-2 text-gray-900 hover:scale-125" />
+          <HomeIcon className="h-8 hover:scale-125" />
         </AdvancedMarker>
       ))}
     </>

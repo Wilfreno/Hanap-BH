@@ -1,10 +1,10 @@
 import { PlaceDetailsType } from "@/lib/types/place-detail";
 import { AdvancedMarker } from "@vis.gl/react-google-maps";
 import { useEffect, useState } from "react";
-import DetailPopUPMain from "../detail-popup/DetailPopUp";
 import { useSearchParams } from "next/navigation";
 import usePlaceSession from "@/lib/hooks/usePlaceSession";
 import useLocation from "@/lib/hooks/useLocation";
+import DetailPopUp from "../detail-popup/DetailPopUp";
 
 export default function SearchMarker() {
   const [on_mobile, setOnMobile] = useState(false);
@@ -54,7 +54,7 @@ export default function SearchMarker() {
       position={place_detail.location.coordinates}
       className="cursor-pointer"
     >
-      <DetailPopUPMain data={place_detail} on_mobile={on_mobile} />
+      <DetailPopUp />
     </AdvancedMarker>
   ) : null;
 }

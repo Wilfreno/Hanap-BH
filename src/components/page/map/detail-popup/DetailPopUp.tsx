@@ -1,6 +1,5 @@
 import { PlaceDetailsType } from "@/lib/types/place-detail";
 import DetailPopUPCard from "./DetailPopUPCard";
-import { HomeIcon } from "@heroicons/react/24/solid";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import useLocation from "@/lib/hooks/useLocation";
@@ -44,6 +43,6 @@ export default function DetailPopUp() {
     }
     setPlace(filtered_place[0]);
   }, [place_id, place_session]);
-  console.log(place);
+
   return place_id && place ? <DetailPopUPCard data={place!} /> : null;
 }

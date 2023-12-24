@@ -13,11 +13,11 @@ import { LatLngLiteral } from "@/lib/types/google-maps-api-type";
 import { FormState } from "./PlaceDetailHosting";
 const Map = dynamic(() => import("@/components/reusables/ReusableMap"), {
   loading: () => (
-    <section className="h-screen w-screen flex items-center justify-center bg-gray-500">
+    <section className="flex items-center justify-center w-screen h-screen bg-gray-500">
       <Image
         src={loadingSVG}
         alt="Loading..."
-        className="h-50 w-auto"
+        className="w-auto h-50"
         priority
       />
     </section>
@@ -61,6 +61,7 @@ export default function HostinMap({
         <Map
           style="rounded-lg cursor-pointer"
           selected_location={(selected) => setSelectedLocation(selected)}
+          zoom={18}
         >
           {selected_location ? (
             <AdvancedMarker
@@ -90,7 +91,7 @@ export default function HostinMap({
         />
       ) : (
         <ArrowsPointingOutIcon
-          className=" absolute top-2 right-2 h-7 hover:scale-125"
+          className="absolute top-2 right-2 h-7 hover:scale-125"
           onClick={() => setFullscreen((prev) => !prev)}
         />
       )}

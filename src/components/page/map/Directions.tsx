@@ -40,7 +40,7 @@ export default function Directions({}: {}) {
       });
 
       directions_renderer.setDirections(response);
-      setRoute(response.routes)
+      setRoute(response.routes);
     } catch (error) {
       throw error;
     }
