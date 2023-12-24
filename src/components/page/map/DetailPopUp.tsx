@@ -16,17 +16,17 @@ export default function DetailPopUp() {
       }`}
     >
       <div
-        className="flex items- justify-center mb-3 py-4 "
+        className="flex justify-center py-4 mb-3 items- "
         onClick={() => setFull((prev) => !prev)}
       >
-        <span className="h-1 w-2/5 bg-gray-500 rounded-full"></span>
+        <span className="w-2/5 h-1 bg-gray-500 rounded-full"></span>
         <XMarkIcon
-          className="absolute right-1 top-1 h-6 text-gray-900 m-2 "
+          className="absolute h-6 m-2 text-gray-900 right-1 top-1 "
           onClick={() => setView(false)}
         />
       </div>
-      <div className="aspect-square w-full h-auto bg-red-500 rounded-md"></div>
-      <div className="space-y-2 my-3 p-2 text-gray-900">
+      <div className="w-full h-auto bg-red-500 rounded-md aspect-square"></div>
+      <div className="p-2 my-3 space-y-2 text-gray-900">
         <h1 className="text-xl font-bold">{place_detail.name}</h1>
         <p className="text-sm font-semibold text-gray-60">
           {place_detail.location.vicinity}
@@ -34,7 +34,7 @@ export default function DetailPopUp() {
       </div>
       {full ? (
         <>
-          <div className="flex items-center space-x-5 mx-auto text-lg text-gray-900 ">
+          <div className="flex items-center mx-auto space-x-5 text-lg text-gray-900 ">
             <div className="flex items-center justify-center space-x-2">
               <p className="font-bold">₱</p>
               {place_detail.price.min ? (
@@ -54,12 +54,12 @@ export default function DetailPopUp() {
               )}
             </div>
           </div>
-          <p className="mx-auto text-sm font-semibold text-gray-800 mt-3">
+          <p className="mx-auto mt-3 text-sm font-semibold text-gray-800">
             {`(${place_detail.rooms})`} Rooms Available
           </p>
         </>
       ) : null}
-      <button className="flex items-center justify-center border-2 border-gray-600 rounded-full my-5 mx-auto w-3/4 p-1">
+      <button className="flex items-center justify-center w-3/4 p-1 mx-auto my-5 border-2 border-gray-600 rounded-full">
         <p className="text-lg font-semibold text-gray-800 ">See more</p>
       </button>
     </section>
