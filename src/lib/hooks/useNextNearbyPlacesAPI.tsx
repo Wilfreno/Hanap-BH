@@ -41,12 +41,8 @@ export default function useNextNearbyPlacesAPI() {
   useEffect(() => {
     setPlaceData(place_session);
     getNextPage();
-<<<<<<< HEAD
-  }, [next_page]);
-=======
   }, [nearby_places_api.data, token_session]);
 
->>>>>>> refs/remotes/origin/main
   return {
     error,
     place_data,

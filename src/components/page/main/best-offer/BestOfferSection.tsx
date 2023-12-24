@@ -3,6 +3,7 @@ import BestOfferLoadingSkeleton from "./BestOfferLoadingSkeleton";
 import { MapIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import BestOfferList from "./BestOfferList";
+import NoResult from "@/components/reusables/NoResult";
 export default function BestOfferSection({
   data,
 }: {

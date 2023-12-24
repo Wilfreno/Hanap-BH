@@ -21,7 +21,6 @@ export default function PlaceVerification({
       <p>Very your the details of your Place</p>
       <div>
         <p>Name</p>
-        <CustomInput  />
       </div>
     </div>
   );

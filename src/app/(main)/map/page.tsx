@@ -8,11 +8,9 @@ import useNextNearbyPlacesAPI from "@/lib/hooks/useNextNearbyPlacesAPI";
 import NearbyPlacesMarker from "@/components/page/map/markers/NearbyPlacesMarker";
 import SearchMarker from "@/components/page/map/markers/SearchMarker";
 import UserMarker from "@/components/page/map/markers/UserMarker";
-import { PlaceDetailsType } from "@/lib/types/place-detail";
-import { APIProvider, useMap } from "@vis.gl/react-google-maps";
+import { APIProvider } from "@vis.gl/react-google-maps";
 import Directions from "@/components/page/map/Directions";
-import { LatLngLiteral } from "@/lib/types/google-maps-api-type";
-import { useState } from "react";
+import DetailPopUp from "@/components/page/map/detail-popup/DetailPopUp";
 const ReusableMap = dynamic(
   () => import("@/components/reusables/ReusableMap"),
   {
@@ -32,32 +30,22 @@ export default function page() {
   const api_key: string = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!;
   if (!api_key) throw new Error("NEXT_PUBLIC_GOOGLE_MAPS_API_KEY missing");
 
-  const [selected_location, setSelectedLocation] = useState<LatLngLiteral>();
-
   const {
     location: { lat, lng },
   } = useLocation();
   const { place_data } = useNextNearbyPlacesAPI();
 
   return (
-    <>
-      <section className="w-screen h-screen">
-        <APIProvider apiKey={api_key}>
-          <ReusableMap
-            selected_location={(location) => setSelectedLocation(location)}
-          >
-            <Directions
-              origin={{ lat: lat!, lng: lng! }}
-              destination={selected_location!}
-            />
-
-            <NearbyPlacesMarker datas={place_data!} />
-            <SearchMarker  />
-            <UserMarker user_location={{ lat: lat!, lng: lng! }} />
-          </ReusableMap>
-        </APIProvider>
-        <DetailPopUpMobile data={place_data!} />
-      </section>
-    </>
+    <section className="relative w-screen h-screen overflow-hidden">
+      <APIProvider apiKey={api_key}>
+        <ReusableMap zoom={17}>
+          <NearbyPlacesMarker datas={place_data!} />
+          <SearchMarker />
+          <UserMarker user_location={{ lat: lat!, lng: lng! }} />
+          <Directions />
+        </ReusableMap>
+      </APIProvider>
+      <DetailPopUp />
+    </section>
   );
 }

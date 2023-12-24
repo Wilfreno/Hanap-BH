@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
     }
 
     const places_api_response = await fetch(
-      `https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=${api_key}&location=${lat}%2C${lng}&type=lodging&radius=50000`
+      `https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=${api_key}&location=${lat}%2C${lng}&type=lodging&radius=1000`
     );
 
     const places_api_data = await places_api_response.json();

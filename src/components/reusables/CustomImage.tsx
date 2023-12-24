@@ -15,7 +15,7 @@ export default function CustomImage({
         <Image
           src={`https://maps.googleapis.com/maps/api/place/photo?key=${api_key}&photo_reference=${photo_reference}&maxheight=1080&maxwidth=1920`}
           alt={photo_reference}
-          className="h-full w-full rounded-lg pointer-events-none"
+          className=" object-cover h-full w-full rounded-lg pointer-events-none"
           width={1920}
           height={1080}
           priority

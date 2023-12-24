@@ -1,7 +1,7 @@
 import { PlaceDetailsType } from "@/lib/types/place-detail";
 import { AdvancedMarker } from "@vis.gl/react-google-maps";
 import { useEffect, useState } from "react";
-import DetailPopUPMain from "../detail-popup/DetailPopUPMain";
+import DetailPopUPMain from "../detail-popup/DetailPopUp";
 import { useSearchParams } from "next/navigation";
 import usePlaceSession from "@/lib/hooks/usePlaceSession";
 import useLocation from "@/lib/hooks/useLocation";

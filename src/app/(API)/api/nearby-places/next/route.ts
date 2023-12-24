@@ -31,7 +31,6 @@ export async function GET(request: NextRequest) {
         { status: 400 }
       );
     }
-    console.log("token", page_token);
     const next_page_response = await fetch(
       `https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=${page_token}&key=${api_key}`
     );

@@ -36,5 +36,5 @@ export default function DetailPopUpMobile({
       setView(true);
     } else setView(false);
   }, [place_id, data]);
-  return view && on_mobile ? <DetailPopUPCard data={details!} /> : null;
+  return view  ? <DetailPopUPCard data={details!} /> : null;
 }

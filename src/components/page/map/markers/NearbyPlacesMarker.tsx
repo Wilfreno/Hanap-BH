@@ -1,35 +1,26 @@
 import { PlaceDetailsType } from "@/lib/types/place-detail";
-import { AdvancedMarker, useMap } from "@vis.gl/react-google-maps";
-import DetailPopUPMain from "../detail-popup/DetailPopUPMain";
-import { useEffect, useState } from "react";
+import { HomeIcon } from "@heroicons/react/24/solid";
+import { AdvancedMarker } from "@vis.gl/react-google-maps";
+import { useRouter } from "next/navigation";
 
 export default function NearbyPlacesMarker({
   datas,
 }: {
   datas: PlaceDetailsType[];
 }) {
-  const [on_mobile, setOnMobile] = useState(false);
-  useEffect(() => {
-    if (
-      /Mobi|Android/i.test(navigator.userAgent) ||
-      /iPhone|iPad|iPod/i.test(navigator.userAgent)
-    ) {
-      setOnMobile(true);
-    } else {
-      setOnMobile(false);
-    }
-  }, [navigator.userAgent]);
-
+  const router = useRouter();
   return (
     <>
       {datas?.map((data) => (
         <AdvancedMarker
           key={data.place_id}
           position={data.location.coordinates}
-          onClick={() => {}}
+          onClick={() => {
+            router.push(`/map?place_id=${data.place_id}`);
+          }}
           className="cursor-pointer"
         >
-          <DetailPopUPMain data={data} on_mobile={on_mobile} />
+          <HomeIcon className="h-12 p-2 text-gray-900 hover:scale-125" />
         </AdvancedMarker>
       ))}
     </>
