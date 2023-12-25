@@ -1,5 +1,5 @@
 import useLocation from "@/lib/hooks/useLocation";
-import usePlaceSession from "@/lib/hooks/usePlaceSession";
+import usePlaceSession from "@/lib/hooks/usePlaceStorage";
 import { LatLngLiteral } from "@/lib/types/google-maps-api-type";
 import { useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
 import { useSearchParams } from "next/navigation";

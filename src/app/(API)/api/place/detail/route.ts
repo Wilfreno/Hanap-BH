@@ -22,9 +22,14 @@ export async function GET(request: NextRequest) {
 
     if (!data) {
       const places_api_response = await fetch(
-        `https://maps.googleapis.com/maps/api/place/details/json?key=${api_key}`
+        `https://maps.googleapis.com/maps/api/place/details/json?key=${api_key}&place_id=${place_id}`
       );
       const places_api_data = await places_api_response.json();
+      if (
+        places_api_data.status === "NOT_FOUND" ||
+        places_api_data.status === "ZERO_RESULTS"
+      )
+        return NextResponse.json({ message: "not found" }, { status: 404 });
 
       const result: PlacesAPIResponseDetails = places_api_data.result;
       data = {
@@ -63,7 +68,6 @@ export async function GET(request: NextRequest) {
         ),
         database: "GOOGLE",
       };
-      return NextResponse.json({ message: "not found" }, { status: 404 });
     }
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {

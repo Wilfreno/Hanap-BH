@@ -39,6 +39,7 @@ export default function page() {
   return (
     <section className="flex w-screen h-screen overflow-y-hidden pt-[9vh]">
       <DetailPopUp />
+      
       <APIProvider apiKey={api_key}>
         <ReusableMap zoom={17}>
           <NearbyPlacesMarker datas={place_data!} />

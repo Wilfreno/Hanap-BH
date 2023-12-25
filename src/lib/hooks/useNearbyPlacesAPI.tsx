@@ -1,25 +1,26 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import { PlaceDetailsType } from "../types/place-detail";
-import usePlaceSession from "./usePlaceSession";
+import usePlaceSession from "./usePlaceStorage";
 import useNextPageSession from "./useNextPageSession";
 import useLocation from "./useLocation";
 import useErrorHandler from "./useErrorHandler";
 
 export default function useNearbyPlacesAPI() {
   const [data, setData] = useState<PlaceDetailsType[]>();
-  const { location, location_session, saveLocation } = useLocation();
-  const { savePlace } = usePlaceSession();
+  const { location, location_data, saveLocation } = useLocation();
+  const { savePlace, place_data } = usePlaceSession();
   const { saveToken } = useNextPageSession();
   const { errorHandler } = useErrorHandler();
 
   async function getNearbyPlaces() {
     if (location.lat && location.lng) {
       if (
-        location_session &&
-        location_session?.lat! === location.lat &&
-        location_session?.lng! === location.lng
+        location_data &&
+        location_data?.lat! === location.lat &&
+        location_data?.lng! === location.lng
       ) {
+        if (place_data) setData(place_data);
         return;
       }
       try {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useNextPageSession from "./useNextPageSession";
-import usePlaceSession from "./usePlaceSession";
+import usePlaceSession from "./usePlaceStorage";
 import useLocation from "./useLocation";
 import { PlaceDetailsType } from "../types/place-detail";
 import useNearbyPlacesAPI from "./useNearbyPlacesAPI";

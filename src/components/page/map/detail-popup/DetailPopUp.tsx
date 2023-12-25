@@ -1,9 +1,9 @@
 import { PlaceDetailsType } from "@/lib/types/place-detail";
 import DetailPopUPCard from "./DetailPopUPCard";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import useLocation from "@/lib/hooks/useLocation";
-import usePlaceSession from "@/lib/hooks/usePlaceSession";
+import usePlaceSession from "@/lib/hooks/usePlaceStorage";
 export default function DetailPopUp() {
   const {
     location: { lat, lng },
