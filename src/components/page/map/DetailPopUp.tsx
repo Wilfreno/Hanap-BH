@@ -1,13 +1,8 @@
-import { useAppSelector } from "@/lib/redux/store";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 export default function DetailPopUp() {
   const [view, setView] = useState<boolean>(false);
   const [full, setFull] = useState<boolean>(false);
-  const place_detail = useAppSelector((state) => state.selected_detail_reducer);
-  useEffect(() => {
-    if (place_detail.place_id !== "") setView(true);
-  }, [place_detail.place_id]);
 
   return view ? (
     <section
