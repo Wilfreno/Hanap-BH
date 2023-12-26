@@ -2,13 +2,13 @@
 
 import { PlaceDetailsType } from "@/lib/types/place-detail";
 import { useEffect, useState } from "react";
-import usePlaceSession from "@/lib/hooks/usePlaceStorage";
 import useLocation from "@/lib/hooks/useLocation";
 import PlaceImagePreview from "@/components/page/place-detail/image-preview/PlaceImagePreview";
 import UnderConstruction from "@/components/page/error/UnderConstruction";
 import PlaceAddress from "@/components/page/place-detail/place-info/PlaceAddress";
+import useLocalStorage from "@/lib/hooks/useLocalStorage";
 export default function page({ params }: { params: { id: string } }) {
-  const { place_data } = usePlaceSession();
+  const nearby_place_local_storage = useLocalStorage("nearby_places");
   const {
     location: { lat, lng },
   } = useLocation();
@@ -31,7 +31,9 @@ export default function page({ params }: { params: { id: string } }) {
     }
   }
   useEffect(() => {
-    const place = place_data?.filter((data) => data.place_id === params.id);
+    const place = nearby_place_local_storage.data?.filter(
+      (data: PlaceDetailsType) => data.place_id === params.id
+    );
     if (!place || place.length <= 0) {
       console.log(lat);
       console.log(lng);
@@ -39,13 +41,13 @@ export default function page({ params }: { params: { id: string } }) {
       return;
     }
     setDetail(place[0]);
-  }, [place_data, lat, lng]);
+  }, [nearby_place_local_storage.data, lat, lng]);
 
   return (
     <>
       <section className="mt-[10vh] w-screen">
         <PlaceImagePreview detail={detail!} />
-        <PlaceAddress detail={detail!}/>
+        <PlaceAddress detail={detail!} />
         <UnderConstruction />
       </section>
     </>
