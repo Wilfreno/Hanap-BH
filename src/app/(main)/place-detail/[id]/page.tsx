@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import usePlaceSession from "@/lib/hooks/usePlaceStorage";
 import useLocation from "@/lib/hooks/useLocation";
 import PlaceImagePreview from "@/components/page/place-detail/image-preview/PlaceImagePreview";
+import UnderConstruction from "@/components/page/error/UnderConstruction";
+import PlaceAddress from "@/components/page/place-detail/place-info/PlaceAddress";
 export default function page({ params }: { params: { id: string } }) {
   const { place_data } = usePlaceSession();
   const {
@@ -43,7 +45,8 @@ export default function page({ params }: { params: { id: string } }) {
     <>
       <section className="mt-[10vh] w-screen">
         <PlaceImagePreview detail={detail!} />
-        {/* <UnderConstruction /> */}
+        <PlaceAddress detail={detail!}/>
+        <UnderConstruction />
       </section>
     </>
   );

@@ -3,12 +3,14 @@ import DetailPopUPCard from "./DetailPopUPCard";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import useLocation from "@/lib/hooks/useLocation";
-import usePlaceSession from "@/lib/hooks/usePlaceStorage";
-export default function DetailPopUp() {
+export default function DetailPopUp({
+  place_data,
+}: {
+  place_data: PlaceDetailsType[];
+}) {
   const {
     location: { lat, lng },
   } = useLocation();
-  const { place_data } = usePlaceSession();
   const search_params = useSearchParams();
   const place_id = search_params.get("place_id");
   const [place, setPlace] = useState<PlaceDetailsType>();

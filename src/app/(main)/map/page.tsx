@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import useLocation from "@/lib/hooks/useLocation";
 import useNextNearbyPlacesAPI from "@/lib/hooks/useNextNearbyPlacesAPI";
 import NearbyPlacesMarker from "@/components/page/map/markers/NearbyPlacesMarker";
-import SearchMarker from "@/components/page/map/markers/SearchMarker";
 import UserMarker from "@/components/page/map/markers/UserMarker";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import Directions from "@/components/page/map/Directions";
@@ -35,17 +34,15 @@ export default function page() {
     location: { lat, lng },
   } = useLocation();
   const { place_data } = useNextNearbyPlacesAPI();
-
   return (
-    <section className="flex w-screen h-screen overflow-y-hidden pt-[9vh]">
-      <DetailPopUp />
-      
+    <section className="flex w-screen h-screen overflow-y-hidden pt-[8vh]">
+      <DetailPopUp place_data={place_data!} />
+
       <APIProvider apiKey={api_key}>
         <ReusableMap zoom={17}>
           <NearbyPlacesMarker datas={place_data!} />
-          <SearchMarker />
           <UserMarker user_location={{ lat: lat!, lng: lng! }} />
-          <Directions /> 
+          <Directions place_data={place_data!} />
         </ReusableMap>
       </APIProvider>
     </section>

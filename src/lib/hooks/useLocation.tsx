@@ -25,7 +25,7 @@ export default function useLocation() {
     );
   }, []);
   useEffect(() => {
-    const storage_data = localStorage.getItem("UserLocation");
+    const storage_data = localStorage.getItem("user_location");
     if (storage_data) return setStorage(JSON.parse(storage_data));
   }, [coordinates]);
 
