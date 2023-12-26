@@ -8,7 +8,7 @@ import DetailPopUp from "../detail-popup/DetailPopUp";
 
 export default function SearchMarker() {
   const [on_mobile, setOnMobile] = useState(false);
-  const { place_session } = usePlaceSession();
+  const { place_data } = usePlaceSession();
   const {
     location: { lat, lng },
   } = useLocation();
@@ -39,15 +39,15 @@ export default function SearchMarker() {
     }
   }, [navigator.userAgent]);
   useEffect(() => {
-    if (place_id && place_session) {
-      const filtered_data = place_session.filter(
+    if (place_id && place_data) {
+      const filtered_data = place_data.filter(
         (place) => place.place_id === place_id
       );
       if (filtered_data.length <= 0) {
         getPlaceData();
       }
     }
-  }, [place_id, place_session]);
+  }, [place_id, place_data]);
   return place_detail ? (
     <AdvancedMarker
       key={place_detail.place_id}

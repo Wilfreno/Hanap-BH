@@ -7,9 +7,9 @@ import useNearbyPlacesAPI from "./useNearbyPlacesAPI";
 
 export default function useNextNearbyPlacesAPI() {
   const [error, setError] = useState<number>();
-  const { savePlace, place_session } = usePlaceSession();
+  const { savePlace, place_data } = usePlaceSession();
   const nearby_places_api = useNearbyPlacesAPI();
-  const [place_data, setPlaceData] = useState<PlaceDetailsType[]>();
+  const [data, setData] = useState<PlaceDetailsType[]>();
   const { saveToken, token_session } = useNextPageSession();
   const {
     location: { lat, lng },
@@ -30,7 +30,7 @@ export default function useNextNearbyPlacesAPI() {
         return;
       }
       const { data, next_page_token } = await api_response.json();
-      setPlaceData((prev) => Array.from(new Set([...prev!, ...data])));
+      setData((prev) => Array.from(new Set([...prev!, ...data])));
       savePlace(place_data!);
       saveToken(next_page_token);
     } catch (error) {
@@ -39,7 +39,7 @@ export default function useNextNearbyPlacesAPI() {
   }
 
   useEffect(() => {
-    setPlaceData(place_session);
+    setData(place_data);
     getNextPage();
   }, [nearby_places_api.data, token_session]);
 

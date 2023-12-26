@@ -9,7 +9,7 @@ export default function Directions({}: {}) {
   const {
     location: { lat, lng },
   } = useLocation();
-  const { place_session } = usePlaceSession();
+  const { place_data } = usePlaceSession();
   const search_params = useSearchParams();
   const place_id = search_params.get("place_id");
   const map = useMap();
@@ -29,7 +29,7 @@ export default function Directions({}: {}) {
     if (!directions_renderer || !directions_service || !place_id) return;
 
     try {
-      const destination_coord = place_session!.filter(
+      const destination_coord = place_data!.filter(
         (place) => place.place_id === place_id
       );
 

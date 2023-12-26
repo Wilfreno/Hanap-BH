@@ -8,7 +8,7 @@ export default function DetailPopUp() {
   const {
     location: { lat, lng },
   } = useLocation();
-  const { place_session } = usePlaceSession();
+  const { place_data } = usePlaceSession();
   const search_params = useSearchParams();
   const place_id = search_params.get("place_id");
   const [place, setPlace] = useState<PlaceDetailsType>();
@@ -32,9 +32,9 @@ export default function DetailPopUp() {
     }
   }
   useEffect(() => {
-    if (!place_id || !place_session) return;
+    if (!place_id || !place_data) return;
 
-    const filtered_place = place_session.filter(
+    const filtered_place = place_data.filter(
       (place) => place.place_id === place_id
     );
     if (!filtered_place) {
@@ -42,7 +42,7 @@ export default function DetailPopUp() {
       return;
     }
     setPlace(filtered_place[0]);
-  }, [place_id, place_session]);
+  }, [place_id, place_data]);
 
   return place_id && place ? <DetailPopUPCard data={place!} /> : null;
 }
