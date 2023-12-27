@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import dynamic from "next/dynamic";
-import { PlaceDetailsType } from "@/lib/types/place-detail";
 import useInputDebounce from "@/lib/hooks/useInputDebounce";
 import useAutoComplete from "@/lib/hooks/useAutoComplete";
 const ResultDropDown = dynamic(
@@ -15,7 +14,7 @@ export default function Search() {
   const result = useAutoComplete(debouncedValue);
   return (
     <form
-      className={`flex grow items-center rounded-full py-2 px-2 sm:border-2  sm:shadow-sm sm:grow-0 w-[40%] text-gray-900`}
+      className={`flex grow items-center rounded-full py-2 px-2 sm:border-2  sm:shadow-sm sm:grow-0 md:relative w-[40%] text-gray-900`}
       autoFocus={false}
       autoComplete="off"
     >
@@ -27,26 +26,27 @@ export default function Search() {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         onFocus={() => setActive(true)}
-        onBlur={() => setActive(false)}
+        onBlur={() => (search === "" ? setActive(false) : null)}
       />
-      {active ? (
-        <XMarkIcon
-          className="h-6 cursor-pointer"
-          onClick={() => {
-            setSearch("");
-          }}
-        />
-      ) : (
-        <label
-          htmlFor="search"
-          className="rounded-full md:bg-gray-900 md:mx-px"
-        >
-          <MagnifyingGlassIcon
-            className={`h-6 text-gray-500  cursor-pointer  md:text-white md:m-1 `}
+      <label htmlFor="search" className="cursor-pointer md:mx-px">
+        {active ? (
+          <XMarkIcon
+            className="h-6 "
+            onClick={() => {
+              setSearch("");
+            }}
           />
-        </label>
-      )}
-      {active ? <ResultDropDown results={result} /> : null}
+        ) : (
+          <MagnifyingGlassIcon className={`h-6 text-gray-500  `} />
+        )}
+      </label>
+      {active ? (
+        <ResultDropDown
+          setActive={setActive}
+          setSearch={setSearch}
+          results={result}
+        />
+      ) : null}
     </form>
   );
 }

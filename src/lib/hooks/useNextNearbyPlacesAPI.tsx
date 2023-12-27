@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
-import useNextPageSession from "./useNextPageSession";
-import usePlaceSession from "./usePlaceSession";
 import useLocation from "./useLocation";
 import { PlaceDetailsType } from "../types/place-detail";
 import useNearbyPlacesAPI from "./useNearbyPlacesAPI";
+import useLocalStorage from "./useLocalStorage";
 
 export default function useNextNearbyPlacesAPI() {
   const [error, setError] = useState<number>();
-  const { savePlace, place_session } = usePlaceSession();
-  const nearby_places_api = useNearbyPlacesAPI();
-  const [place_data, setPlaceData] = useState<PlaceDetailsType[]>();
-  const { saveToken, token_session } = useNextPageSession();
+  const { data } = useNearbyPlacesAPI();
+  const [new_data, setData] = useState<PlaceDetailsType[]>();
+  const nearby_place_local_storage = useLocalStorage("nearby_places");
+  const next_page_token_local_storage = useLocalStorage("next_page_token");
   const {
     location: { lat, lng },
   } = useLocation();
+
   async function getNextPage() {
-    if (!token_session) return;
+    if (!next_page_token_local_storage.data || !data) return;
     try {
       const api_response = await fetch(
-        `/api/nearby-places/next?page_token=${token_session}&lat=${lat}&lng=${lng}`,
+        `/api/nearby-places/next?page_token=${next_page_token_local_storage.data}&lat=${lat}&lng=${lng}`,
         { cache: "no-store" }
       );
       if (api_response.status === 408) {
@@ -30,21 +30,21 @@ export default function useNextNearbyPlacesAPI() {
         return;
       }
       const { data, next_page_token } = await api_response.json();
-      setPlaceData((prev) => Array.from(new Set([...prev!, ...data])));
-      savePlace(place_data!);
-      saveToken(next_page_token);
+      setData((prev) => Array.from(new Set([...prev!, ...data])));
+      nearby_place_local_storage.save(new_data);
+      next_page_token_local_storage.save(next_page_token);
     } catch (error) {
       throw error;
     }
   }
 
   useEffect(() => {
-    setPlaceData(place_session);
+    setData(data);
     getNextPage();
-  }, [nearby_places_api.data, token_session]);
+  }, [data, next_page_token_local_storage.data]);
 
   return {
     error,
-    place_data,
+    place_data: new_data,
   };
 }

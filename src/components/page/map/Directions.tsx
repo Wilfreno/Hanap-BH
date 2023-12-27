@@ -1,15 +1,18 @@
 import useLocation from "@/lib/hooks/useLocation";
-import usePlaceSession from "@/lib/hooks/usePlaceSession";
 import { LatLngLiteral } from "@/lib/types/google-maps-api-type";
+import { PlaceDetailsType } from "@/lib/types/place-detail";
 import { useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function Directions({}: {}) {
+export default function Directions({
+  place_data,
+}: {
+  place_data: PlaceDetailsType[];
+}) {
   const {
     location: { lat, lng },
   } = useLocation();
-  const { place_session } = usePlaceSession();
   const search_params = useSearchParams();
   const place_id = search_params.get("place_id");
   const map = useMap();
@@ -26,10 +29,11 @@ export default function Directions({}: {}) {
     setDirectionsRenderer(new routes_library.DirectionsRenderer({ map }));
   }
   async function getRoute() {
-    if (!directions_renderer || !directions_service || !place_id) return;
+    if (!directions_renderer || !directions_service || !place_id || !place_data)
+      return;
 
     try {
-      const destination_coord = place_session!.filter(
+      const destination_coord = place_data!.filter(
         (place) => place.place_id === place_id
       );
 
