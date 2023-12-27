@@ -1,3 +1,4 @@
+import Fullscreen from "./Fullscreen";
 import Logo from "./Logo";
 import AddPlace from "./add-place/AddPlace";
 import Menu from "./menu/Menu";
@@ -16,6 +17,7 @@ export default function MainHeader() {
           <Menu />
         </div>
       </div>
+      <Fullscreen />
     </header>
   );
 }
