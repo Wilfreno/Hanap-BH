@@ -2,9 +2,9 @@ import React, { Suspense } from "react";
 import "./globals.css";
 import { Manrope } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
-import NextTopLoader from "nextjs-toploader";
 import Provider from "@/components/page/auth/Provider";
-import TopLoader from "@/components/reusables/TopLoader";
+
+import { SpeedInsights } from "@vercel/speed-insights/next";
 const poppins = Manrope({
   subsets: ["latin"],
   weight: ["300", "400", "700"],
@@ -27,6 +27,7 @@ export default async function RootLayout({
         <Provider>
           {children}
           <Analytics />
+          <SpeedInsights />
         </Provider>
       </body>
     </html>
