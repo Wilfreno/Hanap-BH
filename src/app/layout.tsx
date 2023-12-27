@@ -23,7 +23,9 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={poppins.className}>
+      <body
+        className={`${poppins.className} bg-white text-gray-900 dark:bg-white`}
+      >
         <Provider>
           {children}
           <Analytics />

@@ -17,7 +17,7 @@ export default function MainHeader() {
           <Menu />
         </div>
       </div>
-      <Fullscreen />
+        <Fullscreen />
     </header>
   );
 }
