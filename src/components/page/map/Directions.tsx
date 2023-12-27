@@ -51,7 +51,6 @@ export default function Directions({
   }
   useEffect(() => {
     initializeServices();
-    console.log(place_data);
   }, [map, routes_library]);
   useEffect(() => {
     getRoute();

@@ -35,7 +35,7 @@ export default function page() {
   } = useLocation();
   const { place_data } = useNextNearbyPlacesAPI();
   return (
-    <section className="flex w-screen h-screen overflow-y-hidden pt-[8vh]">
+    <section className="relative flex w-screen h-screen overflow-y-hidden pt-[8vh]">
       <DetailPopUp place_data={place_data!} />
 
       <APIProvider apiKey={api_key}>
