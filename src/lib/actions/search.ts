@@ -1,13 +1,10 @@
-export const dynamic = "force-dynamic";
-import dbConnect from "@/lib/database/connect";
-import PlaceDetail from "@/lib/database/model/Place-detail";
-import { AutocompleteType } from "@/lib/types/google-place-api/autocomplete";
-import { type NextRequest, NextResponse } from "next/server";
+"use  server";
 
-export async function GET(request: NextRequest) {
-  const search_params = request.nextUrl.searchParams;
-  const query = search_params.get("search");
+import dbConnect from "../database/connect";
+import PlaceDetail from "../database/model/Place-detail";
+import { AutocompleteType } from "../types/google-place-api/autocomplete";
 
+export async function autocomplete(value: string) {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_PLACE_API_KEY;
   if (!apiKey) throw new Error(" NEXT_PUBLIC_GOOGLE_PLACE_API_KEY missing ");
 
@@ -15,15 +12,20 @@ export async function GET(request: NextRequest) {
     await dbConnect();
     const db_response = await PlaceDetail.find({
       $or: [
-        { name: { $regex: query, $options: "i" } },
-        { "location.vicinity": { $regex: query, $options: "i" } },
+        { name: { $regex: value, $options: "i" } },
+        {
+          "location.vicinity": {
+            $regex: value,
+            $options: "i",
+          },
+        },
       ],
     });
 
     const db_data = db_response.map((data) => data.toJSON());
 
     const response = await fetch(
-      `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${apiKey}&input=${query}&components=country:ph&types=lodging`
+      `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${apiKey}&input=${value}&components=country:ph&types=lodging`
     );
 
     const { predictions } = await response.json();
@@ -48,9 +50,9 @@ export async function GET(request: NextRequest) {
       }
     });
 
-    return NextResponse.json({ data: [...data, ...db_data] }, { status: 200 });
+    return { data: [...data, ...db_data] };
   } catch (error) {
     console.log(error);
-    return NextResponse.json(error, { status: 500 });
+    throw error;
   }
 }

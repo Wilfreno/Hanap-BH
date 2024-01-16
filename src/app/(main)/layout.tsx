@@ -1,7 +1,6 @@
-"use client";
-import MainHeader from "@/components/layout/header/MainHeader";
+import Header from "@/components/layout/header/Header";
 import Navigation from "@/components/layout/mobile/Navigation";
-import { useSelectedLayoutSegment } from "next/navigation";
+import { useTheme } from "next-themes";
 
 export default function layout({
   children,
@@ -12,7 +11,7 @@ export default function layout({
 }) {
   return (
     <>
-      <MainHeader />
+      <Header />
       <main>
         {children}
         {auth}

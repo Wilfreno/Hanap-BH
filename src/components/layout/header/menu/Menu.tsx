@@ -1,34 +1,57 @@
-"use client"
-import { Bars3Icon, UserCircleIcon } from "@heroicons/react/24/solid";
-import MenuDropDown from "./dropdown/MenuDropDown";
-import { useEffect, useRef, useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Link from "next/link";
+import { UserCircleIcon } from "@heroicons/react/24/outline";
+import { usePathname } from "next/navigation";
+import { ThemeToggler } from "@/components/ThemeToggler";
+import Fullscreen from "../Fullscreen";
+
 export default function Menu() {
-  const [active, setActive] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    function clickHandler(e: MouseEvent) {
-      if (!ref.current?.contains(e.target as Node)) {
-        setActive(false);
-      }
-    }
-    document.addEventListener("click", clickHandler);
-    return () => {
-      document.removeEventListener("click", clickHandler);
-    };
-  }, []);
+  const path_name = usePathname();
   return (
-    <>
-      <div
-        className={`hidden sm:flex items-center rounded-full p-1 cursor-pointer text-gray-700 hover:shadow-lg sm:space-x-2 sm:border ${
-          active ? "shadow-lg border-gray-300" : ""
-        }`}
-        ref={ref}
-        onClick={() => setActive((prev) => !prev)}
-      >
-        <Bars3Icon className="h-5 md:h-6 sm:inline-flex" />
-        <UserCircleIcon className={`h-[2rem] md:h-[2.3rem]`} />
-      </div>
-      {active ? <MenuDropDown /> : null}
-    </>
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <Avatar className="ml-3 hover:bg-secondary md:ml-0">
+          <AvatarImage src="" />
+          <AvatarFallback className="bg-transparent">
+            <UserCircleIcon className="w-auto h-full" />
+          </AvatarFallback>
+        </Avatar>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="mx-3 my-2 space-y-1 text-lg w-[95vw] md:w-[18rem] ">
+        <DropdownMenuItem className="py-3 text-base cursor-pointer">
+          <Link
+            href={`/login?url_callback=${path_name}`}
+            as={`/login?url_callback=${path_name}`}
+            prefetch
+          >
+            <p className="font-bold">Log in</p>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem className="py-3 text-base cursor-pointer">
+          <p>Sign up</p>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem className="py-3 text-base cursor-pointer">
+          <p>Add Your Bouarding House</p>
+        </DropdownMenuItem>
+        <DropdownMenuItem className="py-3 text-base cursor-pointer">
+          <p>FAQ</p>
+        </DropdownMenuItem>
+        <DropdownMenuItem className="py-3 text-base cursor-pointer">
+          <p>Terms of Service</p>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <ThemeToggler />
+        <DropdownMenuSeparator className="md:hidden" />
+        <Fullscreen />
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

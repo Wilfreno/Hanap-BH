@@ -1,25 +1,51 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import dynamic from "next/dynamic";
 import useInputDebounce from "@/lib/hooks/useInputDebounce";
 import useAutoComplete from "@/lib/hooks/useAutoComplete";
-const ResultDropDown = dynamic(
-  () => import("@/components/layout/header/search/ResultDropDown")
-);
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+import SearchResult from "./SearchResult";
+import { PlaceDetailsType } from "@/lib/types/place-detail";
+import Spinner from "@/components/svg/loading/Spinner";
 export default function Search() {
+  const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState<string>("");
   const [active, setActive] = useState<boolean>(false);
+  const [results, setResults] = useState<PlaceDetailsType[]>();
   const debouncedValue = useInputDebounce(search, 300);
-  const result = useAutoComplete(debouncedValue);
+  useEffect(() => {
+    async function getSearch() {
+      try {
+        setLoading(true);
+        const response = await fetch(
+          `/api/autocomplete?search=${debouncedValue}`
+        );
+        const { data } = await response.json();
+        setResults(data);
+        setLoading(false);
+      } catch (error) {
+        throw error;
+      }
+    }
+
+    if (debouncedValue === "") {
+      setActive(false);
+      return;
+    }
+
+    getSearch();
+  }, [debouncedValue]);
   return (
     <form
-      className={`flex grow items-center rounded-full py-2 px-2 sm:border-2  sm:shadow-sm sm:grow-0 md:relative w-[40%] text-gray-900`}
+      className="flex items-center border rounded-xl w-[40vw] relative grow md:grow-0"
       autoFocus={false}
       autoComplete="off"
     >
-      <input
-        className={`w-full px-5 bg-transparent outline-none text-gray-700 placeholder-gray-400 `}
+      <Input
+        className="border-none"
         type="text"
         id="search"
         placeholder="Search a place"
@@ -28,25 +54,27 @@ export default function Search() {
         onFocus={() => setActive(true)}
         onBlur={() => (search === "" ? setActive(false) : null)}
       />
-      <label htmlFor="search" className="cursor-pointer md:mx-px">
+      <Label htmlFor="search" className="m-2 cursor-pointer">
         {active ? (
           <XMarkIcon
             className="h-6 "
             onClick={() => {
+              setActive(false);
               setSearch("");
+              setResults(undefined);
             }}
           />
         ) : (
-          <MagnifyingGlassIcon className={`h-6 text-gray-500  `} />
+          <MagnifyingGlassIcon className="h-6 " />
         )}
-      </label>
-      {active ? (
-        <ResultDropDown
+      </Label>
+      {active && (
+        <SearchResult
+          loading={loading}
           setActive={setActive}
-          setSearch={setSearch}
-          results={result}
+          results={results!}
         />
-      ) : null}
+      )}
     </form>
   );
 }

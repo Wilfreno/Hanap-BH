@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/react";
 import Provider from "@/components/page/auth/Provider";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { ThemeProvider } from "@/components/ThemeProvider";
 const poppins = Manrope({
   subsets: ["latin"],
   weight: ["300", "400", "700"],
@@ -23,11 +24,11 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
-        className={`${poppins.className} bg-white text-gray-900 dark:bg-white`}
-      >
+      <body className={poppins.className}>
         <Provider>
-          {children}
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            {children}
+          </ThemeProvider>
           <Analytics />
           <SpeedInsights />
         </Provider>
