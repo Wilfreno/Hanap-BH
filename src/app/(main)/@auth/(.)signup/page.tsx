@@ -1,11 +1,11 @@
-"use client";
-import Login from "@/components/page/auth/login/Login";
+import SignUp from "@/components/page/auth/signup/SignUp";
 import Modal from "@/components/reusables/Modal";
+import React from "react";
 
 export default function page() {
   return (
     <Modal>
-      <Login />
+      <SignUp />
     </Modal>
   );
 }

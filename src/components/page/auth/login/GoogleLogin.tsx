@@ -1,21 +1,17 @@
 import Image from "next/image";
 import googleImg from "../../../../../public/icons/social-media/google-color-svgrepo-com.svg";
 import { signIn } from "next-auth/react";
+import { Button } from "@/components/ui/button";
 
 export default function GoogleLogin({ callback }: { callback: string }) {
   return (
-    <button
-      className="flex items-center justify-center border rounded-lg w-10/12 mx-auto shadow-sm hover:shadow-md py-2 space-x-5 my-5"
-      onClick={() => signIn("google", { callbackUrl: callback })}
+    <Button
+      // onClick={() => signIn("google", { callbackUrl: callback })}
+      variant="outline"
+      className="w-full h-10 space-x-5"
     >
-      <div className="relative">
-        <Image
-          src={googleImg}
-          alt="GOOGLE"
-          className="h-10 w-auto text-white object-contain"
-        />
-      </div>
-      <p>Continue with GOOGLE</p>
-    </button>
+      <Image src={googleImg} alt="GOOGLE" className="h-8 w-auto" />
+      <p className="text-base font-semibold">Login with GOOGLE</p>
+    </Button>
   );
 }

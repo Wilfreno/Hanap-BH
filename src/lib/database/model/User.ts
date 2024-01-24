@@ -33,10 +33,6 @@ const userSchema: Schema = new Schema({
     default: "/img/pfp/default.png",
   },
   contact: {
-    email: {
-      type: String,
-      required: true,
-    },
     social_media: {
       facebook: {
         type: String,
@@ -57,6 +53,19 @@ const userSchema: Schema = new Schema({
         default: "",
       },
     ],
+  },
+  auth: {
+    name: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+    },
   },
   date_created: {
     type: Date,

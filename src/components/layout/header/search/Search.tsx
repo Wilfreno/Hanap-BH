@@ -6,10 +6,9 @@ import useInputDebounce from "@/lib/hooks/useInputDebounce";
 import useAutoComplete from "@/lib/hooks/useAutoComplete";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
 import SearchResult from "./SearchResult";
 import { PlaceDetailsType } from "@/lib/types/place-detail";
-import Spinner from "@/components/svg/loading/Spinner";
+
 export default function Search() {
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState<string>("");
