@@ -2,6 +2,50 @@ export const dynamic = "force-dynamic";
 import dbConnect from "@/lib/database/connect";
 import User from "@/lib/database/model/User";
 import { NextResponse, type NextRequest } from "next/server";
+import bcrypt from "bcrypt";
+export async function POST(request: Request) {
+  try {
+    const user = await request.json();
+    await dbConnect();
+    const user_found = await User.findOne({ "auth.email": user.email });
+
+    if (user_found)
+      NextResponse.json(
+        {
+          status: "CONFLICT",
+          message: "The email already used ",
+        },
+        { status: 409 }
+      );
+    const hashed_pass = await bcrypt.hash(user.password, 14);
+    const new_user = new User({
+      first_name: user.first_name,
+      last_name: user.last_name,
+      gender: user.gender,
+      birthday: user.birthday,
+      auth: {
+        name: user.email.slice(0, user.email.indexOf("@")),
+        email: user.email,
+        password: hashed_pass,
+      },
+    });
+    await new_user.save();
+
+    return NextResponse.json(
+      {
+        status: "OK",
+        message: "New account created successfully",
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { status: "INTERNAL_SERVER_ERROR", message: error },
+      { status: 500 }
+    );
+  }
+}
 
 export async function GET(request: NextRequest) {
   try {

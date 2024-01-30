@@ -4,19 +4,13 @@ import {
   NavigationMenuItem,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import {
-  MapIcon,
-  QueueListIcon,
-  UserCircleIcon,
-} from "@heroicons/react/24/outline";
+import { MapIcon, QueueListIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
 
-export default function Navigation() {
+export default function Footer() {
   return (
-    <footer className="fixed bottom-0 py-3 border-t md:hidden">
+    <footer className="fixed bottom-0 py-3 border-t sm:hidden">
       <NavigationMenu>
         <NavigationMenuList className="flex justify-evenly w-[100vw]">
           <NavigationMenuItem className="grow">

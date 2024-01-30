@@ -7,7 +7,7 @@ import Search from "./search/Search";
 
 export default function Header() {
   return (
-    <header className="flex items-center p-5 md:border-b md:py-2 md:px-10 justify-evenly md:justify-between">
+    <header className="flex items-center p-5 sm:border-b sm:py-1 md:py-2 md:px-10 justify-evenly sm:justify-between">
       <Logo />
       <Search />
       <AddPlace />

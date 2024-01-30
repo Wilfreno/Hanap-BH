@@ -1,6 +1,6 @@
 "use client";
 import Header from "@/components/layout/header/Header";
-import Navigation from "@/components/layout/mobile/Navigation";
+import Footer from "@/components/layout/mobile/Footer";
 import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
@@ -27,7 +27,7 @@ export default function layout({
           ? auth
           : null}
       </main>
-      <Navigation />
+      <Footer/>
     </>
   );
 }

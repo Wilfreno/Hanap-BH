@@ -13,7 +13,7 @@ export default function SignUpName({
     <div className="flex items-center justify-evenly space-x-2">
       <Input
         placeholder="First name"
-        className="h-10  text-base"
+        className="h-10 text-base"
         value={form_data.first_name}
         onChange={(e) =>
           setFormData((prev) => ({ ...prev, first_name: e.target.value }))

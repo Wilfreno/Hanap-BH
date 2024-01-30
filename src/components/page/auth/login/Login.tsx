@@ -1,7 +1,4 @@
 "use client";
-import Image from "next/image";
-import logoDark from "../../../../../public/logo/hanap-bh-dark.png";
-import logoLight from "../../../../../public/logo/hanap-bh-light.png";
 import GoogleLogin from "./GoogleLogin";
 import { AnimatePresence, Variants, motion } from "framer-motion";
 import { XMarkIcon } from "@heroicons/react/24/solid";
@@ -47,7 +44,7 @@ export default function Login() {
         className="my-auto"
         key={"login"}
       >
-        <Card className="border-hidden md:border md:border-solid w-screen md:w-auto">
+        <Card className="w-screen sm:w-auto h-screen sm:h-auto">
           <CardHeader className="relative border-b">
             <CardTitle className="text-xl flex justify-center">
               Log in

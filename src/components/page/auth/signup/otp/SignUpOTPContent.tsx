@@ -6,8 +6,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import useHTTPRequest from "@/lib/hooks/useHTTPRequest";
 import { SignUpFormDataType } from "@/lib/types/auth-types";
-import { clear } from "console";
 import {
   Dispatch,
   RefObject,
@@ -16,14 +16,22 @@ import {
   useRef,
   useState,
 } from "react";
+import { toast } from "sonner";
 
 export default function SignUpOTPContent({
   form_data,
   setFormData,
+  submit_btn_ref,
+  code,
+  setSubmit,
 }: {
+  code: string;
+  setSubmit: Dispatch<SetStateAction<boolean>>;
+  submit_btn_ref: RefObject<HTMLButtonElement>;
   form_data: SignUpFormDataType;
   setFormData: Dispatch<SetStateAction<SignUpFormDataType>>;
 }) {
+  const http_request = useHTTPRequest();
   const [allow_resend, setAllowResend] = useState(false);
   const [interval_id, setIntervalID] = useState<NodeJS.Timer>();
   const [resend_time, setResendTime] = useState(30);
@@ -107,7 +115,24 @@ export default function SignUpOTPContent({
         >
           Resend {allow_resend && `(${resend_time})`}
         </Button>
-        <Button className="font-bold" type="submit">
+        <Button
+          className="font-bold"
+          disabled={form_data.otp.length < 6}
+          onClick={async () => {
+            if (form_data.otp.toLowerCase() === code.toLowerCase()) {
+              setSubmit(true);
+              await http_request.delete("/api/email/otp", {
+                email: form_data.email,
+              });
+              submit_btn_ref.current?.click();
+              return;
+            }
+            toast("Code Verification Error", {
+              description: "The code you provide is incorrect",
+              action: { label: "ok", onClick: () => null },
+            });
+          }}
+        >
           Verify
         </Button>
       </DialogHeader>

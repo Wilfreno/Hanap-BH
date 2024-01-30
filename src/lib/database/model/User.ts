@@ -2,7 +2,7 @@ import { UserDetailType } from "@/lib/types/user-detail-type";
 import mongoose, { Schema } from "mongoose";
 
 const userSchema: Schema = new Schema({
-  given_name: {
+  first_name: {
     type: String,
     default: "",
   },
@@ -10,7 +10,7 @@ const userSchema: Schema = new Schema({
     type: String,
     default: "",
   },
-  family_name: {
+  last_name: {
     type: String,
     default: "",
   },
@@ -24,9 +24,19 @@ const userSchema: Schema = new Schema({
     type: String,
     default: undefined,
   },
-  birth_date: {
-    type: Date,
-    default: undefined,
+  birthday: {
+    year: {
+      type: Number,
+      default: "",
+    },
+    month: {
+      type: String,
+      default: "",
+    },
+    day: {
+      type: Number,
+      default: "",
+    },
   },
   profile_pic: {
     type: String,

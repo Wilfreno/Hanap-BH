@@ -4,7 +4,10 @@ import GoogleProvider from "next-auth/providers/google";
 import dbConnect from "@/lib/database/connect";
 import FacebookProvider from "next-auth/providers/facebook";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import bcrypt from "bcrypt";
+import { Adapter } from "next-auth/adapters";
+import clientPromise from "@/lib/database/mongo-client";
 const google_client_id = process.env.GOOGLE_CLIENT_ID;
 if (!google_client_id) throw new Error("Missing GOOGLE_CLIENT_ID");
 const google_client_secret = process.env.GOOGLE_CLIENT_SECRET;
@@ -19,28 +22,25 @@ const secret = process.env.NEXTAUTH_SECRET;
 if (!secret) throw new Error("Missing NEXTAUTH_SECRET");
 
 const handler = nextAuth({
+  adapter: MongoDBAdapter(clientPromise) as Adapter,
   providers: [
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        user: { label: "user", type: "text", placeholder: "User" },
+        email: { label: "email", type: "text", placeholder: "Email" },
         password: {
           label: "password",
           type: "password",
           placeholder: "Password",
         },
       },
-      async authorize(credentials, req) {
-        let email_name = "";
-        const at_index = credentials?.user.indexOf("@");
-        if (at_index)
-          email_name = credentials?.user.slice(0, at_index) as string;
+      async authorize(credentials) {
         try {
           await dbConnect();
           const user = await User.findOne({
             $or: [
-              { "auth.name": email_name },
-              { "auth.email": credentials!.user },
+              { "auth.name": credentials?.email },
+              { "auth.email": credentials!.email },
             ],
           });
 
@@ -48,13 +48,15 @@ const handler = nextAuth({
 
           if (
             !(await bcrypt.compare(credentials?.password!, user.auth.password))
-          )
-            throw new Error("Password Incorrect");
-
-          return user.toJSON();
+          ) {
+            throw new Error("Password is incorrect");
+          }
+          const json_user = user.toJSON();
+          delete json_user.auth.password
+          delete json_user.__v
+          return json_user;
         } catch (e) {
-          console.log(e);
-          return null;
+          throw e;
         }
       },
     }),
@@ -67,45 +69,44 @@ const handler = nextAuth({
     //   clientSecret: facebook_client_secret,
     // }),
   ],
+  session: {
+    strategy: "jwt",
+  },
   secret,
   debug: process.env.NODE_ENV === "development",
   callbacks: {
     async signIn({ user, profile }) {
       try {
-        const { email } = user;
+        if (profile) {
+          const { email } = user;
 
-        await dbConnect();
-        const db_user = await User.findOne({ "contact.email": email });
+          await dbConnect();
+          const db_user = await User.findOne({ "auth.email": email });
 
-        if (!db_user) {
-          const new_user = new User({
-            given_name: profile?.given_name,
-            family_name: profile?.family_name,
-            profile_pic: profile?.image,
-            contact: {
-              email,
-            },
-          });
-          await new_user.save();
+          if (!db_user) {
+            const new_user = new User({
+              given_name: profile?.given_name,
+              family_name: profile?.family_name,
+              profile_pic: profile?.image,
+              auth: {
+                email,
+                name: email?.slice(0, email?.indexOf("@")),
+              },
+            });
+            await new_user.save();
+          }
         }
         return true;
       } catch (error) {
         return false;
       }
     },
-    async jwt({ token }) {
-      return token;
+    async jwt({ token, user }) {
+      return { ...token, ...user };
     },
     async session({ session, token }) {
       try {
-        const { email } = token;
-        await dbConnect();
-        const db_user = await User.findOne({ "contact.email": email });
-
-        session.user = db_user.toJSON();
-        delete session.user._id;
-        delete session.user.__v;
-        session.user.id = db_user._id;
+        session.user = token;
         return session;
       } catch (error) {
         throw error;

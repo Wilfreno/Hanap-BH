@@ -6,6 +6,7 @@ import Provider from "@/components/page/auth/Provider";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { Toaster } from "@/components/ui/sonner";
 const poppins = Manrope({
   subsets: ["latin"],
   weight: ["300", "400", "700"],
@@ -28,6 +29,7 @@ export default async function RootLayout({
         <Provider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             {children}
+            <Toaster />
           </ThemeProvider>
           <Analytics />
           <SpeedInsights />
