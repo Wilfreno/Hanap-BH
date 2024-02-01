@@ -6,7 +6,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import useHTTPRequest from "@/lib/hooks/useHTTPRequest";
+import useHTTPRequest from "@/components/hooks/useHTTPRequest";
 import { SignUpFormDataType } from "@/lib/types/auth-types";
 import {
   Dispatch,

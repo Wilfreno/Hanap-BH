@@ -2,19 +2,22 @@ import { PhotosType } from "./google-place-api/room-types";
 
 export type UserDetailType = {
   id: string;
-  given_name: string;
+  first_name: string;
   middle_name?: string;
-  family_name: string;
+  last_name: string;
   place_owned: {
     [{
       id: string,
     }];
   };
   gender?: string;
-  birth_date?: Date;
+  birthday?: {
+    year: number;
+    month: string;
+    day: number;
+  };
   profile_pic: string;
   contact: {
-    email: string;
     phone_number: string;
     social_media?: {
       facebook: string;
@@ -22,4 +25,9 @@ export type UserDetailType = {
       instagram: string;
     };
   };
+  auth: {
+    name: string;
+    email: string;
+  };
+  date_created: Date;
 };

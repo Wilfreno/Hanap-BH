@@ -27,7 +27,6 @@ const userSchema: Schema = new Schema({
   birthday: {
     year: {
       type: Number,
-      default: "",
     },
     month: {
       type: String,
@@ -35,12 +34,11 @@ const userSchema: Schema = new Schema({
     },
     day: {
       type: Number,
-      default: "",
     },
   },
   profile_pic: {
     type: String,
-    default: "/img/pfp/default.png",
+    default: "",
   },
   contact: {
     social_media: {

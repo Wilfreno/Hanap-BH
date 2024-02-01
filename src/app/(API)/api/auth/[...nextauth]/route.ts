@@ -4,10 +4,7 @@ import GoogleProvider from "next-auth/providers/google";
 import dbConnect from "@/lib/database/connect";
 import FacebookProvider from "next-auth/providers/facebook";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import bcrypt from "bcrypt";
-import { Adapter } from "next-auth/adapters";
-import clientPromise from "@/lib/database/mongo-client";
 const google_client_id = process.env.GOOGLE_CLIENT_ID;
 if (!google_client_id) throw new Error("Missing GOOGLE_CLIENT_ID");
 const google_client_secret = process.env.GOOGLE_CLIENT_SECRET;
@@ -22,7 +19,6 @@ const secret = process.env.NEXTAUTH_SECRET;
 if (!secret) throw new Error("Missing NEXTAUTH_SECRET");
 
 const handler = nextAuth({
-  adapter: MongoDBAdapter(clientPromise) as Adapter,
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -52,8 +48,8 @@ const handler = nextAuth({
             throw new Error("Password is incorrect");
           }
           const json_user = user.toJSON();
-          delete json_user.auth.password
-          delete json_user.__v
+          delete json_user.auth.password;
+          delete json_user.__v;
           return json_user;
         } catch (e) {
           throw e;
@@ -101,7 +97,21 @@ const handler = nextAuth({
         return false;
       }
     },
-    async jwt({ token, user }) {
+    async jwt({ token, profile, user }) {
+      if (profile) {
+        console.log("PROFILE:::", profile);
+        await dbConnect();
+        const db_user = await User.findOne({ "auth.email": profile.email });
+        const db_user_json = db_user.toJSON();
+        if (db_user_json.profile_pic === "")
+          db_user_json.profile_pic = profile.picture;
+        delete db_user_json.auth.password;
+        delete db_user_json.__v;
+        delete token.name;
+        delete token.picture;
+        delete token.email;
+        return { ...token, ...db_user_json };
+      }
       return { ...token, ...user };
     },
     async session({ session, token }) {

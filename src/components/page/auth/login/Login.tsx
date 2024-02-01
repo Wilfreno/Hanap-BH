@@ -63,7 +63,7 @@ export default function Login() {
               <p>or</p>
               <hr className="h-[1px] w-1/2 bg-secondary" />
             </span>
-            <GoogleLogin callback={!url_callback ? "/" : `/${url_callback}`} />
+            <GoogleLogin />
           </CardContent>
           <CardFooter className="w-full flex justify-center">
             <Button className="w-full" variant="secondary">

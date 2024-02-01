@@ -3,6 +3,7 @@ import dbConnect from "@/lib/database/connect";
 import User from "@/lib/database/model/User";
 import { NextResponse, type NextRequest } from "next/server";
 import bcrypt from "bcrypt";
+
 export async function POST(request: Request) {
   try {
     const user = await request.json();
@@ -10,7 +11,7 @@ export async function POST(request: Request) {
     const user_found = await User.findOne({ "auth.email": user.email });
 
     if (user_found)
-      NextResponse.json(
+      return NextResponse.json(
         {
           status: "CONFLICT",
           message: "The email already used ",
@@ -64,13 +65,23 @@ export async function GET(request: NextRequest) {
 
 export async function DELETE(request: Request) {
   try {
-    const user_id = await request.json();
+    const user = await request.json();
     await dbConnect();
-    await User.findOneAndRemove({ _id: user_id });
-
-    return NextResponse.json({}, { status: 200 });
+    const db_user = await User.findOneAndRemove({ "auth.email": user.email });
+    if (!db_user)
+      return NextResponse.json(
+        { status: "NOT_FOUND", messsage: "The user cannot be found" },
+        { status: 404 }
+      );
+    return NextResponse.json(
+      { status: "OK", message: "User has been deleted" },
+      { status: 200 }
+    );
   } catch (error) {
-    return NextResponse.json({ message: error }, { status: 500 });
+    return NextResponse.json(
+      { status: "INTERNAL_SERVER_ERROR", message: error },
+      { status: 500 }
+    );
   }
 }
 

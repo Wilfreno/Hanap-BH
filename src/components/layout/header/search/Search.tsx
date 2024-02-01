@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import dynamic from "next/dynamic";
-import useInputDebounce from "@/lib/hooks/useInputDebounce";
-import useAutoComplete from "@/lib/hooks/useAutoComplete";
+import useInputDebounce from "@/components/hooks/useInputDebounce";
+import useAutoComplete from "@/components/hooks/useAutoComplete";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import SearchResult from "./SearchResult";

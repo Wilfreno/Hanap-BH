@@ -9,7 +9,7 @@ import SignUpBirthday from "./birthday/SignUpBirthday";
 import SignUpPassword from "./SignUpPassword";
 import SignUpOtp from "./otp/SignUpOTP";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import useHTTPRequest from "@/lib/hooks/useHTTPRequest";
+import useHTTPRequest from "@/components/hooks/useHTTPRequest";
 import SignUPGender from "./SignUPGender";
 import { toast } from "sonner";
 import { signIn } from "next-auth/react";

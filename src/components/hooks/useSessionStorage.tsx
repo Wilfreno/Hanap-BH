@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function useSessionStorage() {
-  const [session_value, setValue] = useState<string | Record<string, any>>();
+  const [session_value, setValue] = useState<
+    string | Record<string, unknown>
+  >();
   return {
     get: (k: string) => {
       const session = sessionStorage.getItem(k);
@@ -17,7 +19,7 @@ export default function useSessionStorage() {
         return session_value;
       }
     },
-    set: (key: string, value: string | Record<string, any>) => {
+    set: (key: string, value: string | Record<string, unknown>) => {
       try {
         const v = JSON.stringify(value);
         sessionStorage.setItem(key, v);

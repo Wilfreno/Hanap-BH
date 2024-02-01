@@ -37,6 +37,18 @@ export default function useHTTPRequest() {
       }
       return r;
     },
+    get: async (route: string) => {
+      const api_response = await fetch(route);
+      const r = await api_response.json();
+      if (r.status !== "OK") {
+        setError({
+          status: r.status,
+          message: r.message,
+        });
+        return;
+      }
+      return r;
+    },
     delete: async (route: string, body: Record<string, unknown>) => {
       const api_response = await fetch(route, {
         method: "DELETE",

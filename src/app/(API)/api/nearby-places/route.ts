@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
       nominatim_data.address.country_code !== "ph"
     ) {
       return NextResponse.json(
-        { message: "location out of bound" },
+        { status: "OUT_OF_BOUND", message: "location out of bound" },
         { status: 400 }
       );
     }
@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
 
     if (places_api_data.status === "OVER_QUERY_LIMIT") {
       return NextResponse.json(
-        { message: "too many request" },
+        { status: "REQUEST_TIME_OUT", message: "too many request" },
         { status: 429 }
       );
     }
@@ -115,6 +115,8 @@ export async function GET(request: NextRequest) {
       });
       return NextResponse.json(
         {
+          status: "OK",
+          message: "Request sucessful",
           data: [...restructured_DB_data!, ...resturctured_places_api_data],
           next_page_token: places_api_data.next_page_token,
         },
@@ -123,6 +125,8 @@ export async function GET(request: NextRequest) {
     }
     return NextResponse.json(
       {
+        status: "OK",
+        message: "Request sucessful",
         data: places_api_data,
         next_page_token: places_api_data.next_page_token,
       },

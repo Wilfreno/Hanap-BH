@@ -4,7 +4,7 @@ import { SignUpFormDataType } from "@/lib/types/auth-types";
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 import SignUpOTPContent from "./SignUpOTPContent";
 import Spinner from "@/components/svg/loading/Spinner";
-import useHTTPRequest from "@/lib/hooks/useHTTPRequest";
+import useHTTPRequest from "@/components/hooks/useHTTPRequest";
 import { toast } from "sonner";
 
 export default function SignUpOTP({

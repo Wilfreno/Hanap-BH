@@ -21,13 +21,13 @@ export default function layout({
   return (
     <>
       <Header />
-      <main>
+      <>
         {children}
         {path_name.startsWith("/login") || path_name.startsWith("/signup")
           ? auth
           : null}
-      </main>
-      <Footer/>
+      </>
+      <Footer />
     </>
   );
 }
