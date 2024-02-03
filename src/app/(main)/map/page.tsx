@@ -24,5 +24,5 @@ export default function page() {
         </ReusableMap>
       </APIProvider> */}
     </section>
-  );
+  );age
 }

@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { Dispatch, SetStateAction, useState } from "react";
 
@@ -15,7 +16,7 @@ export default function MainPagination({
   const [page_select_control, setPageSelectControl] = useState(0);
 
   return (
-    <section className="flex items-center justify-center">
+    <section className="flex items-center justify-center my-[5vh]">
       <Button
         disabled={page === 1}
         variant="link"
@@ -27,7 +28,7 @@ export default function MainPagination({
           }
         }}
       >
-        <ChevronLeftIcon className="h-5 w-auto" />
+        <ChevronLeftIcon className="h-6 w-auto" />
       </Button>
       {Array.from({ length: 3 }).map((_, index) => (
         <Button
@@ -38,7 +39,12 @@ export default function MainPagination({
             setPageSelectControl(index);
           }}
         >
-          <p className={page === index + 1 + page_lever ? "font-bold " : ""}>
+          <p
+            className={cn(
+              " text-base",
+              page === index + 1 + page_lever ? "font-bold " : ""
+            )}
+          >
             {index + 1 + page_lever}
           </p>
         </Button>
@@ -53,7 +59,7 @@ export default function MainPagination({
           if (page_select_control === 2) setPageLever((prev) => prev + 1);
         }}
       >
-        <ChevronRightIcon className="h-5 w-auto" />
+        <ChevronRightIcon className="h-6 w-auto" />
       </Button>
     </section>
   );

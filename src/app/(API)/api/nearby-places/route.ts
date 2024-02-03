@@ -98,7 +98,7 @@ export async function GET(request: NextRequest) {
         "location.town.": nominatim_data.address.town,
       });
     }
-    if (db_data) {
+    if (db_data!?.length! > 0) {
       const filtered_DB_data = db_data?.map((detail) => detail.toJSON());
       const restructured_DB_data = filtered_DB_data?.map((details) => {
         return {
@@ -127,7 +127,7 @@ export async function GET(request: NextRequest) {
       {
         status: "OK",
         message: "Request sucessful",
-        data: places_api_data,
+        data: resturctured_places_api_data,
         next_page_token: places_api_data.next_page_token,
       },
       { status: 200 }

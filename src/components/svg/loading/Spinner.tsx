@@ -5,7 +5,7 @@ export default function Spinner(props: SVGProps<SVGSVGElement>) {
     <>
       <svg
         {...props}
-        xmlns="http://www.w3.org/2000/svg"        // xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlns="http://www.w3.org/2000/svg" // xmlns:xlink="http://www.w3.org/1999/xlink"
         // style="margin: auto; background: rgb(255, 255, 255); display: block; shape-rendering: auto;"
         width="200px"
         height="200px"

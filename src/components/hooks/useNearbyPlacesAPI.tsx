@@ -17,6 +17,8 @@ export default function useNearbyPlacesAPI() {
     );
     setData(response.data);
     session_storage.set("nearby_place", response.data);
+    if (response.next_page_token)
+      session_storage.set("next_page_token", response.next_page_token);
   }
   useEffect(() => {
     if (!navigator.geolocation.getCurrentPosition) {
@@ -48,5 +50,19 @@ export default function useNearbyPlacesAPI() {
       setData(d as PlaceDetailsType[]);
     }
   }, [coordinates]);
-  return data;
+  return {
+    nearby_place: data,
+    next: async () => {
+      const next_page_token = session_storage.get("next_page_token");
+      if (next_page_token) {
+        const response = await http_request.get(
+          `/api/nearby-places/next?page_token=${next_page_token}&lat=${coordinates?.lat}&lng=${coordinates?.lng}`
+        );
+
+        setData((prev) => [...prev!, ...response.data]);
+        session_storage.set("nearby_place", data!);
+        session_storage.set("next_page_token", response.next_page_token);
+      }
+    },
+  };
 }

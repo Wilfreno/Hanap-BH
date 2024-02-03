@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
       nominatim_data.address.country_code !== "ph"
     ) {
       return NextResponse.json(
-        { message: "location out of bound" },
+        { status: "OUT_OF_BOUND", message: "location out of bound" },
         { status: 400 }
       );
     }
@@ -38,8 +38,8 @@ export async function GET(request: NextRequest) {
 
     if (next_page_data.status === "OVER_QUERY_LIMIT") {
       return NextResponse.json(
-        { message: "too many request" },
-        { status: 408 }
+        { status: "REQUEST_TIME_OUT", message: "too many request" },
+        { status: 429 }
       );
     }
     if (!next_page_data.next_page_token) {
@@ -88,13 +88,17 @@ export async function GET(request: NextRequest) {
     );
     return NextResponse.json(
       {
+        status: "OK",
+        message: "request successful",
         data: restructured_next_page_data,
         next_page_token: next_page_data.next_page_token,
       },
       { status: 200 }
     );
   } catch (error) {
-    console.log(error);
-    return NextResponse.json({ message: error }, { status: 500 });
+    return NextResponse.json(
+      { status: "INTERNAL_SERVER_ERROR", message: error },
+      { status: 500 }
+    );
   }
 }

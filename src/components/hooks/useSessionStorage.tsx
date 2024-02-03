@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export default function useSessionStorage() {
   const [session_value, setValue] = useState<
-    string | Record<string, unknown>
+    string | Record<string, unknown> | unknown[]
   >();
   return {
     get: (k: string) => {
@@ -19,7 +19,7 @@ export default function useSessionStorage() {
         return session_value;
       }
     },
-    set: (key: string, value: string | Record<string, unknown>) => {
+    set: (key: string, value: string | Record<string, unknown> | unknown[]) => {
       try {
         const v = JSON.stringify(value);
         sessionStorage.setItem(key, v);
