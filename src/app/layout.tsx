@@ -25,7 +25,9 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${poppins.className} overflow-hidden`}>
+      <body
+        className={`${poppins.className} overflow-x-hidden overflow-y-auto bg-secondary`}
+      >
         <Provider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             {children}

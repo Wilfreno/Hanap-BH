@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 export default function MainSkeleton() {
   return (
-    <section className="flex justify-evenly mt-8">
+    <section className="grid grid-cols-1 sm:grid-cols-4 sm:items-center sm:grow gap-[5vh]">
       {Array.from({ length: 4 }).map((_, index) => {
         return (
           <div

@@ -1,6 +1,6 @@
 "use client";
-import MainSkeleton from "@/components/loading-skeleton/MainSkeleton";
+import MainFecthMobileSkeleton from "@/components/loading-skeleton/MainFetchMobileSkeleton";
 
 export default function page() {
-  return <MainSkeleton />;
+  return <MainFecthMobileSkeleton />;
 }

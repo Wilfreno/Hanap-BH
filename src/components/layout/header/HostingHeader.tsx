@@ -1,4 +1,4 @@
-import Logo from "./Logo";
+import Logo from "./logo/Logo";
 import Menu from "./menu/Menu";
 
 export default function HostingHeader() {

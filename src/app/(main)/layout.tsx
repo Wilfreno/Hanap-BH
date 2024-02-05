@@ -13,11 +13,11 @@ export default function layout({
   auth: React.ReactNode;
 }) {
   const path_name = usePathname();
-  const { setTheme, theme } = useTheme();
-
+  const { setTheme, systemTheme } = useTheme();
   useEffect(() => {
-    setTheme(theme!);
+    setTheme(systemTheme!);
   }, []);
+
   return (
     <>
       <Header />

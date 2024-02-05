@@ -1,13 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/solid";
-import dynamic from "next/dynamic";
 import useInputDebounce from "@/components/hooks/useInputDebounce";
-import useAutoComplete from "@/components/hooks/useAutoComplete";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import SearchResult from "./SearchResult";
 import { PlaceDetailsType } from "@/lib/types/place-detail";
+import useHTTPRequest from "@/components/hooks/useHTTPRequest";
 
 export default function Search() {
   const [loading, setLoading] = useState(false);
@@ -15,15 +14,15 @@ export default function Search() {
   const [active, setActive] = useState<boolean>(false);
   const [results, setResults] = useState<PlaceDetailsType[]>();
   const debouncedValue = useInputDebounce(search, 300);
+  const http_request = useHTTPRequest();
   useEffect(() => {
     async function getSearch() {
       try {
         setLoading(true);
-        const response = await fetch(
+        const response = await http_request.get(
           `/api/autocomplete?search=${debouncedValue}`
         );
-        const { data } = await response.json();
-        setResults(data);
+        setResults(response.data);
         setLoading(false);
       } catch (error) {
         throw error;
@@ -39,7 +38,7 @@ export default function Search() {
   }, [debouncedValue]);
   return (
     <form
-      className="flex items-center border rounded-xl w-[40vw] relative grow md:grow-0"
+      className="bg-background flex items-center border rounded-xl w-[40vw] relative grow md:grow-0"
       autoFocus={false}
       autoComplete="off"
     >

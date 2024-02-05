@@ -48,7 +48,14 @@ export async function GET(request: NextRequest) {
       }
     });
 
-    return NextResponse.json({ data: [...data, ...db_data] }, { status: 200 });
+    return NextResponse.json(
+      {
+        status: "OK",
+        message: "request successful",
+        data: [...data, ...db_data],
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.log(error);
     return NextResponse.json(error, { status: 500 });

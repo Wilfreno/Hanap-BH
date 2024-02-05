@@ -50,6 +50,7 @@ export default function useNearbyPlacesAPI() {
       setData(d as PlaceDetailsType[]);
     }
   }, [coordinates]);
+
   return {
     nearby_place: data,
     next: async () => {
@@ -58,9 +59,8 @@ export default function useNearbyPlacesAPI() {
         const response = await http_request.get(
           `/api/nearby-places/next?page_token=${next_page_token}&lat=${coordinates?.lat}&lng=${coordinates?.lng}`
         );
-
         setData((prev) => [...prev!, ...response.data]);
-        session_storage.set("nearby_place", data!);
+        session_storage.set("nearby_place", [...data!, ...response.data]);
         session_storage.set("next_page_token", response.next_page_token);
       }
     },

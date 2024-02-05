@@ -19,7 +19,7 @@ export default function SearchResult({
 }) {
   return (
     <Card
-      className="fixed top-[10vh] left-1 w-[98vw]  md:absolute md:w-full md:top-[100%] bg-secondary"
+      className="fixed top-[10vh] left-1 w-[98vw]  md:absolute md:w-full md:top-[100%] bg-background z-50"
       onClick={() => (results ? setActive(true) : setActive(false))}
     >
       {!results && (
