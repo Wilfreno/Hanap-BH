@@ -7,7 +7,7 @@ import useSessionStorage from "./useSessionStorage";
 import useHTTPRequest from "./useHTTPRequest";
 
 export default function useNearbyPlacesAPI() {
-  const [data, setData] = useState<PlaceDetailsType[]>();
+  const [data, setData] = useState<PlaceDetailsType[]>([]);
   const [coordinates, setCoordinates] = useState<LatLngLiteral>();
   const session_storage = useSessionStorage();
   const http_request = useHTTPRequest();
