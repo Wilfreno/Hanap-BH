@@ -2,13 +2,13 @@ import { cn } from "@/lib/utils";
 
 export default function MainSkeleton() {
   return (
-    <section className="grid grid-cols-1 space-y-2 sm:space-y-0 sm:grid-cols-4 sm:items-center sm:grow sm:gap-5">
+    <section className="grid grid-cols-1 space-y-2 sm:space-y-0 sm:grid-cols-4 sm:items-center sm:grow sm:gap-5 mx-auto">
       {Array.from({ length: 4 }).map((_, index) => {
         return (
           <div
             key={index}
             className={cn(
-              "w-screen rounded-sm sm:w-[20vw] sm:rounded-lg h-auto shadow-md bg-background",
+              "w-screen rounded-sm sm:w-[20vw] sm:rounded-lg h-auto shadow-md sm:shadow-none bg-background",
               `opacity-${Math.floor((1 / (index + 1)) * 10) * 10}`
             )}
           >

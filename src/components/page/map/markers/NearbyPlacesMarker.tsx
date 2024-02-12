@@ -1,29 +1,28 @@
-import { PlaceDetailsType } from "@/lib/types/place-detail";
-import { HomeIcon } from "@heroicons/react/24/solid";
+import useNearbyPlacesAPI from "@/components/hooks/useNearbyPlacesAPI";
+import { HomeIcon } from "@heroicons/react/24/outline";
 import { AdvancedMarker, useMap } from "@vis.gl/react-google-maps";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function NearbyPlacesMarker({
-  datas,
-}: {
-  datas: PlaceDetailsType[];
-}) {
-  const search_params = useSearchParams();
-  const place_id = search_params.get("place_id");
+export default function NearbyPlacesMarker() {
+  const { nearby_place } = useNearbyPlacesAPI();
   const map = useMap();
   const router = useRouter();
-  if (!place_id) map?.setZoom(17);
+
   return (
     <>
-      {datas?.map((data) => (
+      {nearby_place?.map((data) => (
         <AdvancedMarker
           key={data.place_id}
-          position={data.location.coordinates}
+          position={{
+            lat: data.location.coordinates.lat,
+            lng: data.location.coordinates.lng,
+          }}
           onClick={() => {
             router.push(`/map?place_id=${data.place_id}`);
+            map?.panTo(data.location.coordinates);
           }}
         >
-          <HomeIcon className="h-8 hover:scale-125" />
+          <HomeIcon className="h-8 hover:scale-125 dark:text-background" />
         </AdvancedMarker>
       ))}
     </>

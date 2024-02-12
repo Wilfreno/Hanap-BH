@@ -1,30 +1,12 @@
 import { PlaceDetailsType } from "@/lib/types/place-detail";
-import Image from "next/image";
-import { motion } from "framer-motion";
 import { StarIcon } from "@heroicons/react/24/outline";
-import NoImageSvg from "@/components/svg/NoImageSvg";
+import PlaceImage from "@/components/reusables/PlaceImage";
 
 export default function MainCard({ place }: { place: PlaceDetailsType }) {
-  const api_key = process.env.NEXT_PUBLIC_GOOGLE_PLACE_API_KEY;
-  if (!api_key) throw new Error("NEXT_PUBLIC_GOOGLE_PLACE_API_KEY is missing");
-
   return (
     <>
       <div className="relative overflow-hidden w-full h-auto rounded-t-sm sm:rounded-t-lg flex">
-        {place?.photos.length > 0 ? (
-          <Image
-            src={`https://maps.googleapis.com/maps/api/place/photo?key=${api_key}&photo_reference=${place.photos[0]}&maxheight=1080&maxwidth=1920`}
-            alt={place.photos[0]}
-            height={1080}
-            width={1920}
-            priority
-            className="aspect-square w-full h-auto"
-          />
-        ) : (
-          <span className="aspect-square w-full h-full flex items-center rounded-t-sm sm:rounded-t-lg justify-center fill-secondary dark:fill-none">
-            <NoImageSvg className="w-1/3 h-full stroke-muted-foreground" />
-          </span>
-        )}
+        <PlaceImage photo={place.photos[0]} />
       </div>
       <div className="p-1 h-[20vh] flex flex-col justify-between">
         <div className="space-y-1 px-1">

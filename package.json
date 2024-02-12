@@ -54,7 +54,8 @@
     "tailwind-merge": "^2.2.0",
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss-animate": "^1.0.7",
-    "typescript": "5.1.3"
+    "typescript": "5.1.3",
+    "vaul": "^0.9.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.1",

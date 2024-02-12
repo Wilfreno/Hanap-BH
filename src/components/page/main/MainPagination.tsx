@@ -31,8 +31,8 @@ export default function MainPagination({
   }, [page]);
 
   return (
-    <section className="hidden sm:flex w-full">
-      <div className="flex items-center mx-auto">
+    <>
+      <section className="flex items-center justify-center mx-auto">
         {page_count > 3 && (
           <Button
             disabled={page === 1 || page_count <= 0}
@@ -90,8 +90,8 @@ export default function MainPagination({
             )}
           </Button>
         )}
-      </div>
-      <div className="flex items-center space-x-2">
+      </section>
+      <div className="flex items-center space-x-2 absolute right-5 bottom-2">
         <Button disabled size="sm" variant="outline" className="text-xs">
           {page}
         </Button>
@@ -111,6 +111,6 @@ export default function MainPagination({
           )}
         </Button>
       </div>
-    </section>
+    </>
   );
 }

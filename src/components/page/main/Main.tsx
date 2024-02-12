@@ -10,7 +10,7 @@ export default function Main({
   nearby_place: PlaceDetailsType[];
 }) {
   return (
-    <section className="grid grid-cols-4 items-center grow gap-5">
+    <section className="grid grid-cols-4 items-center gap-5 mx-auto mt-5 grow">
       {nearby_place?.slice((page - 1) * 4, page * 4).map((place, index) => (
         <motion.div
           key={place.name}

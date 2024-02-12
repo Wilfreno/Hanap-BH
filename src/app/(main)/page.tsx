@@ -16,6 +16,7 @@ const MainMobile = dynamic(
     loading: () => <MainSkeleton />,
   }
 );
+
 export default function page() {
   const [on_mobile, setOnMobile] = useState(false);
   const [page, setPage] = useState(1);
@@ -36,9 +37,11 @@ export default function page() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
   return (
-    <main className="sm:flex sm:flex-col sm:px-2 pb-[8svh] sm:py-0 space-y-10 justify-evenly items-center sm:h-[90svh]">
+    <main className="flex flex-col sm:h-[90svh] sm:p-5">
       {!on_mobile ? (
-        <Main nearby_place={nearby_place!} page={page} />
+        <>
+          <Main nearby_place={nearby_place!} page={page} />
+        </>
       ) : (
         <MainMobile nearby_place={nearby_place!} next={next} />
       )}
