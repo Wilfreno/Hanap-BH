@@ -18,7 +18,6 @@ export default function Login() {
   const router = useRouter();
   const search_params = useSearchParams();
   const url_callback = search_params.get("url_callback");
-  const { theme } = useTheme();
   const animation: Variants = {
     hidden: {
       y: "100vh",

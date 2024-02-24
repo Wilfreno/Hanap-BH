@@ -6,7 +6,6 @@ import Search from "./view/search/Search";
 import View from "./view/View";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 export default function Header() {
   const [width, setwidth] = useState<number>(window.innerWidth);
   const search_params = useSearchParams();
@@ -20,10 +19,7 @@ export default function Header() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
   return (
-    <motion.header
-      animate={view === "search" && { height: "fit-content" }}
-      className=" w-full bg-background sm:px-5 sm:py-2 border-b"
-    >
+    <header className="sticky top-0 w-full bg-background sm:px-5 sm:py-2 border-b z-50">
       {width >= 640 ? (
         <div className="flex items-center my-auto">
           <Logo />
@@ -41,6 +37,6 @@ export default function Header() {
         </div>
       )}
       {view === "search" && <Search />}
-    </motion.header>
+    </header>
   );
 }

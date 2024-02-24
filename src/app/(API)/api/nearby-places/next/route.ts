@@ -3,7 +3,7 @@ import getDistance from "@/lib/google-api/distance";
 import {
   NominatimReverseAPiResponse,
   PlaceDetailsType,
-  PlacesAPIResponseDetails,
+  PlacesAPIResponse,
 } from "@/lib/types/place-detail";
 import { type NextRequest, NextResponse } from "next/server";
 
@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
     const next_page_response = await fetch(
       `https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=${page_token}&key=${api_key}`
     );
-    const next_page_data = await next_page_response.json();
+    const next_page_data = await next_page_response.json() as  PlacesAPIResponse;
 
     if (next_page_data.status === "OVER_QUERY_LIMIT") {
       return NextResponse.json(
@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
       next_page_data.next_page_token = null;
     }
     const restructured_next_page_data = next_page_data.results.map(
-      (details: PlacesAPIResponseDetails) => {
+      (details) => {
         const data: PlaceDetailsType = {
           owner: "",
           place_id: details.place_id,

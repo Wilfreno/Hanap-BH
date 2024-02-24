@@ -2,10 +2,7 @@ export const dynamic = "force-dynamic";
 import dbConnect from "@/lib/database/connect";
 import PlaceDetail from "@/lib/database/model/Place-detail";
 import getDistance from "@/lib/google-api/distance";
-import {
-  PlaceDetailsType,
-  PlacesAPIResponseDetails,
-} from "@/lib/types/place-detail";
+import { PlaceDetailsType, PlacesAPIResult } from "@/lib/types/place-detail";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -31,7 +28,7 @@ export async function GET(request: NextRequest) {
       )
         return NextResponse.json({ message: "not found" }, { status: 404 });
 
-      const result: PlacesAPIResponseDetails = places_api_data.result;
+      const result: PlacesAPIResult = places_api_data.results;
       data = {
         owner: "",
         place_id: result.place_id,

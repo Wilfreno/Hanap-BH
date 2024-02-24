@@ -12,13 +12,13 @@ export type NominatimReverseAPiResponse = {
 };
 
 export type PlacesAPIResponse = {
-  next_page_token: string;
+  next_page_token: string | null;
   results: PlacesAPIResult[];
   status: string;
 };
 
 export type PlacesAPIResult = {
-  business_status: string
+  business_status: string;
   geometry: {
     location: LatLngLiteral;
   };

@@ -1,18 +1,13 @@
 "use client";
 import { useState } from "react";
 import useInputDebounce from "@/components/hooks/useInputDebounce";
-import useHTTPRequest from "@/components/hooks/useHTTPRequest";
-import { Separator } from "@/components/ui/separator";
 import Name from "./name/Name";
 import { AnimatePresence } from "framer-motion";
 import Preference from "./preference/Preference";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
 export default function Search() {
   const [search_view, setSearchView] = useState("preference");
   const [search, setSearch] = useState<string>("");
-  const debouncedValue = useInputDebounce(search, 300);
-  const http_request = useHTTPRequest();
 
   return (
     <section className="flex flex-col items-center space-y-5 mt-10 mb-5">

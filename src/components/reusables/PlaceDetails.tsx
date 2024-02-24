@@ -1,8 +1,8 @@
 import { PlaceDetailsType } from "@/lib/types/place-detail";
+import PlaceImage from "./PlaceImage";
 import { StarIcon } from "@heroicons/react/24/outline";
-import PlaceImage from "@/components/reusables/PlaceImage";
 
-export default function MainCard({ place }: { place: PlaceDetailsType }) {
+export default function PlaceDetails({ place }: { place: PlaceDetailsType }) {
   return (
     <>
       <div className="relative overflow-hidden w-full h-auto rounded-t-sm sm:rounded-t-lg flex">
@@ -11,9 +11,6 @@ export default function MainCard({ place }: { place: PlaceDetailsType }) {
       <div className="p-1 h-[20vh] flex flex-col justify-between">
         <div className="space-y-1 px-1">
           <p className="font-bold sm:text-sm md:text-base lg:text-xl truncate">
-            {/* {place?.name.length > 20
-              ? `${place?.name.slice(0, 20)}...`
-              : place?.name} */}
             {place.name}
           </p>
           <h2 className="text-xs text-muted-foreground">

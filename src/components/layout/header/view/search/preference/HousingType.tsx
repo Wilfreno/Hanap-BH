@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import { motion } from "framer-motion";
+import { housing_type } from "@/components/page/main/filter/HouseTypeFIiter";
+
 export default function HousingType({
   setSearch,
   search,
@@ -21,13 +23,6 @@ export default function HousingType({
 }) {
   const [open, setOPen] = useState(false);
   const { generate } = useSearchParamsGenerator();
-  const housing_type = [
-    "Boarding House",
-    "Apartment",
-    "Hotel",
-    "Motel",
-    "B & B",
-  ];
 
   const ArrowIcon = motion(ChevronRightIcon);
   return (
