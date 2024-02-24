@@ -7,10 +7,12 @@ import View from "./view/View";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 export default function Header() {
-  const [width, setwidth] = useState<number>(window.innerWidth);
+  const [width, setwidth] = useState<number>();
   const search_params = useSearchParams();
   const view = search_params.get("view");
   useEffect(() => {
+    setwidth(window.innerWidth);
+
     function handleResize() {
       setwidth(window.innerWidth);
     }
@@ -20,7 +22,7 @@ export default function Header() {
   }, []);
   return (
     <header className="sticky top-0 w-full bg-background sm:px-5 sm:py-2 border-b z-50">
-      {width >= 640 ? (
+      {width! >= 640 ? (
         <div className="flex items-center my-auto">
           <Logo />
           <View />

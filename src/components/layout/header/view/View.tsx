@@ -11,7 +11,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function View() {
-  const [width, setwidth] = useState<number>(window.innerWidth);
+  const [width, setwidth] = useState<number>();
   const search_params = useSearchParams();
   const view = search_params.get("view");
   const router = useRouter();
@@ -35,6 +35,8 @@ export default function View() {
   ];
 
   useEffect(() => {
+    setwidth(window.innerWidth);
+
     function handleResize() {
       setwidth(window.innerWidth);
     }
@@ -56,7 +58,7 @@ export default function View() {
             view === l.link && "text-primary"
           )}
         >
-          {width >= 640 ? l.name : l.icon}
+          {width! >= 640 ? l.name : l.icon}
         </Link>
       ))}
       <Link
@@ -67,7 +69,11 @@ export default function View() {
           path_name === "/map" && "text-primary"
         )}
       >
-        {width >= 640 ? "Map" : <MapIcon className="h-6 w-auto stroke-[2px]" />}
+        {width! >= 640 ? (
+          "Map"
+        ) : (
+          <MapIcon className="h-6 w-auto stroke-[2px]" />
+        )}
       </Link>
     </nav>
   );
