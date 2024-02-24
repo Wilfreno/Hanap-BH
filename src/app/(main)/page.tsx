@@ -37,20 +37,20 @@ export default function page() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
   return (
-    <main className="flex flex-col sm:h-[90svh] sm:p-5">
-      {!on_mobile ? (
+    <main className="flex flex-col sm:p-5">
+      {/* {!on_mobile ? (
         <>
           <Main nearby_place={nearby_place!} page={page} />
         </>
       ) : (
         <MainMobile nearby_place={nearby_place!} next={next} />
-      )}
-      <MainPagination
+      )} */}
+      {/* <MainPagination
         page={page}
         setPage={setPage}
         page_count={page_count}
         next={next}
-      />
+      /> */}
     </main>
   );
 }

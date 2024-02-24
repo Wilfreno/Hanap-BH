@@ -14,12 +14,14 @@ export default function Logo() {
     <Link
       href="/"
       prefetch
-      className="items-center hidden space-x-2 mr-5 md:mx-0 sm:flex md:space-x-5 whitespace-nowrap"
+      className="flex items-center space-x-2 md:space-x-5 whitespace-nowrap"
     >
-      <LogoImg />
+      <span className="hidden sm:inline-flex">
+        <LogoImg />
+      </span>
       <h1
         className={cn(
-          " text-xl md:text-3xl italic font-bold",
+          "text-xl md:text-2xl italic font-bold",
           path_name.startsWith("/map") && "text-background"
         )}
       >

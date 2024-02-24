@@ -10,7 +10,15 @@ export type NominatimReverseAPiResponse = {
     country_code?: string;
   };
 };
-export type PlacesAPIResponseDetails = {
+
+export type PlacesAPIResponse = {
+  next_page_token: string;
+  results: PlacesAPIResult[];
+  status: string;
+};
+
+export type PlacesAPIResult = {
+  business_status: string
   geometry: {
     location: LatLngLiteral;
   };

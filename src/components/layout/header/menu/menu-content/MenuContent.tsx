@@ -4,18 +4,36 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import Link from "next/link";
 import Fullscreen from "../../Fullscreen";
-import { usePathname, useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import AuthenticatedMenu from "./AuthenticatedMenu";
 import UnAuthenticatedMenu from "./UnAuthenticatedMenu";
 import { ArrowRightEndOnRectangleIcon } from "@heroicons/react/24/outline";
+import { useEffect, useState } from "react";
 
 export default function MenuContent() {
+  const [width, setWidth] = useState<number>();
+
   const { status } = useSession();
+
+  useEffect(() => {
+    setWidth(window.innerWidth);
+
+    function resizeHandler() {
+      setWidth(window.innerWidth);
+    }
+
+    window.addEventListener("resize", resizeHandler);
+
+    return () => window.removeEventListener("resize", resizeHandler);
+  }, []);
+
   return (
-    <DropdownMenuContent className="mx-3 my-2 space-y-1 w-[95vw] md:w-[18rem] ">
+    <DropdownMenuContent
+      className="mx-3 space-y-1 w-[95svw] md:w-[18rem]"
+      align={width! < 640 ? "end" : "center"}
+      sideOffset={width! < 640 ? 65 : 10}
+    >
       {status === "authenticated" ? (
         <AuthenticatedMenu />
       ) : (

@@ -2,15 +2,45 @@
 import Logo from "./logo/Logo";
 import AddPlace from "./add-place/AddPlace";
 import Menu from "./menu/Menu";
-import Search from "./search/Search";
-
+import Search from "./view/search/Search";
+import View from "./view/View";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 export default function Header() {
+  const [width, setwidth] = useState<number>(window.innerWidth);
+  const search_params = useSearchParams();
+  const view = search_params.get("view");
+  useEffect(() => {
+    function handleResize() {
+      setwidth(window.innerWidth);
+    }
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   return (
-    <header className="flex items-center sm:h-[10svh]  m-5 bg-transparent sm:bg-background sm:m-0 sm:border-b sm:py-1 md:py-2 md:px-10 justify-evenly sm:justify-between">
-      <Logo />
-      <Search />
-      <AddPlace />
-      <Menu />
-    </header>
+    <motion.header
+      animate={view === "search" && { height: "fit-content" }}
+      className=" w-full bg-background sm:px-5 sm:py-2 border-b"
+    >
+      {width >= 640 ? (
+        <div className="flex items-center my-auto">
+          <Logo />
+          <View />
+          <AddPlace />
+          <Menu />
+        </div>
+      ) : (
+        <div className="w-full">
+          <div className="w-full flex items-center justify-between p-3 px-5">
+            <Logo />
+            <Menu />
+          </div>
+          <View />
+        </div>
+      )}
+      {view === "search" && <Search />}
+    </motion.header>
   );
 }

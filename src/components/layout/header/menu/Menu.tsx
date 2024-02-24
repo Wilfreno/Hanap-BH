@@ -11,8 +11,8 @@ export default function zMenu() {
   const { data, status } = useSession();
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="rounded-full ml-5 md:ml-0">
-        <Avatar>
+      <DropdownMenuTrigger className="rounded-full">
+        <Avatar className="h-8 w-auto">
           {status === "authenticated" && (
             <AvatarImage
               src={data?.user!.profile_pic!}
@@ -20,11 +20,11 @@ export default function zMenu() {
               alt={data!.user.first_name.charAt(0).toUpperCase()}
             />
           )}
-          <AvatarFallback className="group-hover:bg-background font-bold">
+          <AvatarFallback className="group-hover:bg-background font-bold w-8 h-8">
             {status === "authenticated" ? (
               data.user.first_name.charAt(0).toUpperCase()
             ) : (
-              <UserIcon className="w-auto h-2/3 stroke-1" />
+              <UserIcon className=" h-4 w-auto stroke-1" />
             )}
           </AvatarFallback>
         </Avatar>

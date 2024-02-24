@@ -13,14 +13,14 @@ export default function LogoImg() {
         <Image
           src={logoLight}
           alt="Logo"
-          className="h-6  w-auto md:h-8"
+          className="h-5  w-auto md:h-6"
           priority
         />
       ) : (
         <Image
           src={logoDark}
           alt="Logo"
-          className="h-6  w-auto md:h-8"
+          className="h-5  w-auto md:h-6"
           priority
         />
       )}

@@ -6,9 +6,9 @@ export default function AddPlace() {
       href="/hosting"
       as="/hosting"
       prefetch={true}
-      className="items-center hidden space-x-2 lg:inline-flex whitespace-nowrap "
+      className="items-center hidden lg:inline-flex whitespace-nowrap font-bold text-muted-foreground text-sm hover:drop-shadow-lg mr-20"
     >
-      <p className="text-xs lg:text-base">Add Your boarding House</p>
+      Add your place
     </Link>
   );
 }

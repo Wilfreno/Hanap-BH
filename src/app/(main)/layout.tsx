@@ -1,6 +1,5 @@
 "use client";
 import Header from "@/components/layout/header/Header";
-import Footer from "@/components/layout/mobile/Footer";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
@@ -30,7 +29,6 @@ export default function layout({
           ? auth
           : null}
       </>
-      <Footer />
     </>
   );
 }

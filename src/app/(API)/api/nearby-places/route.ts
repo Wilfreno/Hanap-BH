@@ -5,7 +5,8 @@ import getDistance from "@/lib/google-api/distance";
 import {
   NominatimReverseAPiResponse,
   PlaceDetailsType,
-  PlacesAPIResponseDetails,
+  PlacesAPIResponse,
+  PlacesAPIResult,
 } from "@/lib/types/place-detail";
 import { type NextRequest } from "next/server";
 import { NextResponse } from "next/server";
@@ -37,7 +38,8 @@ export async function GET(request: NextRequest) {
       `https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=${api_key}&location=${lat}%2C${lng}&type=lodging&radius=1000`
     );
 
-    const places_api_data = await places_api_response.json();
+    const places_api_data =
+      (await places_api_response.json()) as PlacesAPIResponse;
 
     if (places_api_data.status === "OVER_QUERY_LIMIT") {
       return NextResponse.json(
@@ -45,8 +47,10 @@ export async function GET(request: NextRequest) {
         { status: 429 }
       );
     }
-    const resturctured_places_api_data = places_api_data.results.map(
-      (details: PlacesAPIResponseDetails, index: number) => {
+
+    const resturctured_places_api_data = places_api_data.results
+      .filter((place) => place.business_status === "OPERATIONAL")
+      .map((details: PlacesAPIResult) => {
         const data: PlaceDetailsType = {
           owner: "",
           place_id: details.place_id,
@@ -70,7 +74,7 @@ export async function GET(request: NextRequest) {
             min: undefined,
           },
           rating: {
-            count: 1,
+            count: details.user_ratings_total,
             average: details.rating,
           },
           rooms: 0,
@@ -84,8 +88,7 @@ export async function GET(request: NextRequest) {
           database: "GOOGLE",
         };
         return data;
-      }
-    );
+      });
 
     await dbConnect();
     let db_data;
@@ -133,7 +136,6 @@ export async function GET(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ message: error }, { status: 500 });
   }
 }
