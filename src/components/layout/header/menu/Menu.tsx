@@ -7,12 +7,12 @@ import { UserIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import MenuContent from "./menu-content/MenuContent";
 import { useSession } from "next-auth/react";
-export default function zMenu() {
+export default function Menu() {
   const { data, status } = useSession();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="rounded-full">
-        <Avatar className="h-8 w-auto">
+        <Avatar className="h-9 w-auto">
           {status === "authenticated" && (
             <AvatarImage
               src={data?.user!.profile_pic!}
@@ -20,11 +20,11 @@ export default function zMenu() {
               alt={data!.user.first_name.charAt(0).toUpperCase()}
             />
           )}
-          <AvatarFallback className="group-hover:bg-background font-bold w-8 h-8">
+          <AvatarFallback className="group-hover:bg-background font-bold w-9 h-9">
             {status === "authenticated" ? (
               data.user.first_name.charAt(0).toUpperCase()
             ) : (
-              <UserIcon className=" h-4 w-auto stroke-1" />
+              <UserIcon className="h-1/2 w-auto stroke-1" />
             )}
           </AvatarFallback>
         </Avatar>

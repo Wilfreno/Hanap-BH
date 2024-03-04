@@ -21,21 +21,21 @@ export default function Header() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
   return (
-    <header className="sticky top-0 w-full bg-background sm:px-5 sm:py-2 border-b z-50">
-      {width! >= 640 ? (
-        <div className="flex items-center my-auto">
-          <Logo />
-          <View />
-          <AddPlace />
-          <Menu />
-        </div>
-      ) : (
+    <header className="sticky top-0 w-full bg-background sm:px-10 sm:py-3 border-b z-50">
+      {width! < 640 ? (
         <div className="w-full">
           <div className="w-full flex items-center justify-between p-3 px-5">
             <Logo />
             <Menu />
           </div>
           <View />
+        </div>
+      ) : (
+        <div className="flex items-center my-auto">
+          <Logo />
+          <View />
+          <AddPlace />
+          <Menu />
         </div>
       )}
       {view === "search" && <Search />}

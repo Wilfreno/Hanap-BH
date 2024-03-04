@@ -58,7 +58,7 @@ export default function View() {
             view === l.link && "text-primary"
           )}
         >
-          {width! >= 640 ? l.name : l.icon}
+          {width! < 640 ? l.icon : l.name}
         </Link>
       ))}
       <Link
@@ -69,11 +69,7 @@ export default function View() {
           path_name === "/map" && "text-primary"
         )}
       >
-        {width! >= 640 ? (
-          "Map"
-        ) : (
-          <MapIcon className="h-6 w-auto stroke-[2px]" />
-        )}
+        {width! < 640 ? <MapIcon className="h-6 w-auto stroke-[2px]" /> : "Map"}
       </Link>
     </nav>
   );

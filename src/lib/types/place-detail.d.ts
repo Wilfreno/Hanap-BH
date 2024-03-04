@@ -61,6 +61,6 @@ export type PlaceDetailsType = {
   };
   rooms: number;
   distance: number;
-  database: string;
+  database: "GOOGLE" | "DB";
   date_created?: Date;
 };
