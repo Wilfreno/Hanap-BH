@@ -45,7 +45,7 @@ export default function useHTTPRequest() {
           status: r.status,
           message: r.message,
         });
-        return;
+        return r;
       }
       return r;
     },

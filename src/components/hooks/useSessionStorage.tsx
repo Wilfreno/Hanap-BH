@@ -6,9 +6,9 @@ export default function useSessionStorage() {
       const session = sessionStorage.getItem(k);
       try {
         const object = JSON.parse(session!);
-        return object;
+        return object === "null" ? null : object;
       } catch (e) {
-        return session;
+        return session === "null" ? null : session;
       }
     },
     set: (key: string, value: string | Record<string, unknown> | unknown[]) => {

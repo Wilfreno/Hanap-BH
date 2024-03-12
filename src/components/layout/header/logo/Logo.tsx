@@ -19,14 +19,7 @@ export default function Logo() {
       <span className="hidden sm:inline-flex">
         <LogoImg />
       </span>
-      <h1
-        className={cn(
-          "text-xl md:text-2xl italic font-bold",
-          path_name.startsWith("/map") && "text-background"
-        )}
-      >
-        Hanap-BH
-      </h1>
+      <h1 className={cn("text-xl md:text-2xl italic font-bold")}>Hanap-BH</h1>
     </Link>
   );
 }

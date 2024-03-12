@@ -2,7 +2,7 @@ import FavoriteMark from "@/components/reusables/FavoriteMark";
 import GoogleMark from "@/components/reusables/GoogleMark";
 import PlaceImage from "@/components/reusables/PlaceImage";
 import { PlaceDetailsType } from "@/lib/types/place-detail";
-import { HeartIcon, StarIcon } from "@heroicons/react/24/outline";
+import { StarIcon } from "@heroicons/react/24/outline";
 
 export default function MainContentCard({
   place,
@@ -20,21 +20,19 @@ export default function MainContentCard({
           className="h-6 w-auto absolute top-2 right-2"
         />
       </div>
-      <div className="p-1 space-y-5">
+      <div className="my-2 space-y-5">
         <div>
-          <h1 className="font-bold sm:text-sm md:text-base lg:text-lg truncate">
-            {place.name}
-          </h1>
-          <h2 className="text-sm text-muted-foreground truncate">
+          <h1 className="font-bold sm:text-sm truncate">{place.name}</h1>
+          <h2 className="text-xs text-muted-foreground truncate">
             {place?.location.vicinity}
           </h2>
-          <div className="flex items-center space-x-2 mx-auto text-base font-bold text-muted-foreground">
+          <div className="flex items-center space-x-2 mx-auto font-bold text-muted-foreground">
             <p>
               ₱
               {place.price.min ? (
                 place.price.min
               ) : (
-                <span className=" font-normal">- -</span>
+                <span className=" font-normal mx-1">- -</span>
               )}
             </p>
             <p>~</p>
@@ -43,7 +41,7 @@ export default function MainContentCard({
               {place.price.max ? (
                 place.price.max
               ) : (
-                <span className=" font-normal">- -</span>
+                <span className=" font-normal mx-1">- -</span>
               )}
             </p>
           </div>

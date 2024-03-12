@@ -14,6 +14,7 @@ import { NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   const api_key = process.env.NEXT_PUBLIC_GOOGLE_PLACE_API_KEY;
   if (!api_key) throw new Error("NEXT_PUBLIC_GOOGLE_PLACE_API_KEY is missing");
+
   try {
     const search_params = request.nextUrl.searchParams;
     const lat = search_params.get("lat");
@@ -101,6 +102,7 @@ export async function GET(request: NextRequest) {
         "location.town.": nominatim_data.address.town,
       });
     }
+
     if (db_data!?.length! > 0) {
       const filtered_DB_data = db_data?.map((detail) => detail.toJSON());
       const restructured_DB_data = filtered_DB_data?.map((details) => {
@@ -126,16 +128,29 @@ export async function GET(request: NextRequest) {
         { status: 200 }
       );
     }
-    return NextResponse.json(
-      {
-        status: "OK",
-        message: "Request sucessful",
-        data: resturctured_places_api_data,
-        next_page_token: places_api_data.next_page_token,
-      },
-      { status: 200 }
-    );
+    return resturctured_places_api_data.length > 0
+      ? NextResponse.json(
+          {
+            status: "OK",
+            message: "Request sucessful",
+            data: resturctured_places_api_data,
+            next_page_token: places_api_data.next_page_token,
+          },
+          { status: 200 }
+        )
+      : NextResponse.json(
+          {
+            status: "NO_RESULT",
+            message: "No Search Result",
+            data: [],
+            next_page_token: null,
+          },
+          { status: 404 }
+        );
   } catch (error) {
-    return NextResponse.json({ message: error }, { status: 500 });
+    return NextResponse.json(
+      { status: "INTERNAL_SERVER_ERROR", message: error },
+      { status: 500 }
+    );
   }
 }

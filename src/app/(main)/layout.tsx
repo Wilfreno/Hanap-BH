@@ -23,12 +23,12 @@ export default function layout({
   return (
     <>
       <Header />
-      <>
-        <APIProvider apiKey={api_key}>{children}</APIProvider>
+      <main className="grid">
+        {children}
         {path_name.startsWith("/login") || path_name.startsWith("/signup")
           ? auth
           : null}
-      </>
+      </main>
     </>
   );
 }

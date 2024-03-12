@@ -8,7 +8,7 @@ export default function Search() {
   const [search_view, setSearchView] = useState("preference");
 
   return (
-    <section className="flex flex-col items-center space-y-5 mt-10 mb-5">
+    <section className="flex flex-col items-center space-y-5 my-10">
       <Button
         size="sm"
         variant="outline"

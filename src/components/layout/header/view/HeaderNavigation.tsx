@@ -7,14 +7,11 @@ import {
   MapIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function View() {
+export default function HeaderNavigation() {
   const [width, setwidth] = useState<number>();
-  const search_params = useSearchParams();
-  const view = search_params.get("view");
-  const router = useRouter();
   const path_name = usePathname();
   const view_list = [
     {
@@ -32,6 +29,11 @@ export default function View() {
       link: "browse",
       icon: <GlobeAltIcon className="h-6 w-auto stroke-[2px]" />,
     },
+    {
+      name: "Map",
+      link: "map",
+      icon: <MapIcon className="h-6 w-auto stroke-[2px]" />,
+    },
   ];
 
   useEffect(() => {
@@ -45,32 +47,21 @@ export default function View() {
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-  if (!view) router.replace(`${path_name}?view=nearby`);
   return (
-    <nav className="flex items-center sm:justify-center sm:grow sm:mx-auto sm:space-x-10 font-semibold text-lg text-muted-foreground sm:pl-16">
+    <nav className="flex items-center sm:justify-center sm:grow sm:mx-auto sm:space-x-10 font-semibold text-base text-muted-foreground sm:pl-16">
       {view_list.map((l, index) => (
         <Link
           key={l.name}
-          href={`/?view=${l.link}`}
-          as={`/?view=${l.link}`}
+          href={`/${l.link}`}
+          as={`/${l.link}`}
           className={cn(
             "grow sm:grow-0 flex items-center justify-center p-2 py-3 sm:p-0 sm:py-0",
-            view === l.link && "text-primary"
+            path_name.endsWith(l.link) && "text-primary"
           )}
         >
           {width! < 640 ? l.icon : l.name}
         </Link>
       ))}
-      <Link
-        href="/map"
-        as="/map"
-        className={cn(
-          "grow sm:grow-0 flex items-center justify-center p-2 py-3 sm:p-0 sm:py-0",
-          path_name === "/map" && "text-primary"
-        )}
-      >
-        {width! < 640 ? <MapIcon className="h-6 w-auto stroke-[2px]" /> : "Map"}
-      </Link>
     </nav>
   );
 }
