@@ -1,22 +1,40 @@
 "use client";
-import Logo from "./Logo";
+import Logo from "./logo/Logo";
 import AddPlace from "./add-place/AddPlace";
-import Search from "./search/Search";
 import Menu from "./menu/Menu";
+import { useEffect, useState } from "react";
+import HeaderNavigation from "./HeaderNavigation";
 
 export default function Header() {
+  const [width, setwidth] = useState<number>();
+  useEffect(() => {
+    setwidth(window.innerWidth);
+
+    function handleResize() {
+      setwidth(window.innerWidth);
+    }
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   return (
-    <header className="fixed w-screen my-5 top-0 z-10 flex items-center justify-center bg-transparent sm:shadow-md sm:bg-white sm:w-screen sm:my-0 sm:rounded-none md:mx-0">
-      <div className="relative flex items-center justify-center border-2 rounded-full px-3 py-1 bg-white shadow-md sm:border-none sm:shadow-none sm:w-full sm:justify-between sm:px-5 lg:px-8 ">
-        <Logo />
-        <Search />
-        <div
-          className={`flex relative items-center justify-center md:justify-end  text-gray-500 sm:justify-evenly sm:space-x-5`}
-        >
+    <header className="sticky top-0 w-full bg-background sm:px-10 sm:py-2 z-40">
+      {width! < 640 ? (
+        <div className="w-full">
+          <div className="w-full flex items-center justify-between p-3 px-5">
+            <Logo />
+            <Menu />
+          </div>
+          <HeaderNavigation />
+        </div>
+      ) : (
+        <div className="flex items-center my-auto">
+          <Logo />
+          <HeaderNavigation />
           <AddPlace />
           <Menu />
         </div>
-      </div>
+      )}
     </header>
   );
 }

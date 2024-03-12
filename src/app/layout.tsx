@@ -1,12 +1,15 @@
-import React from "react";
+import React, { Suspense } from "react";
 import "./globals.css";
 import { Manrope } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
-import NextTopLoader from "nextjs-toploader";
 import Provider from "@/components/page/auth/Provider";
+
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { Toaster } from "@/components/ui/sonner";
 const poppins = Manrope({
   subsets: ["latin"],
-  weight: ["300", "400"],
+  weight: ["300", "400", "700"],
 });
 
 export const metadata = {
@@ -22,20 +25,16 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={poppins.className}>
+      <body
+        className={`${poppins.className} grid grid-rows-[auto_1fr] h-[100dvh]`}
+      >
         <Provider>
-          <NextTopLoader
-            color="#222222"
-            initialPosition={0.1}
-            crawlSpeed={200}
-            crawl={true}
-            showSpinner={false}
-            height={3}
-            easing="ease"
-            speed={200}
-          />
-          {children}
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            {children}
+            <Toaster />
+          </ThemeProvider>
           <Analytics />
+          <SpeedInsights />
         </Provider>
       </body>
     </html>

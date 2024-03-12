@@ -1,14 +1,23 @@
-import Image from "next/image";
-import logoImg from "../../../../../public/logo.png";
-import FbLogin from "./FbLogin";
-import Modal from "@/components/reusables/Modal";
+"use client";
 import GoogleLogin from "./GoogleLogin";
-import { Variants, motion } from "framer-motion";
+import { AnimatePresence, Variants, motion } from "framer-motion";
 import { XMarkIcon } from "@heroicons/react/24/solid";
-import { useRouter } from "next/navigation";
-import { signOut } from "next-auth/react";
-export default function Login({ callback }: { callback: string }) {
+import { useRouter, useSearchParams } from "next/navigation";
+import { useTheme } from "next-themes";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import LoginForm from "./LoginForm";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+export default function Login() {
   const router = useRouter();
+  const search_params = useSearchParams();
+  const url_callback = search_params.get("url_callback");
   const animation: Variants = {
     hidden: {
       y: "100vh",
@@ -20,40 +29,53 @@ export default function Login({ callback }: { callback: string }) {
       transition: { duration: 0.3 },
     },
     exit: {
+      y: "-100",
       opacity: 0,
     },
   };
   return (
-    <Modal>
+    <AnimatePresence>
       <motion.div
         initial="hidden"
         animate="visible"
         exit="exit"
         variants={animation}
-        className="flex flex-col bg-white opacity-100 rounded-lg shadow-lg w-[30%] my-[10vh]"
+        className="my-auto"
+        key={"login"}
       >
-        <section className="flex flex-col items-center justify-center py-4 font-semibold relative text-gray-900">
-          <h1 className="text-lg">Sign up or Log in</h1>
-          <XMarkIcon
-            className="absolute h-5 right-2 top-2 cursor-pointer"
-            onClick={() => router.replace(callback)}
-          />
-          <hr className="w-full h-px my-5" />
-          <div className="relative flex items-center justify-center my-10 flex-col space-y-5">
-            <Image
-              src={logoImg}
-              alt="logo"
-              className="h-[6.5rem] w-auto object-contain"
+        <Card className="w-screen sm:w-auto h-screen sm:h-auto">
+          <CardHeader className="relative border-b">
+            <CardTitle className="text-xl flex justify-center">
+              Log in
+            </CardTitle>
+            <XMarkIcon
+              className="absolute h-7 right-2 top-0 cursor-pointer"
+              onClick={() =>
+                router.push(!url_callback ? "/" : `/${url_callback}`)
+              }
             />
-            <p className="text-lg">
-              Welcome to <i className="font-bold text-xl">Hanap-BH</i>
-            </p>
-          </div>
-        </section>
-        <FbLogin callback={callback} />
-        <GoogleLogin callback={callback} />
-        <button onClick={() => signOut()}>Logout</button>
+          </CardHeader>
+          <CardContent className="space-y-5 py-10">
+            <LoginForm />
+            <span className="flex items-center w-full space-x-5">
+              <hr className="h-[1px] w-1/2 bg-secondary" />
+              <p>or</p>
+              <hr className="h-[1px] w-1/2 bg-secondary" />
+            </span>
+            <GoogleLogin />
+          </CardContent>
+          <CardFooter className="w-full flex justify-center">
+            <Button className="w-full" variant="secondary">
+              <Link
+                href={`/signup?url_callback=/${url_callback?.replace("/", "")}`}
+                className="font-bold"
+              >
+                Create new account
+              </Link>
+            </Button>
+          </CardFooter>
+        </Card>
       </motion.div>
-    </Modal>
+    </AnimatePresence>
   );
 }

@@ -2,7 +2,7 @@ import { UserDetailType } from "@/lib/types/user-detail-type";
 import mongoose, { Schema } from "mongoose";
 
 const userSchema: Schema = new Schema({
-  given_name: {
+  first_name: {
     type: String,
     default: "",
   },
@@ -10,7 +10,7 @@ const userSchema: Schema = new Schema({
     type: String,
     default: "",
   },
-  family_name: {
+  last_name: {
     type: String,
     default: "",
   },
@@ -24,19 +24,23 @@ const userSchema: Schema = new Schema({
     type: String,
     default: undefined,
   },
-  birth_date: {
-    type: Date,
-    default: undefined,
+  birthday: {
+    year: {
+      type: Number,
+    },
+    month: {
+      type: String,
+      default: "",
+    },
+    day: {
+      type: Number,
+    },
   },
   profile_pic: {
     type: String,
-    default: "/img/pfp/default.png",
+    default: "",
   },
   contact: {
-    email: {
-      type: String,
-      required: true,
-    },
     social_media: {
       facebook: {
         type: String,
@@ -57,6 +61,19 @@ const userSchema: Schema = new Schema({
         default: "",
       },
     ],
+  },
+  auth: {
+    name: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+    },
   },
   date_created: {
     type: Date,

@@ -7,10 +7,18 @@ export type NominatimReverseAPiResponse = {
     city?: string;
     town?: string;
     country?: string;
-    country_code?: string
+    country_code?: string;
   };
 };
-export type PlacesAPIResponseDetails = {
+
+export type PlacesAPIResponse = {
+  next_page_token: string | null;
+  results: PlacesAPIResult[];
+  status: string;
+};
+
+export type PlacesAPIResult = {
+  business_status: string;
   geometry: {
     location: LatLngLiteral;
   };
@@ -28,15 +36,13 @@ export type PlaceDetailsType = {
   owner: string;
   place_id: string;
   name: string;
-  photos: {
-    photo_url: string;
-  }[];
+  photos: string[];
   location: {
     vicinity: string;
     province: string;
     town: {
-      city: string;
-      municipality: string;
+      city?: string;
+      municipality?: string;
     };
     barangay: string;
     street: string;
@@ -54,7 +60,9 @@ export type PlaceDetailsType = {
     average: number;
   };
   rooms: number;
-  distance?: number;
-  database?: string;
+  distance: number;
+  database: "GOOGLE" | "DB";
   date_created?: Date;
 };
+
+export type Lodging_Type = "BOARDING_HOUSE";

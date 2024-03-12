@@ -1,33 +1,35 @@
-import { Bars3Icon, UserCircleIcon } from "@heroicons/react/24/solid";
-import MenuDropDown from "./dropdown/MenuDropDown";
-import { useEffect, useRef, useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UserIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
+import MenuContent from "./menu-content/MenuContent";
+import { useSession } from "next-auth/react";
 export default function Menu() {
-  const [active, setActive] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    function clickHandler(e: MouseEvent) {
-      if (!ref.current?.contains(e.target as Node)) {
-        setActive(false);
-      }
-    }
-    document.addEventListener("click", clickHandler);
-    return () => {
-      document.removeEventListener("click", clickHandler);
-    };
-  }, []);
+  const { data, status } = useSession();
   return (
-    <>
-      <div
-        className={`hidden sm:flex items-center rounded-full p-1 cursor-pointer hover:shadow-lg sm:space-x-2 sm:border-2 ${
-          active ? "shadow-lg" : ""
-        }`}
-        ref={ref}
-        onClick={() => setActive((prev) => !prev)}
-      >
-        <Bars3Icon className="h-5 md:h-6 sm:inline-flex" />
-        <UserCircleIcon className={`h-[2rem] md:h-[2.3rem]`} />
-      </div>
-      {active ? <MenuDropDown /> : null}
-    </>
+    <DropdownMenu>
+      <DropdownMenuTrigger className="rounded-full">
+        <Avatar className="h-9 w-auto">
+          {status === "authenticated" && (
+            <AvatarImage
+              src={data?.user!.profile_pic!}
+              fetchPriority="high"
+              alt={data!.user.first_name.charAt(0).toUpperCase()}
+            />
+          )}
+          <AvatarFallback className="group-hover:bg-background font-bold w-9 h-9">
+            {status === "authenticated" ? (
+              data.user.first_name.charAt(0).toUpperCase()
+            ) : (
+              <UserIcon className="h-1/2 w-auto stroke-1" />
+            )}
+          </AvatarFallback>
+        </Avatar>
+      </DropdownMenuTrigger>
+      <MenuContent />
+    </DropdownMenu>
   );
 }
