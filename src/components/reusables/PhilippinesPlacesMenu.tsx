@@ -10,7 +10,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { motion } from "framer-motion";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { cn } from "@/lib/utils";
-import { PSGCResponseType } from "../layout/header/view/search/preference/Location";
+import { PSGCResponseType } from "../page/search/Location";
 import { Button } from "../ui/button";
 
 type PhilippinesPlaces = {
@@ -90,7 +90,7 @@ export default function PhilippinesPlacesMenu({
   }, [place_selected]);
 
   return (
-    <section className="space-x-5 flex w-fit h-fit">
+    <section className="space-x-5 flex w-fit h-fit self-center justify-self-center">
       <DropdownMenu
         onOpenChange={(e) => setOpen((prev) => ({ ...prev, province: e }))}
       >
@@ -179,7 +179,12 @@ export default function PhilippinesPlacesMenu({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <ScrollArea className="h-[50svh]">
+          <ScrollArea
+            className={cn(
+              "h-[50svh]",
+              list.municipality_city.length < 20 && "h-fit"
+            )}
+          >
             <DropdownMenuGroup>
               {list.municipality_city?.map((municipality_city) => (
                 <DropdownMenuItem
@@ -242,7 +247,9 @@ export default function PhilippinesPlacesMenu({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <ScrollArea className="h-[50svh]">
+          <ScrollArea
+            className={cn("h-[50svh]", list.barangay.length < 20 && "h-fit")}
+          >
             <DropdownMenuGroup>
               {list.barangay.map((barangay) => (
                 <DropdownMenuItem

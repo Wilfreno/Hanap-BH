@@ -64,3 +64,5 @@ export type PlaceDetailsType = {
   database: "GOOGLE" | "DB";
   date_created?: Date;
 };
+
+export type Lodging_Type = "BOARDING_HOUSE";

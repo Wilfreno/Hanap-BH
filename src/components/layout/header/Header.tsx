@@ -3,7 +3,7 @@ import Logo from "./logo/Logo";
 import AddPlace from "./add-place/AddPlace";
 import Menu from "./menu/Menu";
 import { useEffect, useState } from "react";
-import HeaderNavigation from "./view/HeaderNavigation";
+import HeaderNavigation from "./HeaderNavigation";
 
 export default function Header() {
   const [width, setwidth] = useState<number>();

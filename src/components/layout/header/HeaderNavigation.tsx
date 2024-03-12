@@ -25,14 +25,14 @@ export default function HeaderNavigation() {
       icon: <MagnifyingGlassIcon className="h-6 w-auto stroke-[2px]" />,
     },
     {
-      name: "Browse",
-      link: "browse",
-      icon: <GlobeAltIcon className="h-6 w-auto stroke-[2px]" />,
-    },
-    {
       name: "Map",
       link: "map",
       icon: <MapIcon className="h-6 w-auto stroke-[2px]" />,
+    },
+    {
+      name: "Browse",
+      link: "browse",
+      icon: <GlobeAltIcon className="h-6 w-auto stroke-[2px]" />,
     },
   ];
 
