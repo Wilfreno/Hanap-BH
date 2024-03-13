@@ -14,7 +14,7 @@ export default function useNearbyPlacesAPI() {
 
   useEffect(() => {
     async function getNearbyPlace() {
-      const response = await http_request.get("/api/nearby-places", {
+      const response = await http_request.get("/api/place/nearby", {
         lat: String(coordinates?.lat),
         lng: String(coordinates?.lng),
       });
@@ -46,7 +46,7 @@ export default function useNearbyPlacesAPI() {
     next: async () => {
       const session_token = sessionStorage.getItem("next_page_token");
       if (session_token) {
-        const response = await http_request.get("/api/nearby-places/next", {
+        const response = await http_request.get("/api/place/nearby/next", {
           page_token: session_token,
           lat: coordinates?.lat,
           lng: coordinates?.lng,

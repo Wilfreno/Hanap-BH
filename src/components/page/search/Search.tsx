@@ -1,10 +1,6 @@
+"use client";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import {
   AdjustmentsHorizontalIcon,
@@ -18,9 +14,11 @@ import { cn } from "@/lib/utils";
 export default function Search({
   search,
   setSearch,
+  disable,
 }: {
-  search: SearchType;
-  setSearch: Dispatch<SetStateAction<SearchType | undefined>>;
+  disable?: boolean;
+  search?: SearchType;
+  setSearch?: Dispatch<SetStateAction<SearchType | undefined>>;
 }) {
   return (
     <form
@@ -31,22 +29,23 @@ export default function Search({
     >
       <div className="flex items-center">
         <Input
+          disabled={disable}
           placeholder="Search"
           className="border-none focus-visible:ring-0"
-          value={search.autocomplete}
+          value={search?.autocomplete ? search.autocomplete : ""}
           onChange={(e) =>
-            setSearch((prev) => ({ ...prev!, autocomplete: e.target.value }))
+            setSearch!((prev) => ({ ...prev!, autocomplete: e.target.value }))
           }
         />
         <MagnifyingGlassIcon
           className={cn(
             "h-5 w-auto text-muted",
-            search.autocomplete && "text-primary"
+            search?.autocomplete && "text-primary"
           )}
         />
       </div>
       <Dialog>
-        <DialogTrigger asChild>
+        <DialogTrigger asChild disabled={disable}>
           <Button
             size="icon"
             variant="ghost"
@@ -56,10 +55,7 @@ export default function Search({
           </Button>
         </DialogTrigger>
         <DialogContent className="space-y-5 grid">
-          <PlaceFilterMenu />
-          <DialogClose className="justify-self-end">
-            <Button className="font-semibold">search</Button>
-          </DialogClose>
+          <PlaceFilterMenu search={search!} setSearch={setSearch!} />
         </DialogContent>
       </Dialog>
     </form>

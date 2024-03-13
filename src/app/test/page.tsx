@@ -1,7 +1,5 @@
 "use client";
-import MainFecthMobileSkeleton from "@/components/loading-skeleton/MainFetchMobileSkeleton";
 import PhilippinesPlacesMenu from "@/components/reusables/PhilippinesPlacesMenu";
-import { useState } from "react";
 
 export default function page() {
   return (

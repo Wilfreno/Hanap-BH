@@ -12,7 +12,6 @@ export default function layout({
   children: React.ReactNode;
   auth: React.ReactNode;
 }) {
-  const api_key: string = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!;
   const path_name = usePathname();
   const { setTheme, systemTheme } = useTheme();
   useEffect(() => {
@@ -22,13 +21,10 @@ export default function layout({
   return (
     <>
       <Header />
-      <main className="grid">
-        
-        {children}
-        {path_name.startsWith("/login") || path_name.startsWith("/signup")
-          ? auth
-          : null}
-      </main>
+      {children}
+      {path_name.startsWith("/login") || path_name.startsWith("/signup")
+        ? auth
+        : null}
     </>
   );
 }

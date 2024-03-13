@@ -10,19 +10,12 @@ import { ScrollArea } from "../ui/scroll-area";
 import { motion } from "framer-motion";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { cn } from "@/lib/utils";
-import { PSGCResponseType } from "../page/search/Location";
 import { Button } from "../ui/button";
-
-type PhilippinesPlaces = {
-  province: PSGCResponseType;
-  municipality_city: PSGCResponseType;
-  barangay: PSGCResponseType;
-};
-type PhilippinesPlacesList = {
-  province: PSGCResponseType[];
-  municipality_city: PSGCResponseType[];
-  barangay: PSGCResponseType[];
-};
+import {
+  PSGCResponseType,
+  PhilippinesPlaces,
+  PhilippinesPlacesList,
+} from "@/lib/types/psgc-types";
 
 export default function PhilippinesPlacesMenu({
   selected,
@@ -113,7 +106,7 @@ export default function PhilippinesPlacesMenu({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <ScrollArea className="h-[50svh]">
+          <ScrollArea className="h-[40svh]">
             <DropdownMenuGroup>
               {list.province
                 ?.sort((a, b) => a.name.localeCompare(b.name))
@@ -181,7 +174,7 @@ export default function PhilippinesPlacesMenu({
         <DropdownMenuContent>
           <ScrollArea
             className={cn(
-              "h-[50svh]",
+              "h-[40svh]",
               list.municipality_city.length < 20 && "h-fit"
             )}
           >
@@ -248,7 +241,7 @@ export default function PhilippinesPlacesMenu({
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <ScrollArea
-            className={cn("h-[50svh]", list.barangay.length < 20 && "h-fit")}
+            className={cn("h-[40svh]", list.barangay.length < 20 && "h-fit")}
           >
             <DropdownMenuGroup>
               {list.barangay.map((barangay) => (

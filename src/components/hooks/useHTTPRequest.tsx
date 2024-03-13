@@ -19,7 +19,7 @@ export default function useHTTPRequest() {
     }
   }, [error]);
   return {
-    post: async (url: string, body: Record<string, unknown>) => {
+    post: async <T,>(url: string, body: T) => {
       const api_response = await fetch(url, {
         method: "POST",
         headers: {
@@ -27,21 +27,23 @@ export default function useHTTPRequest() {
         },
         body: JSON.stringify(body),
       });
+
       const r = await api_response.json();
+
       if (r.status !== "OK") {
         setError({
           status: r.status,
           message: r.message,
         });
-        return;
       }
+
       return r;
     },
     get: async <T,>(url: string, search_params?: T) => {
       let request = url;
       if (search_params)
         request += "?" + new URLSearchParams(search_params).toString();
-
+      console.log(request);
       const api_response = await fetch(request);
       const r = await api_response.json();
       if (r.status !== "OK") {
@@ -49,7 +51,6 @@ export default function useHTTPRequest() {
           status: r.status,
           message: r.message,
         });
-        return r;
       }
       return r;
     },

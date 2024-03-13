@@ -9,6 +9,8 @@ import { PlaceDetailsType } from "@/lib/types/place-detail";
 import useHTTPRequest from "@/components/hooks/useHTTPRequest";
 import { HTTPStatusResponseType } from "@/lib/types/http-request-response";
 import NoSearchResults from "@/components/reusables/NoSearchResults";
+import { PhilippinesPlaces } from "@/lib/types/psgc-types";
+import { autocomplete } from "@/lib/actions/search";
 
 export type PSGCResponseType = {
   name: string;
@@ -18,11 +20,7 @@ export type PSGCResponseType = {
 export type SearchType = {
   autocomplete: string;
   lodging_type: string;
-  location: {
-    province: PSGCResponseType;
-    municipality_cities: PSGCResponseType;
-    barangay: PSGCResponseType;
-  };
+  location: PhilippinesPlaces;
 };
 export default function page() {
   const { nearby_place } = useNearbyPlacesAPI();
@@ -34,11 +32,20 @@ export default function page() {
 
   useEffect(() => {
     async function getData() {
-      const r = await http_request.get("/api/autocomplete", debounced_value!);
-      setResult(r.data);
+      if (
+        !debounced_value?.autocomplete &&
+        !debounced_value?.location &&
+        !debounced_value?.lodging_type
+      ) {
+        setResult(undefined);
+        return;
+      }
+
+      const r = await http_request.post("/api/place/search", debounced_value!);
+      if (r.status === "OK") setResult(r.data);
       setStatus(r.status);
     }
-    if (search) getData;
+    if (search) getData();
   }, [debounced_value]);
   return (
     <>

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import NoImageSvg from "../svg/NoImageSvg";
 
-export default function PlaceImage({ photo }: { photo: string }) {
+export default function PlaceImage({ photo }: { photo?: string }) {
   const api_key = process.env.NEXT_PUBLIC_GOOGLE_PLACE_API_KEY;
   if (!api_key) throw new Error("NEXT_PUBLIC_GOOGLE_PLACE_API_KEY is missing");
 

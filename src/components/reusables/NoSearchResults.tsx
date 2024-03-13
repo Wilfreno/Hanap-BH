@@ -2,8 +2,8 @@ import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function NoSearchResults() {
   return (
-    <section className="grid self-center justify-self-center space-y-2">
-      <XMarkIcon className="h-[2rem] stroke-[4] justify-self-center" />
+    <section className="grid self-center justify-self-center space-y-2 grow">
+      <XMarkIcon className="h-[5rem] stroke-[4] justify-self-center self-center" />
       <div>
         <p className="text-lg text-center">
           Seems like there's no lodgings nearby your location
@@ -14,7 +14,6 @@ export default function NoSearchResults() {
           <span className="underline font-bold">browse</span> for places
         </p>
       </div>
-      <nav></nav>
     </section>
   );
 }

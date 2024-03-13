@@ -25,9 +25,7 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
-        className={`${poppins.className} grid grid-rows-[auto_1fr] h-[100dvh]`}
-      >
+      <body className={`${poppins.className} flex flex-col h-[100dvh]`}>
         <Provider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             {children}
