@@ -25,7 +25,7 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${poppins.className} bg-secondary`}>
+      <body className={`${poppins.className} flex flex-col h-[100dvh]`}>
         <Provider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             {children}

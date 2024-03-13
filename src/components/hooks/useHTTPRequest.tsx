@@ -19,38 +19,43 @@ export default function useHTTPRequest() {
     }
   }, [error]);
   return {
-    post: async (route: string, body: Record<string, unknown>) => {
-      const api_response = await fetch(route, {
+    post: async <T,>(url: string, body: T) => {
+      const api_response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
         body: JSON.stringify(body),
       });
+
+      const r = await api_response.json();
+
+      if (r.status !== "OK") {
+        setError({
+          status: r.status,
+          message: r.message,
+        });
+      }
+
+      return r;
+    },
+    get: async <T,>(url: string, search_params?: T) => {
+      let request = url;
+      if (search_params)
+        request += "?" + new URLSearchParams(search_params).toString();
+      console.log(request);
+      const api_response = await fetch(request);
       const r = await api_response.json();
       if (r.status !== "OK") {
         setError({
           status: r.status,
           message: r.message,
         });
-        return;
       }
       return r;
     },
-    get: async (route: string) => {
-      const api_response = await fetch(route);
-      const r = await api_response.json();
-      if (r.status !== "OK") {
-        setError({
-          status: r.status,
-          message: r.message,
-        });
-        return;
-      }
-      return r;
-    },
-    delete: async (route: string, body: Record<string, unknown>) => {
-      const api_response = await fetch(route, {
+    delete: async (url: string, body: Record<string, unknown>) => {
+      const api_response = await fetch(url, {
         method: "DELETE",
         headers: {
           "Content-type": "application/json",

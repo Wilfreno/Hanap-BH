@@ -1,7 +1,7 @@
 import Image from "next/image";
 import NoImageSvg from "../svg/NoImageSvg";
 
-export default function PlaceImage({ photo }: { photo: string }) {
+export default function PlaceImage({ photo }: { photo?: string }) {
   const api_key = process.env.NEXT_PUBLIC_GOOGLE_PLACE_API_KEY;
   if (!api_key) throw new Error("NEXT_PUBLIC_GOOGLE_PLACE_API_KEY is missing");
 
@@ -15,7 +15,7 @@ export default function PlaceImage({ photo }: { photo: string }) {
       className="aspect-square w-full h-auto rounded-t-lg"
     />
   ) : (
-    <span className="aspect-square w-full h-full flex items-center rounded-t-sm sm:rounded-t-lg justify-center fill-secondary dark:fill-none">
+    <span className="aspect-square w-full h-full flex items-center bg-primary-foreground rounded-t-sm sm:rounded-t-lg justify-center fill-secondary dark:fill-none">
       <NoImageSvg className="w-1/3 h-full stroke-muted-foreground" />
     </span>
   );

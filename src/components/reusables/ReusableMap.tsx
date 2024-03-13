@@ -3,6 +3,7 @@ import { LatLngLiteral } from "@/lib/types/google-maps-api-type";
 import { Map, useApiIsLoaded } from "@vis.gl/react-google-maps";
 import React, { useEffect, useState } from "react";
 import useCurrentPosition from "../hooks/useCurrentPosition";
+import { cn } from "@/lib/utils";
 
 export default function ReusableMap({
   children,
@@ -37,12 +38,14 @@ export default function ReusableMap({
         mapTypeControl={false}
         fullscreenControl={false}
         clickableIcons={false}
-        gestureHandling={"greedy"}
         disableDefaultUI={true}
         mapId="671365b374be82"
         zoom={zoom}
         center={coordinates}
-        className={`grow h-full ${style} outline-none`}
+        className={cn(
+          "w-full h-full outline-none focus-visible:ring-0 focus-visible:border-none cursor-pointer",
+          style
+        )}
         onClick={(e) => setSelected(e.detail.latLng!)}
       >
         {children}

@@ -1,6 +1,10 @@
 "use client";
-import MainFecthMobileSkeleton from "@/components/loading-skeleton/MainFetchMobileSkeleton";
+import PhilippinesPlacesMenu from "@/components/reusables/PhilippinesPlacesMenu";
 
 export default function page() {
-  return <MainFecthMobileSkeleton />;
+  return (
+    <section className="h-screen w-screen flex justify-center bg-background">
+      <PhilippinesPlacesMenu selected={(e) => console.log(e)} />
+    </section>
+  );
 }
