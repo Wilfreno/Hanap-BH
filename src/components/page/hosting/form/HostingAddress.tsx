@@ -9,20 +9,12 @@ import {
   MapPinIcon,
 } from "@heroicons/react/24/outline";
 import { APIProvider, AdvancedMarker } from "@vis.gl/react-google-maps";
-import dynamic from "next/dynamic";
 import { useState } from "react";
 import UserMarker from "../../map/markers/UserMarker";
 import { cn } from "@/lib/utils";
-import Spinner from "@/components/svg/loading/Spinner";
 import { LatLngLiteral } from "@/lib/types/google-maps-api-type";
 import { usePathname, useRouter } from "next/navigation";
-
-const Map = dynamic(() => import("@/components/reusables/ReusableMap"), {
-  ssr: false,
-  loading: () => (
-    <Spinner className="h-20 w-auto fill-primary mx-auto my-auto" />
-  ),
-});
+import Map from "@/components/reusables/Map";
 
 export default function HostingAddress() {
   const api_key: string = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!;
@@ -61,7 +53,7 @@ export default function HostingAddress() {
         <APIProvider apiKey={api_key}>
           <Map
             zoom={18}
-            style="rounded-lg cursor-pointer"
+            className="rounded-lg cursor-pointer"
             selected_location={(e) => setCoordinates(e)}
           >
             {coordinates ? (
