@@ -5,16 +5,18 @@ import React, { useEffect, useState } from "react";
 import useCurrentPosition from "../hooks/useCurrentPosition";
 import { cn } from "@/lib/utils";
 
-export default function ReusableMap({
+export default function GoogleMap({
   children,
-  style,
+  className,
   selected_location,
   zoom,
+  center,
 }: {
   children?: React.ReactNode;
-  style?: string;
+  className?: string;
   selected_location?: (s: LatLngLiteral) => void;
   zoom: number;
+  center?: LatLngLiteral;
 }) {
   const [selected, setSelected] = useState<LatLngLiteral>();
   const { coordinates } = useCurrentPosition();
@@ -40,11 +42,12 @@ export default function ReusableMap({
         clickableIcons={false}
         disableDefaultUI={true}
         mapId="671365b374be82"
+        gestureHandling="greedy"
         zoom={zoom}
-        center={coordinates}
+        center={center ? center : coordinates}
         className={cn(
-          "w-full h-full outline-none focus-visible:ring-0 focus-visible:border-none cursor-pointer",
-          style
+          "w-full h-full outline-none focus-visible:ring-0 focus-visible:border-none",
+          className
         )}
         onClick={(e) => setSelected(e.detail.latLng!)}
       >

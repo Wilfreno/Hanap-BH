@@ -14,7 +14,7 @@ export default function FavoriteMark({
     <i {...props}>
       <HeartIcon
         className={cn(
-          "h-full w-auto hover:fill-red-500 text-muted-foreground hover:text-red-500 hover:scale-125",
+          "h-full w-auto hover:fill-red-500 text-muted-foreground hover:text-red-500 hover:scale-125 cursor-pointer",
           clicked && "fill-red-500 text-red-500"
         )}
         onClick={() => setClicked((prev) => !prev)}

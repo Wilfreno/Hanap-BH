@@ -49,13 +49,13 @@ export default function HeaderNavigation() {
   }, []);
   return (
     <nav className="flex items-center sm:justify-center sm:grow sm:mx-auto sm:space-x-10 font-semibold text-base text-muted-foreground sm:pl-16">
-      {view_list.map((l, index) => (
+      {view_list.map((l) => (
         <Link
           key={l.name}
           href={`/${l.link}`}
           as={`/${l.link}`}
           className={cn(
-            "grow sm:grow-0 flex items-center justify-center p-2 py-3 sm:p-0 sm:py-0",
+            "grow sm:grow-0 flex items-center justify-center p-2 py-3 sm:p-0 sm:py-0 hover:text-primary",
             path_name.endsWith(l.link) && "text-primary"
           )}
         >

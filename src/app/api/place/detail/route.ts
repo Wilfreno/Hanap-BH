@@ -12,6 +12,7 @@ export async function GET(request: NextRequest) {
   const place_id = search_params.get("place_id");
   const lat = search_params.get("lat");
   const lng = search_params.get("lng");
+
   try {
     let data: PlaceDetailsType;
     await dbConnect();
@@ -26,9 +27,12 @@ export async function GET(request: NextRequest) {
         places_api_data.status === "NOT_FOUND" ||
         places_api_data.status === "ZERO_RESULTS"
       )
-        return NextResponse.json({ message: "not found" }, { status: 404 });
+        return NextResponse.json(
+          { status: "NO_RESULT", message: "not found" },
+          { status: 404 }
+        );
 
-      const result: PlacesAPIResult = places_api_data.results;
+      const result: PlacesAPIResult = places_api_data.result;
       data = {
         owner: "",
         place_id: result.place_id,
@@ -66,8 +70,15 @@ export async function GET(request: NextRequest) {
         database: "GOOGLE",
       };
     }
-    return NextResponse.json({ data }, { status: 200 });
+    return NextResponse.json(
+      { status: "OK", message: "request successful", data },
+      { status: 200 }
+    );
   } catch (error) {
-    return NextResponse.json({ message: error }, { status: 500 });
+    console.log(error);
+    return NextResponse.json(
+      { status: "INTERNAL_SERVER_ERROR", message: error },
+      { status: 500 }
+    );
   }
 }

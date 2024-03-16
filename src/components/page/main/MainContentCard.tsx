@@ -11,7 +11,7 @@ export default function MainContentCard({
 }) {
   return (
     <>
-      <div className="relative overflow-hidden w-full h-auto rounded-t-sm sm:rounded-lg">
+      <div className="aspect-square relative overflow-hidden w-full h-auto rounded-t-sm sm:rounded-lg">
         <PlaceImage photo={place.photos ? place.photos[0] : undefined} />
 
         <GoogleMark place={place} />

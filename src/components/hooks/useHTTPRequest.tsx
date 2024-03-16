@@ -43,7 +43,6 @@ export default function useHTTPRequest() {
       let request = url;
       if (search_params)
         request += "?" + new URLSearchParams(search_params).toString();
-      console.log(request);
       const api_response = await fetch(request);
       const r = await api_response.json();
       if (r.status !== "OK") {

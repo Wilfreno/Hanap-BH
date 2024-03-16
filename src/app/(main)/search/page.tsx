@@ -10,7 +10,7 @@ import useHTTPRequest from "@/components/hooks/useHTTPRequest";
 import { HTTPStatusResponseType } from "@/lib/types/http-request-response";
 import NoSearchResults from "@/components/reusables/NoSearchResults";
 import { PhilippinesPlaces } from "@/lib/types/psgc-types";
-import { autocomplete } from "@/lib/actions/search";
+import useCurrentPosition from "@/components/hooks/useCurrentPosition";
 
 export type PSGCResponseType = {
   name: string;
@@ -24,12 +24,12 @@ export type SearchType = {
 };
 export default function page() {
   const { nearby_place } = useNearbyPlacesAPI();
+  const { coordinates } = useCurrentPosition();
   const http_request = useHTTPRequest();
   const [result, setResult] = useState<PlaceDetailsType[]>();
   const [status, setStatus] = useState<HTTPStatusResponseType>();
   const [search, setSearch] = useState<SearchType>();
   const debounced_value = useInputDebounce(search);
-
   useEffect(() => {
     async function getData() {
       if (
@@ -41,7 +41,12 @@ export default function page() {
         return;
       }
 
-      const r = await http_request.post("/api/place/search", debounced_value!);
+      const r = await http_request.post("/api/place/search", {
+        ...debounced_value!,
+        lat: coordinates?.lat,
+        lng: coordinates?.lng,
+      });
+
       if (r.status === "OK") setResult(r.data);
       setStatus(r.status);
     }

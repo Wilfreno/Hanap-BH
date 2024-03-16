@@ -28,17 +28,14 @@ export default function useNearbyPlacesAPI() {
     const nearby_place_session = sessionStorage.getItem("nearby_place");
     const next_page_token_session = sessionStorage.getItem("next_page_token");
     setNextPageToken(next_page_token_session!);
-    if (
-      coordinates &&
-      !nearby_place_session &&
-      nearby_place_session !== "null"
-    ) {
-      getNearbyPlace();
-    }
-    if (nearby_place_session && nearby_place_session !== "null")
-      setData(JSON.parse(nearby_place_session));
-  }, [coordinates]);
 
+    if (nearby_place_session && nearby_place_session !== "null") {
+      setData(JSON.parse(nearby_place_session));
+      return;
+    }
+
+    if (coordinates) getNearbyPlace();
+  }, [coordinates]);
   return {
     next_page_token,
     status,

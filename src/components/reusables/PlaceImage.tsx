@@ -1,7 +1,16 @@
 import Image from "next/image";
 import NoImageSvg from "../svg/NoImageSvg";
+import { cn } from "@/lib/utils";
 
-export default function PlaceImage({ photo }: { photo?: string }) {
+export default function PlaceImage({
+  photo,
+  className,
+  asBackground,
+}: {
+  asBackground?: boolean;
+  className?: string;
+  photo?: string;
+}) {
   const api_key = process.env.NEXT_PUBLIC_GOOGLE_PLACE_API_KEY;
   if (!api_key) throw new Error("NEXT_PUBLIC_GOOGLE_PLACE_API_KEY is missing");
 
@@ -12,11 +21,17 @@ export default function PlaceImage({ photo }: { photo?: string }) {
       height={1080}
       width={1920}
       priority
-      className="aspect-square w-full h-auto rounded-t-lg"
+      className={cn("w-full h-full", className)}
     />
   ) : (
-    <span className="aspect-square w-full h-full flex items-center bg-primary-foreground rounded-t-sm sm:rounded-t-lg justify-center fill-secondary dark:fill-none">
-      <NoImageSvg className="w-1/3 h-full stroke-muted-foreground" />
-    </span>
+    !asBackground && (
+      <div
+        className={cn(
+          "w-full h-full flex items-center bg-primary-foreground justify-center fill-secondary dark:fill-none"
+        )}
+      >
+        <NoImageSvg className="w-1/3 h-full stroke-muted-foreground" />
+      </div>
+    )
   );
 }

@@ -61,7 +61,6 @@ export async function POST(request: Request) {
         `https://maps.googleapis.com/maps/api/place/details/json?key=${api_key}&place_id=${predictions[i].place_id}`
       );
       const { result } = await places_api_response.json();
-      console.log(result);
 
       data.push({
         owner: "",
