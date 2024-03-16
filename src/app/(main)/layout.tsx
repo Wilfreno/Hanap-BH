@@ -1,8 +1,8 @@
 "use client";
 import Header from "@/components/layout/header/Header";
-import { APIProvider } from "@vis.gl/react-google-maps";
+import { useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 export default function layout({
@@ -14,9 +14,18 @@ export default function layout({
 }) {
   const path_name = usePathname();
   const { setTheme, systemTheme } = useTheme();
+  const searchParams = useSearchParams();
+  const cb = searchParams.get("callbackUrl");
+  const router = useRouter();
+
   useEffect(() => {
     setTheme(systemTheme!);
   }, []);
+
+  if (cb)
+    router.replace(
+      `${path_name}?redirect=${cb.replace(window.location.origin + "/", "")}`
+    );
 
   return (
     <>

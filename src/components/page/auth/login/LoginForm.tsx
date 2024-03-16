@@ -9,8 +9,9 @@ import { toast } from "sonner";
 
 export default function LoginForm() {
   const router = useRouter();
-  const search_params = useSearchParams();
-  const url_callback = search_params.get("url_callback");
+  const searchParams = useSearchParams();
+  const url_callback = searchParams.get("url_callback");
+  const redirect = searchParams.get("redirect");
   const [open, setOpen] = useState(false);
   const [form_data, setFormData] = useState({ email: "", password: "" });
   const [submit, setSubmit] = useState(false);
@@ -20,10 +21,13 @@ export default function LoginForm() {
       onSubmit={async (e) => {
         e.preventDefault();
         setSubmit(true);
+
         const r = await signIn("credentials", {
           ...form_data,
-          redirect: false,
+          callbackUrl: `/${redirect}`!,
+          redirect: !!redirect,
         });
+
         if (r?.error) {
           toast("Sign in Error", {
             description: r.error,
@@ -43,6 +47,11 @@ export default function LoginForm() {
           },
         });
         setSubmit(false);
+
+        if (redirect) {
+          router.push(`/${redirect}`);
+          return;
+        }
 
         router.push(!url_callback ? "/" : `${url_callback}`);
       }}

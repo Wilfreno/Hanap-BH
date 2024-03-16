@@ -72,6 +72,8 @@ export async function POST(request: Request) {
       { status: 200 }
     );
   } catch (error) {
+    if (process.env.NODE_ENV === "development") throw error;
+
     return NextResponse.json(
       { status: "INTERNAL_SERVER_ERROR", message: error },
       { status: 500 }
@@ -91,6 +93,7 @@ export async function DELETE(request: Request) {
       { status: 200 }
     );
   } catch (error) {
+    if (process.env.NODE_ENV === "development") throw error;
     return NextResponse.json(
       { status: "INTERNAL_SERVER_ERROR", message: error },
       { status: 500 }

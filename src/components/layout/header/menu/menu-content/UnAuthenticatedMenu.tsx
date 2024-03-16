@@ -1,7 +1,4 @@
-import {
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -29,7 +26,6 @@ export default function UnAuthenticatedMenu() {
           <p>Sign up</p>
         </DropdownMenuItem>
       </Link>
-      
     </>
   );
 }

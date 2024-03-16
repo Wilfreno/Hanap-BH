@@ -68,6 +68,10 @@ const handler = nextAuth({
   session: {
     strategy: "jwt",
   },
+  pages: {
+    signIn: "/login",
+    error: "/",
+  },
   secret,
   debug: process.env.NODE_ENV === "development",
   callbacks: {
@@ -99,7 +103,6 @@ const handler = nextAuth({
     },
     async jwt({ token, profile, user }) {
       if (profile) {
-        console.log("PROFILE:::", profile);
         await dbConnect();
         const db_user = await User.findOne({ "auth.email": profile.email });
         const db_user_json = db_user.toJSON();

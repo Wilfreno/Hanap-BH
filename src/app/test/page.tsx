@@ -1,10 +1,10 @@
 "use client";
-import PhilippinesPlacesMenu from "@/components/reusables/PhilippinesPlacesMenu";
-import CarIcon from "@/components/svg/CarIcon";
+import FetchingSkeleton from "@/components/loading-skeleton/FetchingSkeleton";
 
 export default function page() {
   return (
     <section className="h-screen w-screen flex justify-center bg-background">
+      <FetchingSkeleton />
     </section>
   );
 }

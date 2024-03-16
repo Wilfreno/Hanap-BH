@@ -3,7 +3,6 @@ import GoogleLogin from "./GoogleLogin";
 import { AnimatePresence, Variants, motion } from "framer-motion";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useTheme } from "next-themes";
 import {
   Card,
   CardContent,
@@ -14,10 +13,12 @@ import {
 import LoginForm from "./LoginForm";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+
 export default function Login() {
   const router = useRouter();
   const search_params = useSearchParams();
   const url_callback = search_params.get("url_callback");
+
   const animation: Variants = {
     hidden: {
       y: "100vh",
@@ -51,7 +52,7 @@ export default function Login() {
             <XMarkIcon
               className="absolute h-7 right-2 top-0 cursor-pointer"
               onClick={() =>
-                router.push(!url_callback ? "/" : `/${url_callback}`)
+                router.push(url_callback ? `/${url_callback}` : "/")
               }
             />
           </CardHeader>
@@ -67,7 +68,9 @@ export default function Login() {
           <CardFooter className="w-full flex justify-center">
             <Button className="w-full" variant="secondary">
               <Link
-                href={`/signup?url_callback=/${url_callback?.replace("/", "")}`}
+                href={`/signup?url_callback=${
+                  url_callback ? url_callback : ""
+                }`}
                 className="font-bold"
               >
                 Create new account

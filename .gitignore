@@ -39,3 +39,7 @@ next-env.d.ts
 
 /react-email-dev/.react-email
 /react-email-dev/node_modules
+
+# test page 
+
+/src/app/test

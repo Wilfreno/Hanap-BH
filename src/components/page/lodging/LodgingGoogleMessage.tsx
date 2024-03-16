@@ -1,4 +1,5 @@
 import { PlaceDetailsType } from "@/lib/types/place-detail";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 export default function LodgingGoogleMessage({
@@ -6,6 +7,7 @@ export default function LodgingGoogleMessage({
 }: {
   place: PlaceDetailsType;
 }) {
+  const { update } = useSession();
   return (
     <section className="text-center space-y-2 p-5 text-muted-foreground">
       <p className="">
@@ -15,11 +17,11 @@ export default function LodgingGoogleMessage({
       <p>
         If the place is yours, you can register it{" "}
         <Link
-          href={`/hosting/${place.place_id}`}
+          href={`/hosting/claim/${place.place_id}`}
           className="text-primary font-bold"
         >
           here
-        </Link>{" "}
+        </Link>
       </p>
     </section>
   );

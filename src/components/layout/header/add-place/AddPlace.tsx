@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { PlusIcon } from "@heroicons/react/24/solid";
 export default function AddPlace() {
   return (
     <Link

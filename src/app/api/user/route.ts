@@ -14,7 +14,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           status: "CONFLICT",
-          message: "The email already used ",
+          message: "Eemail already used ",
         },
         { status: 409 }
       );
