@@ -4,6 +4,8 @@ import { toast } from "sonner";
 
 export default function useCurrentPosition() {
   const [coordinates, setCoordinates] = useState<LatLngLiteral>();
+  const [position_status_error, setPositionStatusError] =
+    useState<GeolocationPositionError>();
 
   useEffect(() => {
     if (!navigator.geolocation.getCurrentPosition) {
@@ -21,13 +23,10 @@ export default function useCurrentPosition() {
         });
       },
       (error) => {
-        toast(error.code, {
-          description: error.message,
-          action: { label: "ok", onClick: () => null },
-        });
+        setPositionStatusError(error);
       }
     );
   }, []);
 
-  return { coordinates };
+  return { coordinates, position_status_error };
 }

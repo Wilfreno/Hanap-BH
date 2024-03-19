@@ -17,7 +17,7 @@ export default function PlaceImage({
   return photo ? (
     <Image
       src={`https://maps.googleapis.com/maps/api/place/photo?key=${api_key}&photo_reference=${photo}&maxheight=1080&maxwidth=1920`}
-      alt={photo}
+      alt=""
       height={1080}
       width={1920}
       priority

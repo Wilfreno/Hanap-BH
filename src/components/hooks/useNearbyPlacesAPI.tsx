@@ -9,7 +9,7 @@ export default function useNearbyPlacesAPI() {
   const [data, setData] = useState<PlaceDetailsType[]>([]);
   const [status, setStatus] = useState<HTTPStatusResponseType>();
   const [next_page_token, setNextPageToken] = useState<string>();
-  const { coordinates } = useCurrentPosition();
+  const { coordinates, position_status_error } = useCurrentPosition();
   const http_request = useHTTPRequest();
 
   useEffect(() => {
@@ -37,6 +37,7 @@ export default function useNearbyPlacesAPI() {
     if (coordinates) getNearbyPlace();
   }, [coordinates]);
   return {
+    position_status_error,
     next_page_token,
     status,
     nearby_place: data,

@@ -18,7 +18,7 @@ export default function Header() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
   return (
-    <header className="sticky top-0 w-full bg-background sm:px-10 sm:py-2 z-40">
+    <header className="w-full bg-background sm:px-10 sm:py-2 z-40">
       {width! < 640 ? (
         <div className="w-full">
           <div className="w-full flex items-center justify-between p-3 px-5">

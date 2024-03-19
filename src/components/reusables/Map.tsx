@@ -8,6 +8,7 @@ const GoogleMap = dynamic(() => import("@/components/reusables/GoogleMap"), {
     <Spinner className="w-[10vw] h-auto self-center justify-self-center fill-primary" />
   ),
 });
+
 export default function Map({
   className,
   zoom,
@@ -23,7 +24,6 @@ export default function Map({
 }) {
   const api_key: string = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!;
   if (!api_key) throw new Error("NEXT_PUBLIC_GOOGLE_MAPS_API_KEY missing");
-
   return (
     <APIProvider apiKey={api_key}>
       <GoogleMap

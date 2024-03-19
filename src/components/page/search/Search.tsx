@@ -7,19 +7,60 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import PlaceFilterMenu from "@/components/reusables/PlaceFilterMenu";
-import { SearchType } from "@/app/(main)/search/page";
-import { Dispatch, SetStateAction } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import useCurrentPosition from "@/components/hooks/useCurrentPosition";
+import useHTTPRequest from "@/components/hooks/useHTTPRequest";
+import useInputDebounce from "@/components/hooks/useInputDebounce";
+import { PhilippinesPlaces } from "@/lib/types/psgc-types";
+import { HTTPStatusResponseType } from "@/lib/types/http-request-response";
+import { PlaceDetailsType } from "@/lib/types/place-detail";
+
+export type SearchType = {
+  autocomplete: string;
+  lodging_type: string;
+  location: PhilippinesPlaces;
+};
 
 export default function Search({
-  search,
-  setSearch,
   disable,
+  result,
+  status,
 }: {
   disable?: boolean;
-  search?: SearchType;
-  setSearch?: Dispatch<SetStateAction<SearchType | undefined>>;
+  result?: (r: PlaceDetailsType[]) => void;
+  status?: (s: HTTPStatusResponseType) => void;
 }) {
+  const { coordinates } = useCurrentPosition();
+  const http_request = useHTTPRequest();
+
+  const [search, setSearch] = useState<SearchType>();
+  const debounced_value = useInputDebounce(search);
+
+  useEffect(() => {
+    async function getData() {
+      if (
+        !debounced_value?.autocomplete &&
+        !debounced_value?.location &&
+        !debounced_value?.lodging_type
+      ) {
+        if (result) result(undefined!);
+        return;
+      }
+
+      const r = await http_request.post("/api/place/search", {
+        ...debounced_value!,
+        lat: coordinates?.lat,
+        lng: coordinates?.lng,
+      });
+
+      if (r.status === "OK" && result) result!(r.data);
+      if (status) status(r.status);
+    }
+
+    if (search) getData();
+  }, [debounced_value]);
+
   return (
     <form
       autoFocus={false}
