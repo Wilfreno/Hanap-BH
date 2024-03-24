@@ -1,4 +1,3 @@
-import { SearchType } from "@/app/(main)/search/page";
 import { Button } from "../ui/button";
 import { DialogClose } from "../ui/dialog";
 import { Label } from "../ui/label";
@@ -8,6 +7,7 @@ import PhilippinesPlacesMenu from "./PhilippinesPlacesMenu";
 import { Dispatch, SetStateAction, useState } from "react";
 import { PhilippinesPlaces } from "@/lib/types/psgc-types";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { SearchType } from "../page/search/Search";
 
 export default function PlaceFilterMenu({
   search,
