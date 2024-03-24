@@ -1,11 +1,9 @@
-import { PlaceDetailType } from "@/lib/types/google-place-api-types";
 import mongoose, { Schema } from "mongoose";
 
-const PlaceSchema: Schema = new Schema<PlaceDetailType>({
+const PlaceSchema: Schema = new Schema({
   owner: {
-    type: Schema.Types.ObjectId,
-    default: undefined,
-    ref: "User",
+    type: String,
+    required: true,
   },
   place_id: {
     type: String,
@@ -15,6 +13,34 @@ const PlaceSchema: Schema = new Schema<PlaceDetailType>({
     type: String,
     required: true,
   },
+  photos: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
+  specifics: {
+    gender_restriction: {
+      type: String,
+      required: true,
+    },
+    benefits: [
+      {
+        type: String,
+        required: true,
+      },
+    ],
+    description: {
+      type: String,
+      default: "",
+    },
+  },
+  rooms: [
+    {
+      type: String,
+      default: "",
+    },
+  ],
   location: {
     vicinity: {
       type: String,
@@ -24,15 +50,17 @@ const PlaceSchema: Schema = new Schema<PlaceDetailType>({
       type: String,
       default: "",
     },
-    municipality: {
-      type: String,
-      default: "",
+    town: {
+      city: {
+        type: String,
+        default: "",
+      },
+      municipality: {
+        type: String,
+        default: "",
+      },
     },
     barangay: {
-      type: String,
-      default: "",
-    },
-    street: {
       type: String,
       default: "",
     },
@@ -58,8 +86,14 @@ const PlaceSchema: Schema = new Schema<PlaceDetailType>({
     },
   },
   rating: {
-    type: Number,
-    required: true,
+    count: {
+      type: Number,
+      default: 0,
+    },
+    average: {
+      type: Number,
+      default: 0,
+    },
   },
   contact: {
     social_media: {
@@ -85,7 +119,7 @@ const PlaceSchema: Schema = new Schema<PlaceDetailType>({
   },
   database: {
     type: String,
-    required: true,
+    default: "MONGODB",
   },
   date_created: {
     type: Date,

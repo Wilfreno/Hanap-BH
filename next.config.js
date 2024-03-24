@@ -9,17 +9,13 @@ const nextConfig = {
         port: "",
         pathname: "/maps/api/place/**",
       },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
-  async redirects() {
-    return [
-      {
-        source: "/",
-        destination: "/dashboard",
-        permanent: false,
-      },
-    ];
-  },
 };
-
 module.exports = nextConfig;

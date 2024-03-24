@@ -1,61 +1,79 @@
 import { UserDetailType } from "@/lib/types/user-detail-type";
 import mongoose, { Schema } from "mongoose";
 
-const userSchema: Schema = new Schema<UserDetailType>({
+const userSchema: Schema = new Schema({
   first_name: {
     type: String,
-    required: true,
+    default: "",
   },
   middle_name: {
     type: String,
-    default: undefined,
+    default: "",
   },
   last_name: {
     type: String,
-    required: true,
+    default: "",
   },
   place_owned: [
     {
-      type: Schema.Types.ObjectId,
-      ref: "PlaceDetail",
-      default: undefined,
+      type: String,
+      default: "",
     },
   ],
   gender: {
     type: String,
     default: undefined,
   },
-  birth_date: {
-    type: Date,
-    required: true,
+  birthday: {
+    year: {
+      type: Number,
+    },
+    month: {
+      type: String,
+      default: "",
+    },
+    day: {
+      type: Number,
+    },
   },
   profile_pic: {
     type: String,
-    default: "/img/pfp/default.png",
+    default: "",
   },
   contact: {
     social_media: {
-      facebok: {
+      facebook: {
         type: String,
-        default: undefined,
+        default: "",
       },
       twitter: {
         type: String,
-        default: undefined,
+        default: "",
       },
       instagram: {
         type: String,
-        default: undefined,
+        default: "",
       },
     },
-    phone_number: {
-      type: String,
-      default: undefined,
-    },
+    phone_number: [
+      {
+        type: String,
+        default: "",
+      },
+    ],
   },
-  password: {
-    type: String,
-    required: true,
+  auth: {
+    name: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+    },
   },
   date_created: {
     type: Date,

@@ -34,4 +34,12 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# /src/lib/google-api
+
+# react-email-dev
+
+/react-email-dev/.react-email
+/react-email-dev/node_modules
+
+# test page 
+
+/src/app/test

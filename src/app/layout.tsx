@@ -1,12 +1,15 @@
-import React from "react";
+import React, { Suspense } from "react";
 import "./globals.css";
-import { Poppins } from "next/font/google";
-import ReduxProvider from "../lib/redux/ReduxProvider";
-import Script from "next/script";
+import { Manrope } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
+import Provider from "@/components/page/auth/Provider";
 
-const poppins = Poppins({
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { Toaster } from "@/components/ui/sonner";
+const poppins = Manrope({
   subsets: ["latin"],
-  weight: ["300", "400", "900"],
+  weight: ["300", "400", "700"],
 });
 
 export const metadata = {
@@ -15,17 +18,25 @@ export const metadata = {
     "A website utilizing google maps api to locate your nearby boadring houses",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
- 
   return (
-    <ReduxProvider>
-      <html lang="en">
-        <body className={poppins.className}>{children}</body>
-      </html>
-    </ReduxProvider>
+    <html lang="en">
+      <body
+        className={`${poppins.className} grid grid-rows-[auto_1fr] h-[100dvh]`}
+      >
+        <Provider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            {children}
+            <Toaster />
+          </ThemeProvider>
+          <Analytics />
+          <SpeedInsights />
+        </Provider>
+      </body>
+    </html>
   );
 }

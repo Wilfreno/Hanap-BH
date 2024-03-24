@@ -1,4 +1,4 @@
-import { RoomDetailType } from "@/lib/types/room-detail-type";
+import { RoomDetailType } from "@/lib/types/google-place-api/room-types";
 import mongoose, { Schema } from "mongoose";
 
 const roomSchema: Schema = new Schema<RoomDetailType>({
@@ -6,31 +6,24 @@ const roomSchema: Schema = new Schema<RoomDetailType>({
     type: String,
     required: true,
   },
-  options: {
+  specifics: {
+    benifits: {
+      type: String,
+      required: true,
+    },
     price: {
       type: Number,
       required: true,
-
     },
     occupant_count: {
       type: Number,
-      required: true 
-    }
+      required: true,
+    },
   },
-  photo: [
+  photos: [
     {
-      height: {
-        type: Number,
-        required: true
-      },
-      width: {
-        type: Number,
-        required: true
-      },
-      photo_reference: {
-        type: Number,
-        required: true
-      }
+      type: Number,
+      required: true,
     },
   ],
 });

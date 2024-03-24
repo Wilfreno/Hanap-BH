@@ -1,27 +1,40 @@
-import { Avatar, IconButton } from "@mui/material";
-import styles from "./Header.module.css";
-import Link from "next/link";
-import SearchFilter from "./searchFilter/searchFilter";
-import Logo from "./Logo";
-import Notification from "./Notification";
-import UserLogin from "./UserLogin";
-import { usePathname } from "next/navigation";
+"use client";
+import Logo from "./logo/Logo";
+import AddPlace from "./add-place/AddPlace";
+import Menu from "./menu/Menu";
+import { useEffect, useState } from "react";
+import HeaderNavigation from "./HeaderNavigation";
 
 export default function Header() {
-  const pathname = usePathname();
+  const [width, setwidth] = useState<number>();
+  useEffect(() => {
+    setwidth(window.innerWidth);
 
+    function handleResize() {
+      setwidth(window.innerWidth);
+    }
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   return (
-    <section
-      className={`${styles.container} ${
-        pathname.startsWith("/map") ? styles.map : styles.default
-      }`}
-    >
-      <Logo />
-      <SearchFilter />
-      <div className={styles.icons}>
-        <Notification />
-        <UserLogin />
-      </div>
-    </section>
+    <header className="w-full bg-background sm:px-10 sm:py-2 z-40">
+      {width! < 640 ? (
+        <div className="w-full">
+          <div className="w-full flex items-center justify-between p-3 px-5">
+            <Logo />
+            <Menu />
+          </div>
+          <HeaderNavigation />
+        </div>
+      ) : (
+        <div className="flex items-center my-auto">
+          <Logo />
+          <HeaderNavigation />
+          <AddPlace />
+          <Menu />
+        </div>
+      )}
+    </header>
   );
 }
