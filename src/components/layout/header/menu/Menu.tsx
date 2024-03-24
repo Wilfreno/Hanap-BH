@@ -4,9 +4,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UserIcon } from "@heroicons/react/24/outline";
-import Image from "next/image";
 import MenuContent from "./menu-content/MenuContent";
 import { useSession } from "next-auth/react";
+
+
+
 export default function Menu() {
   const { data, status } = useSession();
   return (

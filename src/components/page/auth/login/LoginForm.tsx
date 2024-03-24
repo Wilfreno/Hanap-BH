@@ -10,11 +10,12 @@ import { toast } from "sonner";
 export default function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const exit = searchParams.get("exit");
   const url_callback = searchParams.get("url_callback");
-  const redirect = searchParams.get("redirect");
   const [open, setOpen] = useState(false);
   const [form_data, setFormData] = useState({ email: "", password: "" });
   const [submit, setSubmit] = useState(false);
+
   return (
     <form
       className="space-y-5"
@@ -24,8 +25,8 @@ export default function LoginForm() {
 
         const r = await signIn("credentials", {
           ...form_data,
-          callbackUrl: `/${redirect}`!,
-          redirect: !!redirect,
+          callbackUrl: url_callback!,
+          redirect: !!url_callback,
         });
 
         if (r?.error) {
@@ -39,6 +40,7 @@ export default function LoginForm() {
           setSubmit(false);
           return;
         }
+
         toast("Log in successful", {
           description: "",
           action: {
@@ -48,12 +50,12 @@ export default function LoginForm() {
         });
         setSubmit(false);
 
-        if (redirect) {
-          router.push(`/${redirect}`);
+        if (url_callback) {
+          router.push(url_callback);
           return;
         }
 
-        router.push(!url_callback ? "/" : `${url_callback}`);
+        router.push(!exit ? "/" : exit);
       }}
     >
       <Input

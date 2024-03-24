@@ -1,5 +1,12 @@
 "use client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { SignUpFormDataType } from "@/lib/types/auth-types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -13,6 +20,7 @@ import useHTTPRequest from "@/components/hooks/useHTTPRequest";
 import SignUPGender from "./SignUPGender";
 import { toast } from "sonner";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 
 export default function SignUp() {
   const [form_data, setFormData] = useState<SignUpFormDataType>({
@@ -32,8 +40,8 @@ export default function SignUp() {
 
   const router = useRouter();
   const searchParams = useSearchParams();
+  const exit = searchParams.get("exit");
   const url_callback = searchParams.get("url_callback");
-  const redirect = searchParams.get("redirect");
 
   const http_request = useHTTPRequest();
 
@@ -43,7 +51,7 @@ export default function SignUp() {
         <CardTitle className="text-xl flex justify-center">Sign up</CardTitle>
         <XMarkIcon
           className="absolute h-7 right-2 top-0 cursor-pointer"
-          onClick={() => router.push(!url_callback ? "/" : `${url_callback}`)}
+          onClick={() => router.push(!exit ? "/" : `${exit}`)}
         />
       </CardHeader>
       <CardContent className="py-10">
@@ -55,16 +63,14 @@ export default function SignUp() {
             const r = await http_request.post("/api/user", form_data);
 
             if (r.status === "CONFLICT")
-              router.push(
-                `/login?url_callback=${url_callback ? url_callback : ""}`
-              );
+              router.push(`/login?exit=${exit ? exit : ""}`);
             if (r.status !== "OK") return;
 
             const sign_in_promise = await signIn("credentials", {
               email: form_data.email,
               password: form_data.password,
-              callbackUrl: `/${redirect}`,
-              redirect: !!redirect,
+              callbackUrl: `/${url_callback}`,
+              url_callback: !!url_callback,
             });
 
             if (sign_in_promise?.error) {
@@ -75,9 +81,7 @@ export default function SignUp() {
                   onClick: () => null,
                 },
               });
-              router.push(
-                `/signup?url_callback=${url_callback ? url_callback : ""}`
-              );
+              router.push(`/login?exit=${exit ? exit : ""}`);
               return;
             }
 
@@ -88,11 +92,11 @@ export default function SignUp() {
                 onClick: () => null,
               },
             });
-            if (redirect) {
-              router.push(`/${redirect}`);
+            if (url_callback) {
+              router.push(url_callback);
               return;
             }
-            router.push(url_callback ? url_callback : "");
+            router.push(exit ? exit : "");
           }}
         >
           <SignUpName form_data={form_data} setFormData={setFormData} />
@@ -103,6 +107,17 @@ export default function SignUp() {
           <SignUpOtp form_data={form_data} setFormData={setFormData} />
         </form>
       </CardContent>
+      <CardFooter className="w-full flex justify-center">
+        Alread have an account ?
+        <Link
+          href={exit ? `/login?exit=${exit}` : "/"}
+          as={exit ? `/login?exit=${exit}` : "/"}
+          prefetch
+          className="font-bold mx-3"
+        >
+          Login
+        </Link>
+      </CardFooter>
     </Card>
   );
 }

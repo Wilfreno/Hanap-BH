@@ -1,7 +1,6 @@
 import { MapPinIcon } from "@heroicons/react/24/solid";
 import { AdvancedMarker, useMap } from "@vis.gl/react-google-maps";
 import { useEffect, useState } from "react";
-import Directions from "../Directions";
 import { LatLngLiteral } from "@/lib/types/google-maps-api-type";
 import { toast } from "sonner";
 import useCurrentPosition from "@/components/hooks/useCurrentPosition";
@@ -44,7 +43,6 @@ export default function UserMarker() {
           <MapPinIcon className="h-7 w-auto animate-bounce dark:text-background" />
         </span>
       </AdvancedMarker>
-      {/* <Directions /> */}
     </>
   );
 }

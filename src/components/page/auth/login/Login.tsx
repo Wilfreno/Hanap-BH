@@ -17,8 +17,7 @@ import { Button } from "@/components/ui/button";
 export default function Login() {
   const router = useRouter();
   const search_params = useSearchParams();
-  const url_callback = search_params.get("url_callback");
-
+  const exit = search_params.get("exit");
   const animation: Variants = {
     hidden: {
       y: "100vh",
@@ -34,6 +33,7 @@ export default function Login() {
       opacity: 0,
     },
   };
+
   return (
     <AnimatePresence>
       <motion.div
@@ -51,9 +51,7 @@ export default function Login() {
             </CardTitle>
             <XMarkIcon
               className="absolute h-7 right-2 top-0 cursor-pointer"
-              onClick={() =>
-                router.push(url_callback ? `/${url_callback}` : "/")
-              }
+              onClick={() => router.replace(exit ? `${exit}` : "/")}
             />
           </CardHeader>
           <CardContent className="space-y-5 py-10">
@@ -68,9 +66,9 @@ export default function Login() {
           <CardFooter className="w-full flex justify-center">
             <Button className="w-full" variant="secondary">
               <Link
-                href={`/signup?url_callback=${
-                  url_callback ? url_callback : ""
-                }`}
+                href={exit ? `/signup?exit=${exit}` : "/"}
+                as={exit ? `/signup?exit=${exit}` : "/"}
+                prefetch
                 className="font-bold"
               >
                 Create new account
