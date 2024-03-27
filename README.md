@@ -8,54 +8,77 @@
 <p/>
 
  
- <p>
- "Welcome to 𝙃𝙖𝙣𝙖𝙥-𝘽𝙃, your go-to portal for hassle-free accommodation hunting in the Philippines! 🏠✨ Discover the perfect boarding houses and lodgings near you. Our user-friendly interface and advanced mapping technology make finding your ideal home away from home a breeze. Explore the vibrant map, pinpointing the closest options tailored to your preferences. Say goodbye to the stress of searching — 𝙃𝙖𝙣𝙖𝙥-𝘽𝙃 is here to make your stay as comfortable as can be. Start your journey to a convenient and cozy living experience today!"
- <p/>  
-  
-<hr/>
+<p align="center" >A complete Full-Stack Web Application that help filipinos locate the nearest lodgings on their vicinity </p>
 
-# Table of Contents
-- [Summary](#summary)
-- [Features](#features)
-- [Technologies Used](#technologies-used)
-- [Project Structure](#project-structure)
-<hr/>
+---
 
-# Summary
- **Hanap-BH is a Web app that displays your nearby boarding houses and lodgings based on your location in the Philippines.**
+# The Motivation
+
+<p>In the Philippines it is common for students to enroll to a School / University / College far away from home to get a better quality of education. As a result, it is a struggle for students to find a decent home for them to rest. With <b>Hanap-BH</b> finding the right lodging for them is a breeze.<p/>
 
 
+# Website
+<https://hanapbh.vercel.app/>
 
 # Features
-  𝗜𝗻𝘁𝗲𝗿𝗮𝗰𝘁𝗶𝘃𝗲 𝗠𝗮𝗽
-
-  
-  `` Hanap-BH uses the GOOGLE's Maps JavaScript API to display an interactive map on your screen ``
-
-  
-   𝗥𝗲𝘀𝗽𝗼𝗻𝘀𝗶𝘃𝗲 𝗗𝗲𝘀𝗶𝗴𝗻
-
-   
-  `` Hanap-BH utilizes tailwind-css to make the website responsive to any screen size ``
-
-  
-   𝗨𝘀𝗲𝗿 𝗔𝘂𝘁𝗵𝗲𝗻𝘁𝗶𝗰𝗮𝘁𝗶𝗼𝗻
-
-   
-  `` Users are not inclined to authenticate before accessing the website, but if the user is to claim or add a place, they need to authenticate themselves to proceed ``
-
-  
-  𝗦𝗲𝗮𝗿𝗰𝗵 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻𝗮𝗹𝗶𝘁𝘆
-
-  
-  `` You have a specific place in your mind? feel free to use the search bar! ``
-
-<hr/>
+ * Utilizes the [Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript) to Have an interactive map to locate the nearest lodging / boarding houses
+* Utilizes the [Google Places API](https://developers.google.com/maps/documentation/places/web-service/overview) to provide reliable data
+* Users can log-in to add or claim a new or existing lodging / boarding house
+* Has a simple responsive UI for better user experience
 
 
-# Technologies used
+# Contributions
 
-## Tools, Libraries & Framework used
+Before contributing you should be aware that the project is using services from [Google Maps Platform](https://developers.google.com/maps) and you may need payment credentials to create API key and access services. But don't worry, you're not going to pay anything; Google has a free 200$ service every month.
+
+
+## Clone the repo 
+```bash 
+git clone https://github.com/Wilfreno/Hanap-BH.git
+```
+
+## Install Dependencies
+
+```bash
+npm install 
+```
+
+## Set Environment Variable
+
+```env
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY = 
+NEXT_PUBLIC_GOOGLE_PLACE_API_KEY = 
+
+MONGODB_PASS = 
+MONGODB_USER =
+MONGODB_HOSTNAME =
+MONGODB_URI = mongodb+srv://$MONGODB_USER:$MONGODB_PASS@$MONGODB_HOSTNAME/Hanap-BH?retryWrites=true&w=majority
+
+GOOGLE_CLIENT_ID = 
+GOOGLE_CLIENT_SECRET = 
+
+NEXTAUTH_URL = http://127.0.0.1:3000
+NEXTAUTH_SECRET = 
+    
+GMAIL_APP_2FAUTH_PASS = 
+
+REACT_EDITOR = code
+
+```
+
+
+### For:
+
+
+#### [Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript) & [Google Places API](https://developers.google.com/maps/documentation/places/web-service/overview)
+   * NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+   * NEXT_PUBLIC_GOOGLE_PLACE_API_KEY
+
+first [Set up your Google Cloud project](https://developers.google.com/maps/documentation/places/web-service/cloud-setup#console), 
+then Create your [Googpe Maps Credentials](https://console.cloud.google.com/apis/credentials?authuser=1&project=hanap-bh)
+ 
+ 
+ ## Tools, Libraries & Framework used
 
 - [Next.js](https://nextjs.org/)
  - [React.js](https://react.dev/)
