@@ -1,3 +1,4 @@
+import { Lodging, Photo, Room } from "@prisma/client";
 import { LatLngLiteral } from "./google-maps-api-type";
 import { PhotosType } from "./photos-type";
 import { UserDetailType } from "./user-detail-type";
@@ -32,38 +33,11 @@ export type PlacesAPIResult = {
   vicinity: string;
 };
 
-export type PlaceDetailsType = {
-  owner: string;
-  place_id: string;
-  name: string;
-  photos: string[];
-  location: {
-    vicinity: string;
-    province: string;
-    town: {
-      city?: string;
-      municipality?: string;
-    };
-    barangay: string;
-    street: string;
-    coordinates: {
-      lat: number;
-      lng: number;
-    };
-  };
-  price: {
-    max?: number;
-    min?: number;
-  };
-  rating: {
-    count: number;
-    average: number;
-  };
-  lodging_type?: Lodging_Type;
-  rooms: number;
+export interface LodgingDetailsType extends Lodging {
   distance: number;
   database: "GOOGLE" | "MONGODB";
-  date_created?: Date;
-};
+  photos?: Photo[]
+  rooms?: Room[]
+}
 
 export type Lodging_Type = "BOARDING_HOUSE";

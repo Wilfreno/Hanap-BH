@@ -1,16 +1,16 @@
 import { LatLngLiteral } from "../types/google-maps-api-type";
 
 export default function getDistance(
-  location_1: LatLngLiteral,
-  location_2: LatLngLiteral
+  location_1: LatLngLiteral  ,
+  location_2: LatLngLiteral 
 ) {
   const earth_radius_km = 6371;
 
-  const lat_radiance_1 = (Math.PI / 180) * location_1.lat;
-  const lat_radiance_2 = (Math.PI / 180) * location_2.lat;
+  const lat_radiance_1 = (Math.PI / 180) * Number(location_1.lat);
+  const lat_radiance_2 = (Math.PI / 180) * Number(location_2.lat);
 
-  const lat_distance = ((location_2.lat - location_1.lat) * Math.PI) / 180;
-  const lng_distance = ((location_2.lng - location_1.lng) * Math.PI) / 180;
+  const lat_distance = ((Number(location_2.lat) - Number(location_1.lat)) * Math.PI) / 180;
+  const lng_distance = ((Number(location_2.lng) - Number(location_1.lng)) * Math.PI) / 180;
 
   const a =
     Math.pow(Math.sin(lat_distance / 2), 2) +

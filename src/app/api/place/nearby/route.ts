@@ -1,18 +1,15 @@
-import dbConnect from "@/lib/database/connect";
-import PlaceDetail from "@/lib/database/model/Place-detail";
 import getDistance from "@/lib/google-api/distance";
 
-
 import {
+  LodgingDetailsType,
   NominatimReverseAPiResponse,
-  PlaceDetailsType,
   PlacesAPIResponse,
   PlacesAPIResult,
 } from "@/lib/types/place-detail";
+import { Lodging, PrismaClient } from "@prisma/client";
+import { Decimal } from "@prisma/client/runtime/library";
 import { type NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-
-
 
 export async function GET(request: NextRequest) {
   const api_key = process.env.NEXT_PUBLIC_GOOGLE_PLACE_API_KEY;
@@ -56,34 +53,24 @@ export async function GET(request: NextRequest) {
 
     const resturctured_places_api_data = places_api_data.results
       .filter((place) => place.business_status === "OPERATIONAL")
-      .map((details: PlacesAPIResult) => {
-        const data: PlaceDetailsType = {
-          owner: "",
-          place_id: details.place_id,
+      .map(
+        (details: PlacesAPIResult): LodgingDetailsType => ({
+          id: details.place_id,
+          owner_id: "",
           name: details.name,
-          photos: details.photos
-            ? details.photos.map((photo) => photo.photo_reference)
-            : [],
-          location: {
-            vicinity: details.vicinity,
-            province: "",
-            town: {
-              city: nominatim_data.address.city || "",
-              municipality: nominatim_data.address.town || "",
-            },
-            barangay: "",
-            street: "",
-            coordinates: details.geometry.location,
-          },
-          price: {
-            max: undefined,
-            min: undefined,
-          },
-          rating: {
-            count: details.user_ratings_total,
-            average: details.rating,
-          },
-          rooms: 0,
+          lodging_type: "",
+          address: details.vicinity,
+          latitude: details.geometry.location.lat as Decimal,
+          longitude: details.geometry.location.lng as Decimal,
+          house_rules: "",
+          photos: details.photos.map((photo) => ({
+            id: photo.photo_reference,
+            photo_url: photo?.photo_reference,
+            width: 0,
+            heigth: 0,
+            user_id: null,
+            date_created: null
+          })),
           distance: getDistance(
             { lat: Number(lat), lng: Number(lng) },
             {
@@ -92,32 +79,31 @@ export async function GET(request: NextRequest) {
             }
           ),
           database: "GOOGLE",
-        };
-        return data;
-      });
+          date_created: null
+        })
+      );
 
-    await dbConnect();
+    const prisma = new PrismaClient();
     let db_data;
     if (nominatim_data.address.city) {
-      db_data = await PlaceDetail.find({
-        "location.town.city": nominatim_data.address.city,
+      db_data = await prisma.lodging.findMany({
+        where: { address: { contains: nominatim_data.address.city } },
       });
     } else if (nominatim_data.address.town) {
-      db_data = await PlaceDetail.find({
-        "location.town.": nominatim_data.address.town,
+      db_data = await prisma.lodging.findMany({
+        where: { address: { contains: nominatim_data.address.town } },
       });
     }
 
-    if (db_data!?.length! > 0) {
-      const filtered_DB_data = db_data?.map((detail) => detail.toJSON());
-      const restructured_DB_data = filtered_DB_data?.map((details) => {
+    if (db_data!.length > 0) {
+      const restructured_DB_data = db_data?.map((details) => {
         return {
           ...details,
           distance: getDistance(
             { lat: Number(lat), lng: Number(lng) },
             {
-              lng: details.geometry.location.lng,
-              lat: details.geometry.location.lat,
+              lng: details?.longitude,
+              lat: details?.latitude,
             }
           ),
           database: "MONGODB",

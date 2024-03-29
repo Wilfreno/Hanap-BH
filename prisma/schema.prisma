@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @unique @default(uuid())
+  email        String    @unique
+  password     String?
+  first_name   String
+  middle_name  String?
+  last_name    String
+  birthday     DateTime?
+  gender       String?
+  lodgings     Lodging[]
+  rated        Rating[]
+  OTP          OTP[]
+  Contacts     Contact?
+  photo        Photo?
+  date_created DateTime? @default(now())
+}
+
+model Lodging {
+  id           String    @id @unique @default(uuid())
+  owner        User      @relation(fields: [owner_id], references: [id])
+  owner_id     String
+  name         String
+  lodging_type String
+  address      String
+  latitude     Decimal
+  longitude    Decimal
+  rooms        Room[]
+  ratings      Rating[]
+  house_rules  String
+  date_created DateTime? @default(now())
+}
+
+model Room {
+  id             String    @id @unique @default(uuid())
+  lodging        Lodging   @relation(fields: [lodging_id], references: [id])
+  lodging_id     String
+  price          Int
+  occupant_count Int
+  specification  String
+  date_created   DateTime? @default(now())
+}
+
+model Rating {
+  id           String    @id @unique @default(uuid())
+  value        Decimal
+  user         User      @relation(fields: [user_id], references: [id])
+  user_id      String
+  lodging      Lodging   @relation(fields: [lodging_id], references: [id])
+  lodging_id   String
+  date_created DateTime? @default(now())
+}
+
+model Photo {
+  id           String    @id @unique @default(uuid())
+  photo_url    String
+  width        Int?
+  heigth       Int?
+  User         User?     @relation(fields: [user_id], references: [id])
+  user_id      String?   @unique
+  date_created DateTime? @default(now())
+}
+
+model OTP {
+  id           String    @id @unique @default(uuid())
+  user         User      @relation(fields: [user_id], references: [id])
+  user_id      String
+  value        String
+  date_created DateTime? @default(now())
+}
+
+model Contact {
+  id           String @id @unique @default(uuid())
+  user         User   @relation(fields: [user_id], references: [id])
+  user_id      String @unique
+  phone_number String
+  facebook     String
+  instagram    String
+  twitter_x    String
+}

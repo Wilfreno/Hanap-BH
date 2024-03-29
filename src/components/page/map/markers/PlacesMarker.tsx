@@ -1,7 +1,6 @@
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTrigger,
 } from "@/components/ui/sheet";
@@ -10,7 +9,6 @@ import { HomeIcon } from "@heroicons/react/24/outline";
 import { AdvancedMarker, useMap } from "@vis.gl/react-google-maps";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-import MainContentCard from "../../main/MainContentCard";
 import PlaceImage from "@/components/reusables/PlaceImage";
 import LodgingGoogleMessage from "../../lodging/LodgingGoogleMessage";
 
@@ -22,9 +20,9 @@ export default function PlacesMarker({
   const map = useMap();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const place_id = searchParams.get("place_id");
 
   useEffect(() => {
-    const place_id = searchParams.get("place_id");
     const filter = places.filter((p) => p.place_id === place_id);
     if (filter.length > 0) map?.panTo(filter[0].location.coordinates);
   }, [places]);
@@ -39,11 +37,14 @@ export default function PlacesMarker({
             lng: place.location.coordinates.lng,
           }}
           onClick={() => {
-            router.push(`/map?place_id=${place.place_id}`);
+            router.replace(`/map?place_id=${place.place_id}`);
             map?.panTo(place.location.coordinates);
           }}
         >
-          <Sheet>
+          <Sheet
+            onOpenChange={() => router.replace("/map")}
+            open={place_id === place.place_id}
+          >
             <SheetTrigger>
               <HomeIcon className="h-8 hover:scale-125 dark:text-background" />
             </SheetTrigger>
