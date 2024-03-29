@@ -23,8 +23,10 @@ export default function SignUpOTPContent({
   setFormData,
   submit_btn_ref,
   code,
+  setCode,
   setSubmit,
 }: {
+  setCode: Dispatch<SetStateAction<string | undefined>>;
   code: string;
   setSubmit: Dispatch<SetStateAction<boolean>>;
   submit_btn_ref: RefObject<HTMLButtonElement>;
@@ -45,7 +47,20 @@ export default function SignUpOTPContent({
   ];
 
   useEffect(() => {
+    async function getOTP() {
+      const r = await http_request.post("/api/email/otp", {
+        email: form_data.email,
+      });
+      setCode(r.data);
+      toast("Verification code sent", {
+        description: r.message,
+      });
+      await http_request.delete("/api/email/otp", {
+        email: form_data.email,
+      });
+    }
     if (allow_resend) {
+      getOTP();
       const id = setInterval(() => {
         if (resend_time > 0) {
           setResendTime((prev) => prev - 1);
@@ -75,7 +90,7 @@ export default function SignUpOTPContent({
             <Input
               key={index}
               ref={input_refs[index]}
-              className="aspect-square h-auto w-12 text-lg font-bold uppercase"
+              className="aspect-square h-auto w-12 text-lg font-bold uppercase text-center"
               maxLength={1}
               value={form_data.otp.charAt(index)}
               onChange={(e) => {

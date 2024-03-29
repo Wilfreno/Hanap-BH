@@ -11,8 +11,8 @@ export default function MainContentCard({
 }) {
   return (
     <>
-      <div className="relative overflow-hidden w-full h-auto rounded-t-sm sm:rounded-lg">
-        <PlaceImage photo={place.photos[0]} />
+      <div className="aspect-square relative overflow-hidden w-full h-auto rounded-t-sm sm:rounded-lg">
+        <PlaceImage photo={place.photos ? place.photos[0] : undefined} />
 
         <GoogleMark place={place} />
         <FavoriteMark
@@ -29,7 +29,7 @@ export default function MainContentCard({
           <div className="flex items-center space-x-2 mx-auto font-bold text-muted-foreground">
             <p>
               ₱
-              {place.price.min ? (
+              {place.price?.min ? (
                 place.price.min
               ) : (
                 <span className=" font-normal mx-1">- -</span>
@@ -38,7 +38,7 @@ export default function MainContentCard({
             <p>~</p>
             <p>
               ₱
-              {place.price.max ? (
+              {place.price?.max ? (
                 place.price.max
               ) : (
                 <span className=" font-normal mx-1">- -</span>
@@ -47,9 +47,9 @@ export default function MainContentCard({
           </div>
         </div>
         <div className="flex items-center justify-between text-xs font-semibold p-1">
-          <p>{place?.distance.toFixed(2)} Km away</p>
+          <p>{place?.distance?.toFixed(2)} Km away</p>
           <p className="flex items-center space-x-2">
-            {place?.rating.average}
+            {place?.rating?.average!}
             <StarIcon className="h-4 w-auto" />
           </p>
         </div>

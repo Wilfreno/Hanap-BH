@@ -1,109 +1,89 @@
-import useNearbyPlacesAPI from "@/components/hooks/useNearbyPlacesAPI";
+import useCurrentPosition from "@/components/hooks/useCurrentPosition";
+import UserLocationIcon from "@/components/svg/UserLocationIcon";
 import { LatLngLiteral } from "@/lib/types/google-maps-api-type";
-import { PlaceDetailsType } from "@/lib/types/place-detail";
+import { HomeIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import {
-  useDirectionsService,
+  AdvancedMarker,
   useMap,
   useMapsLibrary,
 } from "@vis.gl/react-google-maps";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
+import { useTheme } from "next-themes";
+import React, { useEffect, useState } from "react";
 
-export default function Directions() {
-  const { directionsService, directionsRenderer } = useDirectionsService();
-  const { nearby_place } = useNearbyPlacesAPI();
-  const search_params = useSearchParams();
-  const place_id = search_params.get("place_id");
+export default function Directions({
+  destination,
+  route_index = 0,
+  getRoutes,
+  children,
+}: {
+  getRoutes: (r: google.maps.DirectionsRoute[]) => void;
+  route_index?: number;
+  destination: LatLngLiteral;
+  children?: React.ReactNode;
+}) {
+  const { coordinates } = useCurrentPosition();
+  const { theme } = useTheme();
   const map = useMap();
-  const [user_location, setUserLocation] = useState<LatLngLiteral>();
-  const [place_location, setPlaceLocation] = useState<LatLngLiteral>();
+  const routes_library = useMapsLibrary("routes");
 
-  async function renderRoute() {
-    const response = await directionsService?.route({
-      origin: { lat: user_location?.lat!, lng: user_location?.lng! },
-      destination: { lat: 0, lng: 0 },
+  const [direction_service, setDirectionsService] =
+    useState<google.maps.DirectionsService>();
+  const [direction_renderer, setDirectionsRenderer] =
+    useState<google.maps.DirectionsRenderer>();
+  const [routes, setRoutes] = useState<google.maps.DirectionsRoute[]>();
+
+  async function getDirection() {
+    const direction_service_response = await direction_service?.route({
+      origin: coordinates!,
+      destination,
       travelMode: google.maps.TravelMode.DRIVING,
+      provideRouteAlternatives: true,
     });
-    directionsRenderer?.setDirections(response!);
+
+    direction_renderer?.setDirections(direction_service_response!);
+    setRoutes(direction_service_response?.routes);
   }
-  async function getPlace() {}
 
   useEffect(() => {
-    if (place_id) {
-      const place_fil = nearby_place.filter(
-        (place) => place_id === place.place_id
-      )[0];
-      if (place_fil) {
-        setPlaceLocation(place_fil.location.coordinates);
-        return;
-      }
-      getPlace();
-    }
-  }, [place_id]);
-  //   const search_params = useSearchParams();
-  //   const place_id = search_params.get("place_id");
-  //   const map = useMap();
-  //   const routes_library = useMapsLibrary("routes");
+    if (routes) getRoutes(routes);
+  }, [routes]);
 
-  //   const [route, setRoute] = useState<google.maps.DirectionsRoute[]>();
-  //   const [user_position, setUserPosition] = useState<LatLngLiteral>();
+  useEffect(() => {
+    if (!map || !routes_library) return;
 
-  //   async function initializeServices() {
-  //     if (!routes_library || !map) return;
+    setDirectionsService(new routes_library.DirectionsService());
+    setDirectionsRenderer(
+      new routes_library.DirectionsRenderer({
+        map,
+        suppressMarkers: true,
+        polylineOptions: {
+          strokeColor:
+            theme === "dark" ? "hsl(var(--background))" : "hsl(var(--primary))",
+          strokeOpacity: 3,
+        },
+      })
+    );
+  }, [map, routes_library]);
 
-  //     setDirectionsService(new routes_library.DirectionsService());
-  //     setDirectionsRenderer(new routes_library.DirectionsRenderer({ map }));
-  //   }
-  //   async function getRoute() {
-  //     if (!directions_renderer || !directions_service || !place_id || !place_data)
-  //       return;
+  useEffect(() => {
+    if (!direction_renderer || !direction_service) return;
+    getDirection();
+  }, [direction_renderer, direction_service]);
 
-  //     try {
-  //       const destination_coord = place_data!.filter(
-  //         (place) => place.place_id === place_id
-  //       );
+  useEffect(() => {
+    if (!direction_renderer) return;
+    direction_renderer.setRouteIndex(route_index);
+  }, [route_index, direction_renderer]);
 
-  //       const response = await directions_service.route({
-  //         origin: { lat: lat!, lng: lng! },
-  //         destination: destination_coord[0].location.coordinates,
-  //         travelMode: google.maps.TravelMode.DRIVING,
-  //       });
-
-  //       directions_renderer.setDirections(response);
-  //       setRoute(response.routes);
-  //     } catch (error) {
-  //       throw error;
-  //     }
-  //   }
-  //   useEffect(() => {
-  //     const interval = setInterval(() => {
-  //       navigator.geolocation.getCurrentPosition(
-  //         (position) => {
-  //           setUserPosition({
-  //             lat: position.coords.latitude,
-  //             lng: position.coords.longitude,
-  //           });
-  //         },
-  //         (error) => {
-  //           toast(error.code, {
-  //             description: error.message,
-  //             action: { label: "ok", onClick: () => null },
-  //           });
-  //         }
-  //       );
-  //     }, 60000);
-
-  //     clearInterval(interval);
-  //   }, []);
-
-  //   useEffect(() => {
-  //     initializeServices();
-  //   }, [map, routes_library]);
-
-  //     useEffect(() => {
-  //     getRoute();
-  //   }, [directions_renderer, directions_service, place_id]);
-
-  return null;
+  return routes?.[route_index].legs[0] ? (
+    <>
+      {children}
+      <AdvancedMarker position={coordinates}>
+        <UserLocationIcon className="h-6 w-auto stroke-primary dark:stroke-background stroke-1" />
+      </AdvancedMarker>
+      <AdvancedMarker position={destination}>
+        <MapPinIcon className="h-6 w-auto text-primary dark:text-background" />
+      </AdvancedMarker>
+    </>
+  ) : null;
 }

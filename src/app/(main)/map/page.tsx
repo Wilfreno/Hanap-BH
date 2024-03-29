@@ -1,20 +1,30 @@
 "use client";
-import Spinner from "@/components/svg/loading/Spinner";
-import { APIProvider } from "@vis.gl/react-google-maps";
-import dynamic from "next/dynamic";
+import useNearbyPlacesAPI from "@/components/hooks/useNearbyPlacesAPI";
+import Markers from "@/components/page/map/markers/Markers";
+import Search from "@/components/page/search/Search";
+import Map from "@/components/reusables/Map";
+import { PlaceDetailsType } from "@/lib/types/place-detail";
+import { ControlPosition, MapControl, useMap } from "@vis.gl/react-google-maps";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-const Map = dynamic(() => import("@/components/reusables/ReusableMap"), {
-  loading: () => <Spinner className="h-20 self-center justify-self-center" />,
-});
 export default function page() {
-  const api_key: string = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!;
-  if (!api_key) throw new Error("NEXT_PUBLIC_GOOGLE_MAPS_API_KEY missing");
+  const { nearby_place } = useNearbyPlacesAPI();
+  const [result, setResult] = useState<PlaceDetailsType[]>();
+  const router = useRouter();
+  if (result && result.length > 0)
+    router.replace(`/map?place_id=${result[0].place_id}`);
 
   return (
-    <>
-      <APIProvider apiKey={api_key}>
-        <Map zoom={17} />
-      </APIProvider>
-    </>
+    <main className="grid">
+      <Map zoom={17}>
+        <MapControl position={ControlPosition.TOP_RIGHT}>
+          <section className="mx-10">
+            <Search result={(r) => setResult(r)} />
+          </section>
+        </MapControl>
+        <Markers places={result ? result : nearby_place} />
+      </Map>
+    </main>
   );
 }

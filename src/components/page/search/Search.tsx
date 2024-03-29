@@ -1,27 +1,66 @@
+"use client";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import {
   AdjustmentsHorizontalIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import PlaceFilterMenu from "@/components/reusables/PlaceFilterMenu";
-import { SearchType } from "@/app/(main)/search/page";
-import { Dispatch, SetStateAction } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import useCurrentPosition from "@/components/hooks/useCurrentPosition";
+import useHTTPRequest from "@/components/hooks/useHTTPRequest";
+import useInputDebounce from "@/components/hooks/useInputDebounce";
+import { PhilippinesPlaces } from "@/lib/types/psgc-types";
+import { HTTPStatusResponseType } from "@/lib/types/http-request-response";
+import { PlaceDetailsType } from "@/lib/types/place-detail";
+
+export type SearchType = {
+  autocomplete: string;
+  lodging_type: string;
+  location: PhilippinesPlaces;
+};
 
 export default function Search({
-  search,
-  setSearch,
+  disable,
+  result,
+  status,
 }: {
-  search: SearchType;
-  setSearch: Dispatch<SetStateAction<SearchType | undefined>>;
+  disable?: boolean;
+  result?: (r: PlaceDetailsType[]) => void;
+  status?: (s: HTTPStatusResponseType) => void;
 }) {
+  const { coordinates } = useCurrentPosition();
+  const http_request = useHTTPRequest();
+
+  const [search, setSearch] = useState<SearchType>();
+  const debounced_value = useInputDebounce(search);
+
+  useEffect(() => {
+    async function getData() {
+      if (
+        !debounced_value?.autocomplete &&
+        !debounced_value?.location &&
+        !debounced_value?.lodging_type
+      ) {
+        if (result) result(undefined!);
+        return;
+      }
+
+      const r = await http_request.post("/api/place/search", {
+        ...debounced_value!,
+        lat: coordinates?.lat,
+        lng: coordinates?.lng,
+      });
+
+      if (r.status === "OK" && result) result!(r.data);
+      if (status) status(r.status);
+    }
+
+    if (search) getData();
+  }, [debounced_value]);
+
   return (
     <form
       autoFocus={false}
@@ -31,22 +70,23 @@ export default function Search({
     >
       <div className="flex items-center">
         <Input
+          disabled={disable}
           placeholder="Search"
           className="border-none focus-visible:ring-0"
-          value={search.autocomplete}
+          value={search?.autocomplete ? search.autocomplete : ""}
           onChange={(e) =>
-            setSearch((prev) => ({ ...prev!, autocomplete: e.target.value }))
+            setSearch!((prev) => ({ ...prev!, autocomplete: e.target.value }))
           }
         />
         <MagnifyingGlassIcon
           className={cn(
             "h-5 w-auto text-muted",
-            search.autocomplete && "text-primary"
+            search?.autocomplete && "text-primary"
           )}
         />
       </div>
       <Dialog>
-        <DialogTrigger asChild>
+        <DialogTrigger asChild disabled={disable}>
           <Button
             size="icon"
             variant="ghost"
@@ -56,10 +96,7 @@ export default function Search({
           </Button>
         </DialogTrigger>
         <DialogContent className="space-y-5 grid">
-          <PlaceFilterMenu />
-          <DialogClose className="justify-self-end">
-            <Button className="font-semibold">search</Button>
-          </DialogClose>
+          <PlaceFilterMenu search={search!} setSearch={setSearch!} />
         </DialogContent>
       </Dialog>
     </form>

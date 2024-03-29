@@ -1,7 +1,9 @@
+"use client";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 export default function LodgingTypeCard({
@@ -11,7 +13,7 @@ export default function LodgingTypeCard({
 }) {
   const [hover, setHover] = useState(false);
   const MotionCard = motion(CardContent);
-
+  const path_name = usePathname();
   return (
     <Card key={lodging.link}>
       <MotionCard
@@ -24,8 +26,8 @@ export default function LodgingTypeCard({
             "flex flex-col justify-center w-full h-full overflow-hidden",
             hover && "justify-evenly"
           )}
-          href={`/hosting/${lodging.link}`}
-          as={`/hosting/${lodging.link}`}
+          href={`${path_name}${lodging.link}`}
+          as={`${path_name}${lodging.link}`}
         >
           <h2
             className={cn("text-2xl font-bold mx-auto", hover && "text-base")}

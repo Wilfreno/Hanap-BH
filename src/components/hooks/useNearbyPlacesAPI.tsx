@@ -9,12 +9,12 @@ export default function useNearbyPlacesAPI() {
   const [data, setData] = useState<PlaceDetailsType[]>([]);
   const [status, setStatus] = useState<HTTPStatusResponseType>();
   const [next_page_token, setNextPageToken] = useState<string>();
-  const { coordinates } = useCurrentPosition();
+  const { coordinates, position_status_error } = useCurrentPosition();
   const http_request = useHTTPRequest();
 
   useEffect(() => {
     async function getNearbyPlace() {
-      const response = await http_request.get("/api/nearby-places", {
+      const response = await http_request.get("/api/place/nearby", {
         lat: String(coordinates?.lat),
         lng: String(coordinates?.lng),
       });
@@ -28,25 +28,23 @@ export default function useNearbyPlacesAPI() {
     const nearby_place_session = sessionStorage.getItem("nearby_place");
     const next_page_token_session = sessionStorage.getItem("next_page_token");
     setNextPageToken(next_page_token_session!);
-    if (
-      coordinates &&
-      !nearby_place_session &&
-      nearby_place_session !== "null"
-    ) {
-      getNearbyPlace();
-    }
-    if (nearby_place_session && nearby_place_session !== "null")
-      setData(JSON.parse(nearby_place_session));
-  }, [coordinates]);
 
+    if (nearby_place_session && nearby_place_session !== "null") {
+      setData(JSON.parse(nearby_place_session));
+      return;
+    }
+
+    if (coordinates) getNearbyPlace();
+  }, [coordinates]);
   return {
+    position_status_error,
     next_page_token,
     status,
     nearby_place: data,
     next: async () => {
       const session_token = sessionStorage.getItem("next_page_token");
       if (session_token) {
-        const response = await http_request.get("/api/nearby-places/next", {
+        const response = await http_request.get("/api/place/nearby/next", {
           page_token: session_token,
           lat: coordinates?.lat,
           lng: coordinates?.lng,

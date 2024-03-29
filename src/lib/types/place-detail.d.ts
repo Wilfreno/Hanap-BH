@@ -59,9 +59,10 @@ export type PlaceDetailsType = {
     count: number;
     average: number;
   };
+  lodging_type?: Lodging_Type;
   rooms: number;
   distance: number;
-  database: "GOOGLE" | "DB";
+  database: "GOOGLE" | "MONGODB";
   date_created?: Date;
 };
 

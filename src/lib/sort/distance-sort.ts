@@ -1,6 +1,8 @@
 import { PlaceDetailsType } from "../types/place-detail";
 
-export default function quickSort(arr: PlaceDetailsType[]): PlaceDetailsType[] {
+export default function quickDistanceSort(
+  arr: PlaceDetailsType[]
+): PlaceDetailsType[] {
   if (arr.length <= 1) {
     return arr;
   }
@@ -16,5 +18,5 @@ export default function quickSort(arr: PlaceDetailsType[]): PlaceDetailsType[] {
     }
   }
 
-  return [...quickSort(left), pivot, ...quickSort(right)];
+  return [...quickDistanceSort(left), pivot, ...quickDistanceSort(right)];
 }

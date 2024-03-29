@@ -10,10 +10,11 @@ import AuthenticatedMenu from "./AuthenticatedMenu";
 import UnAuthenticatedMenu from "./UnAuthenticatedMenu";
 import { ArrowRightEndOnRectangleIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 export default function MenuContent() {
   const [width, setWidth] = useState<number>();
-
+  const path_name = usePathname();
   const { status } = useSession();
 
   useEffect(() => {
@@ -58,7 +59,11 @@ export default function MenuContent() {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="py-2 cursor-pointer flex items-center justify-center font-bold"
-            onClick={() => signOut({ redirect: false })}
+            onClick={() =>
+              signOut({
+                callbackUrl: path_name.startsWith("/hosting") ? "/" : path_name,
+              })
+            }
           >
             Log Out <ArrowRightEndOnRectangleIcon className="h-5 w-auto mx-3" />
           </DropdownMenuItem>

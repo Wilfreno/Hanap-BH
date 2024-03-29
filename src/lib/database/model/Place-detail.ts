@@ -30,7 +30,7 @@ const PlaceSchema: Schema = new Schema({
         required: true,
       },
     ],
-    desctiption: {
+    description: {
       type: String,
       default: "",
     },
@@ -61,10 +61,6 @@ const PlaceSchema: Schema = new Schema({
       },
     },
     barangay: {
-      type: String,
-      default: "",
-    },
-    street: {
       type: String,
       default: "",
     },
@@ -120,6 +116,10 @@ const PlaceSchema: Schema = new Schema({
         default: undefined,
       },
     ],
+  },
+  database: {
+    type: String,
+    default: "MONGODB",
   },
   date_created: {
     type: Date,

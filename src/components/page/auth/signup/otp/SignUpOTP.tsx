@@ -53,10 +53,6 @@ export default function SignUpOTP({
               setCode(r.otp);
               toast("Verification code sent", {
                 description: r.message,
-                action: {
-                  label: "ok",
-                  onClick: () => null,
-                },
               });
             }
           }}
@@ -74,6 +70,7 @@ export default function SignUpOTP({
         submit_btn_ref={submit_btn_ref}
         setSubmit={setSubmit}
         code={code!}
+        setCode={setCode}
       />
     </Dialog>
   );

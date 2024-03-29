@@ -2,7 +2,7 @@ import Image from "next/image";
 import googleImg from "../../../../../public/icons/social-media/google-color-svgrepo-com.svg";
 import { signIn, useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import Spinner from "@/components/svg/loading/Spinner";
 import { useState } from "react";
@@ -26,7 +26,8 @@ export default function GoogleLogin() {
       onClick={async () => {
         setClicked(true);
         const r = await signIn("google", {
-          callbackUrl: !url_callback ? "/" : `${url_callback}`,
+          callbackUrl: `/${url_callback}`!,
+          url_callback: !!url_callback,
         });
         if (r?.error) {
           toast("Sign in Error", {

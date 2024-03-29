@@ -9,21 +9,26 @@ import { toast } from "sonner";
 
 export default function LoginForm() {
   const router = useRouter();
-  const search_params = useSearchParams();
-  const url_callback = search_params.get("url_callback");
+  const searchParams = useSearchParams();
+  const exit = searchParams.get("exit");
+  const url_callback = searchParams.get("url_callback");
   const [open, setOpen] = useState(false);
   const [form_data, setFormData] = useState({ email: "", password: "" });
   const [submit, setSubmit] = useState(false);
+
   return (
     <form
       className="space-y-5"
       onSubmit={async (e) => {
         e.preventDefault();
         setSubmit(true);
+
         const r = await signIn("credentials", {
           ...form_data,
-          redirect: false,
+          callbackUrl: url_callback!,
+          redirect: !!url_callback,
         });
+
         if (r?.error) {
           toast("Sign in Error", {
             description: r.error,
@@ -35,6 +40,7 @@ export default function LoginForm() {
           setSubmit(false);
           return;
         }
+
         toast("Log in successful", {
           description: "",
           action: {
@@ -44,7 +50,12 @@ export default function LoginForm() {
         });
         setSubmit(false);
 
-        router.push(!url_callback ? "/" : `${url_callback}`);
+        if (url_callback) {
+          router.push(url_callback);
+          return;
+        }
+
+        router.push(!exit ? "/" : exit);
       }}
     >
       <Input

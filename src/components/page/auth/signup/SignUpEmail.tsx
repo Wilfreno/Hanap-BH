@@ -11,6 +11,7 @@ export default function SignUpEmail({
 }) {
   return (
     <Input
+      autoComplete="on"
       placeholder="Email"
       className="h-10 w-full text-base"
       type="email"

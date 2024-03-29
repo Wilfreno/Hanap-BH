@@ -1,7 +1,8 @@
-export const dynamic = "force-dynamic";
 import dbConnect from "@/lib/database/connect";
 import PlaceDetail from "@/lib/database/model/Place-detail";
 import getDistance from "@/lib/google-api/distance";
+
+
 import {
   NominatimReverseAPiResponse,
   PlaceDetailsType,
@@ -10,6 +11,8 @@ import {
 } from "@/lib/types/place-detail";
 import { type NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+
+
 
 export async function GET(request: NextRequest) {
   const api_key = process.env.NEXT_PUBLIC_GOOGLE_PLACE_API_KEY;
@@ -20,7 +23,8 @@ export async function GET(request: NextRequest) {
     const lat = search_params.get("lat");
     const lng = search_params.get("lng");
     const nomitatim_response = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
+      { cache: "no-store" }
     );
     const nominatim_data: NominatimReverseAPiResponse =
       await nomitatim_response.json();
@@ -36,7 +40,8 @@ export async function GET(request: NextRequest) {
     }
 
     const places_api_response = await fetch(
-      `https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=${api_key}&location=${lat}%2C${lng}&type=lodging&radius=1000`
+      `https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=${api_key}&location=${lat}%2C${lng}&type=lodging&rankby=distance`,
+      { cache: "no-store" }
     );
 
     const places_api_data =
