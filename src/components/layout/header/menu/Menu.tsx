@@ -17,14 +17,14 @@ export default function Menu() {
         <Avatar className="h-9 w-auto">
           {status === "authenticated" && (
             <AvatarImage
-              src={data?.user!.profile_pic!}
+              src={data?.user.photo?.photo_url}
               fetchPriority="high"
-              alt={data!.user.first_name.charAt(0).toUpperCase()}
+              alt={data.user.first_name?.charAt(0).toUpperCase()}
             />
           )}
           <AvatarFallback className="group-hover:bg-background font-bold w-9 h-9">
             {status === "authenticated" ? (
-              data.user.first_name.charAt(0).toUpperCase()
+              data.user.first_name?.charAt(0).toUpperCase()
             ) : (
               <UserIcon className="h-1/2 w-auto stroke-1" />
             )}

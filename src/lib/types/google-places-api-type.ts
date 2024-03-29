@@ -1,7 +1,4 @@
-import { Lodging, Photo, Room } from "@prisma/client";
 import { LatLngLiteral } from "./google-maps-api-type";
-import { PhotosType } from "./photos-type";
-import { UserDetailType } from "./user-detail-type";
 
 export type NominatimReverseAPiResponse = {
   address: {
@@ -33,11 +30,3 @@ export type PlacesAPIResult = {
   vicinity: string;
 };
 
-export interface LodgingDetailsType extends Lodging {
-  distance: number;
-  database: "GOOGLE" | "MONGODB";
-  photos?: Photo[]
-  rooms?: Room[]
-}
-
-export type Lodging_Type = "BOARDING_HOUSE";

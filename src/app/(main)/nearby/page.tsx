@@ -8,8 +8,8 @@ import { useSession } from "next-auth/react";
 export default function page() {
   // const { status, nearby_place, next, next_page_token, position_status_error } =
   //   useNearbyPlacesAPI();
-  const { data } = useSession();
-  console.log(data);
+  const session = useSession();
+  console.log("session:: ",session);
   return (
     <>
       {/* {position_status_error?.PERMISSION_DENIED ? (

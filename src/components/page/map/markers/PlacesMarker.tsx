@@ -4,7 +4,7 @@ import {
   SheetHeader,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { PlaceDetailsType } from "@/lib/types/place-detail";
+import { PlaceDetailsType } from "@/lib/types/google-places-api-type";
 import { HomeIcon } from "@heroicons/react/24/outline";
 import { AdvancedMarker, useMap } from "@vis.gl/react-google-maps";
 import { useRouter, useSearchParams } from "next/navigation";

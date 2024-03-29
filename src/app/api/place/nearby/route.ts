@@ -5,7 +5,7 @@ import {
   NominatimReverseAPiResponse,
   PlacesAPIResponse,
   PlacesAPIResult,
-} from "@/lib/types/place-detail";
+} from "@/lib/types/google-places-api-type";
 import { Lodging, PrismaClient } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
 import { type NextRequest } from "next/server";

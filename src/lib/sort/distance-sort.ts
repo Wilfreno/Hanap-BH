@@ -1,4 +1,4 @@
-import { PlaceDetailsType } from "../types/place-detail";
+import { PlaceDetailsType } from "../types/google-places-api-type";
 
 export default function quickDistanceSort(
   arr: PlaceDetailsType[]

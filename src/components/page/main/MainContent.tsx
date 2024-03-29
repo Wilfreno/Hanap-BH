@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { PlaceDetailsType } from "@/lib/types/place-detail";
+import { PlaceDetailsType } from "@/lib/types/google-places-api-type";
 import FetchingSkeleton from "@/components/loading-skeleton/FetchingSkeleton";
 import { useEffect, useState } from "react";
 import MainContentCard from "./MainContentCard";

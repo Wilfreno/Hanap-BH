@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import { PrismaClient, User } from "@prisma/client";
 import exclude from "@/lib/prisma/exclude";
+import { UserDetailType } from "@/lib/types/user-detail-type";
 
 const google_client_id = process.env.GOOGLE_CLIENT_ID;
 if (!google_client_id) throw new Error("Missing GOOGLE_CLIENT_ID");
@@ -44,6 +45,7 @@ const handler = nextAuth({
             throw new Error("Password is incorrect");
           }
           const filtered_user = exclude(user, ["password"]);
+          console.log("authorize::", filtered_user);
           return filtered_user as User;
         } catch (e) {
           throw e;
@@ -84,17 +86,14 @@ const handler = nextAuth({
                 email: email!,
                 first_name: profile.given_name,
                 last_name: profile.family_name,
+                photo: {
+                  create: {
+                    photo_url: profile.picture,
+                  },
+                },
               },
             });
-
-            const profile_photo = await prisma.photo.create({
-              data: {
-                photo_url: profile.image!,
-                width: 0,
-                heigth: 0,
-                user_id: new_user.id,
-              },
-            });
+            console.log("SignIn::", new_user);
           }
         }
         return true;
@@ -107,19 +106,22 @@ const handler = nextAuth({
         const prisma = new PrismaClient();
         const db_user = await prisma.user.findFirst({
           where: { email: { startsWith: profile.email } },
-          include: { photo: true },
+          include: {
+            photo: true,
+            lodgings: { include: { rooms: true } },
+            contacts: true,
+          },
           relationLoadStrategy: "join",
         });
 
         const filtered_user = exclude(db_user, ["password"] as any);
-
         return { ...token, ...filtered_user };
       }
       return { ...token, ...user };
     },
     async session({ session, token }) {
       try {
-        session.user = token;
+        session.user = token as any;
         return session;
       } catch (error) {
         throw error;

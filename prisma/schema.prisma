@@ -26,7 +26,7 @@ model User {
   lodgings     Lodging[]
   rated        Rating[]
   OTP          OTP[]
-  Contacts     Contact?
+  contacts     Contact?
   photo        Photo?
   date_created DateTime? @default(now())
 }
@@ -70,7 +70,7 @@ model Photo {
   id           String    @id @unique @default(uuid())
   photo_url    String
   width        Int?
-  heigth       Int?
+  height       Int?
   User         User?     @relation(fields: [user_id], references: [id])
   user_id      String?   @unique
   date_created DateTime? @default(now())

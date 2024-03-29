@@ -26,7 +26,7 @@ export default function GoogleLogin() {
       onClick={async () => {
         setClicked(true);
         const r = await signIn("google", {
-          callbackUrl: `/${url_callback}`!,
+          callbackUrl: `/${url_callback ? url_callback : ""}`!,
           url_callback: !!url_callback,
         });
         if (r?.error) {
