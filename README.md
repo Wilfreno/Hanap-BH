@@ -1,6 +1,6 @@
 <p align="center">
-<a href="https://hanap-bh.vercel.app/" target="_blank">
-<img src="https://github.com/Wilfreno09/Hanap-BH/blob/ce8c61423060c93d5c7a0d9827b2f6a10bdb99a6/public/logo.png" alt="Hanap-BH" style="height:7vw;" /><a/>
+<a href="https://github.com/Wilfreno/Hanap-BH/blob/main/public/logo/hanap-bh-light.png" target="_blank">
+<img src="https://github.com/Wilfreno/Hanap-BH/blob/main/public/logo/hanap-bh-light.png" alt="Hanap-BH" style="height:7vw;" /><a/>
 <p/>
 
 <p align="center">
@@ -10,7 +10,6 @@
  
 <p align="center" >A complete Full-Stack Web Application that help filipinos locate the nearest lodgings on their vicinity </p>
 
----
 
 # The Motivation
 
@@ -26,7 +25,17 @@
 * Users can log-in to add or claim a new or existing lodging / boarding house
 * Has a simple responsive UI for better user experience
 
+ # Tools, Libraries & Framework used
 
+ - [Next.js](https://nextjs.org/)
+ - [React.js](https://react.dev/)
+ - [React-Redux](https://react-redux.js.org/)
+ - [Mongoose.js](https://mongoosejs.com/)
+ - [React-google-maps](https://github.com/visgl/react-google-maps)
+ - [Tailwind-css](https://tailwindcss.com/)
+
+
+   
 # Contributions
 
 Before contributing you should be aware that the project is using services from [Google Maps Platform](https://developers.google.com/maps) and you may need payment credentials to create API key and access services. But don't worry, you're not going to pay anything; Google has a free 200$ service every month.
@@ -78,14 +87,4 @@ first [Set up your Google Cloud project](https://developers.google.com/maps/docu
 then Create your [Googpe Maps Credentials](https://console.cloud.google.com/apis/credentials?authuser=1&project=hanap-bh)
  
  
- ## Tools, Libraries & Framework used
 
-- [Next.js](https://nextjs.org/)
- - [React.js](https://react.dev/)
- - [React-Redux](https://react-redux.js.org/)
- - [Mongoose.js](https://mongoosejs.com/)
- - [React-google-maps](https://github.com/visgl/react-google-maps)
- - [Tailwind-css](https://tailwindcss.com/)
-
-
-   
