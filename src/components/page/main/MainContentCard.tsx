@@ -1,7 +1,7 @@
 import FavoriteMark from "@/components/reusables/FavoriteMark";
 import GoogleMark from "@/components/reusables/GoogleMark";
 import PlaceImage from "@/components/reusables/PlaceImage";
-import { PlaceDetailsType } from "@/lib/types/place-detail";
+import { PlaceDetailsType } from "@/lib/types/google-places-api-type";
 import { StarIcon } from "@heroicons/react/24/outline";
 
 export default function MainContentCard({

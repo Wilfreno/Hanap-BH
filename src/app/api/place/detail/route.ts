@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 import dbConnect from "@/lib/database/connect";
 import PlaceDetail from "@/lib/database/model/Place-detail";
 import getDistance from "@/lib/google-api/distance";
-import { PlaceDetailsType, PlacesAPIResult } from "@/lib/types/place-detail";
+import { PlaceDetailsType, PlacesAPIResult } from "@/lib/types/google-places-api-type";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {

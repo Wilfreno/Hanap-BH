@@ -3,7 +3,7 @@ import useNearbyPlacesAPI from "@/components/hooks/useNearbyPlacesAPI";
 import Markers from "@/components/page/map/markers/Markers";
 import Search from "@/components/page/search/Search";
 import Map from "@/components/reusables/Map";
-import { PlaceDetailsType } from "@/lib/types/place-detail";
+import { PlaceDetailsType } from "@/lib/types/google-places-api-type";
 import { ControlPosition, MapControl, useMap } from "@vis.gl/react-google-maps";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

@@ -2,7 +2,7 @@
 
 import useCurrentPosition from "@/components/hooks/useCurrentPosition";
 import useHTTPRequest from "@/components/hooks/useHTTPRequest";
-import { PlaceDetailsType } from "@/lib/types/place-detail";
+import { PlaceDetailsType } from "@/lib/types/google-places-api-type";
 import { useEffect, useState } from "react";
 import FavoriteMark from "@/components/reusables/FavoriteMark";
 import LodgingImage from "@/components/page/lodging/LodgingImage";

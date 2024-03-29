@@ -1,4 +1,4 @@
-import { PlaceDetailsType } from "@/lib/types/place-detail";
+import { PlaceDetailsType } from "@/lib/types/google-places-api-type";
 import {
   HoverCard,
   HoverCardContent,

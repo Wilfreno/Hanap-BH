@@ -14,7 +14,7 @@ import useHTTPRequest from "@/components/hooks/useHTTPRequest";
 import useInputDebounce from "@/components/hooks/useInputDebounce";
 import { PhilippinesPlaces } from "@/lib/types/psgc-types";
 import { HTTPStatusResponseType } from "@/lib/types/http-request-response";
-import { PlaceDetailsType } from "@/lib/types/place-detail";
+import { PlaceDetailsType } from "@/lib/types/google-places-api-type";
 
 export type SearchType = {
   autocomplete: string;

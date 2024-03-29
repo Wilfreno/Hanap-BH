@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { PlaceDetailsType } from "../../lib/types/place-detail";
+import { PlaceDetailsType } from "../../lib/types/google-places-api-type";
 import useHTTPRequest from "./useHTTPRequest";
 import useCurrentPosition from "./useCurrentPosition";
 import { HTTPStatusResponseType } from "@/lib/types/http-request-response";

@@ -1,7 +1,7 @@
 import Map from "@/components/reusables/Map";
 import Directions from "../map/Directions";
 import { MapPinIcon } from "@heroicons/react/24/outline";
-import { PlaceDetailsType } from "@/lib/types/place-detail";
+import { PlaceDetailsType } from "@/lib/types/google-places-api-type";
 import { useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import CarIcon from "@/components/svg/CarIcon";

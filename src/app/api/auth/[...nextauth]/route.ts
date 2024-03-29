@@ -1,10 +1,11 @@
-import User from "@/lib/database/model/User";
 import nextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
-import dbConnect from "@/lib/database/connect";
-import FacebookProvider from "next-auth/providers/facebook";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
+import { PrismaClient, User } from "@prisma/client";
+import exclude from "@/lib/prisma/exclude";
+import { UserDetailType } from "@/lib/types/user-detail-type";
+
 const google_client_id = process.env.GOOGLE_CLIENT_ID;
 if (!google_client_id) throw new Error("Missing GOOGLE_CLIENT_ID");
 const google_client_secret = process.env.GOOGLE_CLIENT_SECRET;
@@ -32,25 +33,20 @@ const handler = nextAuth({
       },
       async authorize(credentials) {
         try {
-          await dbConnect();
-          const user = await User.findOne({
-            $or: [
-              { "auth.name": credentials?.email },
-              { "auth.email": credentials!.email },
-            ],
+          const prisma = new PrismaClient();
+
+          const user = await prisma.user.findFirst({
+            where: { email: { startsWith: credentials?.email } },
           });
 
           if (!user) throw new Error("User does not Exist");
 
-          if (
-            !(await bcrypt.compare(credentials?.password!, user.auth.password))
-          ) {
+          if (!(await bcrypt.compare(credentials?.password!, user.password!))) {
             throw new Error("Password is incorrect");
           }
-          const json_user = user.toJSON();
-          delete json_user.auth.password;
-          delete json_user.__v;
-          return json_user;
+          const filtered_user = exclude(user, ["password"]);
+          console.log("authorize::", filtered_user);
+          return filtered_user as User;
         } catch (e) {
           throw e;
         }
@@ -79,21 +75,25 @@ const handler = nextAuth({
       try {
         if (profile) {
           const { email } = user;
-
-          await dbConnect();
-          const db_user = await User.findOne({ "auth.email": email });
+          const prisma = new PrismaClient();
+          const db_user = await prisma.user.findFirst({
+            where: { email: { startsWith: email! } },
+          });
 
           if (!db_user) {
-            const new_user = new User({
-              given_name: profile?.given_name,
-              family_name: profile?.family_name,
-              profile_pic: profile?.image,
-              auth: {
-                email,
-                name: email?.slice(0, email?.indexOf("@")),
+            const new_user = await prisma.user.create({
+              data: {
+                email: email!,
+                first_name: profile.given_name,
+                last_name: profile.family_name,
+                photo: {
+                  create: {
+                    photo_url: profile.picture,
+                  },
+                },
               },
             });
-            await new_user.save();
+            console.log("SignIn::", new_user);
           }
         }
         return true;
@@ -103,23 +103,25 @@ const handler = nextAuth({
     },
     async jwt({ token, profile, user }) {
       if (profile) {
-        await dbConnect();
-        const db_user = await User.findOne({ "auth.email": profile.email });
-        const db_user_json = db_user.toJSON();
-        if (db_user_json.profile_pic === "")
-          db_user_json.profile_pic = profile.picture;
-        delete db_user_json.auth.password;
-        delete db_user_json.__v;
-        delete token.name;
-        delete token.picture;
-        delete token.email;
-        return { ...token, ...db_user_json };
+        const prisma = new PrismaClient();
+        const db_user = await prisma.user.findFirst({
+          where: { email: { startsWith: profile.email } },
+          include: {
+            photo: true,
+            lodgings: { include: { rooms: true } },
+            contacts: true,
+          },
+          relationLoadStrategy: "join",
+        });
+
+        const filtered_user = exclude(db_user, ["password"] as any);
+        return { ...token, ...filtered_user };
       }
       return { ...token, ...user };
     },
     async session({ session, token }) {
       try {
-        session.user = token;
+        session.user = token as any;
         return session;
       } catch (error) {
         throw error;

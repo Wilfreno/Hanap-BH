@@ -4,7 +4,7 @@ import {
   NominatimReverseAPiResponse,
   PlaceDetailsType,
   PlacesAPIResponse,
-} from "@/lib/types/place-detail";
+} from "@/lib/types/google-places-api-type";
 import { type NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
