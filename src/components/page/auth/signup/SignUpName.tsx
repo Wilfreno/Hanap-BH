@@ -10,7 +10,7 @@ export default function SignUpName({
   setFormData: Dispatch<SetStateAction<SignUpFormDataType>>;
 }) {
   return (
-    <div className="flex items-center justify-evenly space-x-2">
+    <div className="flex items-center space-x-2">
       <Input
         placeholder="First name"
         className="h-10 text-base"

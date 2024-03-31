@@ -10,9 +10,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
 
 export default function Login() {
   const router = useRouter();
@@ -26,20 +24,17 @@ export default function Login() {
         e === false && router.replace(exit ? `${exit}` : "/")
       }
     >
-      <DialogContent>
-        <DialogHeader className="py-5 border-b">
-          <DialogTitle className="text-center">Log in</DialogTitle>
+      <DialogContent className="w-[95vw] sm:w-[25rem] space-y-5 rounded-lg">
+        <DialogHeader className="border-b py-5">
+          <DialogTitle className="text-center text-xl">Log in</DialogTitle>
         </DialogHeader>
-
-        <div>
-          <LoginForm />
-          <span className="flex items-center w-full space-x-5">
-            <hr className="h-[1px] w-1/2 bg-secondary" />
-            <p>or</p>
-            <hr className="h-[1px] w-1/2 bg-secondary" />
-          </span>
-          <GoogleLogin />
+        <LoginForm />
+        <div className="flex items-center w-full space-x-5">
+          <hr className="h-[1px] w-1/2 bg-secondary" />
+          <p>or</p>
+          <hr className="h-[1px] w-1/2 bg-secondary" />
         </div>
+        <GoogleLogin />
         <DialogFooter className="w-full flex justify-center">
           <Button className="w-full" variant="secondary" asChild>
             <Link

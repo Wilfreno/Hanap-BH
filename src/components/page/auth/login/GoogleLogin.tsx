@@ -22,36 +22,38 @@ export default function GoogleLogin() {
     });
   }
   return (
-    <Button
-      onClick={async () => {
-        setClicked(true);
-        const r = await signIn("google", {
-          callbackUrl: `/${url_callback ? url_callback : ""}`!,
-          url_callback: !!url_callback,
-        });
-        if (r?.error) {
-          toast("Sign in Error", {
-            description: r.error,
-            action: {
-              label: "ok",
-              onClick: () => null,
-            },
+    <div className="">
+      <Button
+        onClick={async () => {
+          setClicked(true);
+          const r = await signIn("google", {
+            callbackUrl: `/${url_callback ? url_callback : ""}`!,
+            url_callback: !!url_callback,
           });
-          return;
-        }
-      }}
-      variant="outline"
-      className="w-full h-10 space-x-5"
-      disabled={clicked}
-    >
-      {clicked ? (
-        <Spinner className="h-5 w-auto fill-primary" />
-      ) : (
-        <>
-          <Image src={googleImg} alt="GOOGLE" className="h-8 w-auto" />
-          <p className="text-base font-semibold">Login with GOOGLE</p>
-        </>
-      )}
-    </Button>
+          if (r?.error) {
+            toast("Sign in Error", {
+              description: r.error,
+              action: {
+                label: "ok",
+                onClick: () => null,
+              },
+            });
+            return;
+          }
+        }}
+        variant="outline"
+        className="w-full h-10 space-x-5"
+        disabled={clicked}
+      >
+        {clicked ? (
+          <Spinner className="h-5 w-auto fill-primary" />
+        ) : (
+          <>
+            <Image src={googleImg} alt="GOOGLE" className="h-8 w-auto" />
+            <p className="text-base font-semibold">Login with GOOGLE</p>
+          </>
+        )}
+      </Button>
+    </div>
   );
 }
