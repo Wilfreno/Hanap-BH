@@ -1,14 +1,16 @@
 export const dynamic = "force-dynamic";
-import dbConnect from "@/lib/database/connect";
-import User from "@/lib/database/model/User";
 import { NextResponse, type NextRequest } from "next/server";
 import bcrypt from "bcrypt";
+import { PrismaClient, User } from "@prisma/client";
 
 export async function POST(request: Request) {
   try {
-    const user = await request.json();
-    await dbConnect();
-    const user_found = await User.findOne({ "auth.email": user.email });
+    const prisma = new PrismaClient();
+    const user: User = await request.json();
+
+    const user_found = await prisma.user.findFirst({
+      where: { email: { startsWith: user.email } },
+    });
 
     if (user_found)
       return NextResponse.json(
@@ -18,19 +20,17 @@ export async function POST(request: Request) {
         },
         { status: 409 }
       );
-    const hashed_pass = await bcrypt.hash(user.password, 14);
-    const new_user = new User({
-      first_name: user.first_name,
-      last_name: user.last_name,
-      gender: user.gender,
-      birthday: user.birthday,
-      auth: {
-        name: user.email.slice(0, user.email.indexOf("@")),
+    const hashed_pass = await bcrypt.hash(user.password!, 14);
+    const new_user = await prisma.user.create({
+      data: {
+        first_name: user.first_name,
+        last_name: user.last_name,
+        gender: user.gender,
+        birthday: user.birthday,
         email: user.email,
         password: hashed_pass,
       },
     });
-    await new_user.save();
 
     return NextResponse.json(
       {
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
       { status: 200 }
     );
   } catch (error) {
-    console.error(error);
+    if (process.env.NODE_ENV === "development") throw error;
     return NextResponse.json(
       { status: "INTERNAL_SERVER_ERROR", message: error },
       { status: 500 }
@@ -52,25 +52,36 @@ export async function GET(request: NextRequest) {
   try {
     const search_params = request.nextUrl.searchParams;
     const user_id = search_params.get("id");
-    await dbConnect();
-    const user = await User.findOne({ _id: user_id });
-    if (!user)
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    const prisma = new PrismaClient();
+    const user = await prisma.user.findFirst({ where: { id: user_id! } });
 
-    return NextResponse.json({ data: user }, { status: 200 });
+    if (!user)
+      return NextResponse.json(
+        { status: "NOT_FOUND", message: "User not found" },
+        { status: 404 }
+      );
+
+    return NextResponse.json(
+      { status: "OK", message: "Request Succesful", data: user },
+      { status: 200 }
+    );
   } catch (error) {
-    return NextResponse.json({ message: error }, { status: 500 });
+    if (process.env.NODE_ENV === "development") throw error;
+    return NextResponse.json(
+      { status: "INTERNAL_SERVER_ERROR", message: error },
+      { status: 500 }
+    );
   }
 }
 
 export async function DELETE(request: Request) {
   try {
-    const user = await request.json();
-    await dbConnect();
-    const db_user = await User.findOneAndRemove({ "auth.email": user.email });
+    const user: User = await request.json();
+    const prisma = new PrismaClient();
+    const db_user = await prisma.user.findFirst({ where: { id: user.id! } });
     if (!db_user)
       return NextResponse.json(
-        { status: "NOT_FOUND", messsage: "The user cannot be found" },
+        { status: "NOT_FOUND", messsage: "User not found" },
         { status: 404 }
       );
     return NextResponse.json(
@@ -78,6 +89,7 @@ export async function DELETE(request: Request) {
       { status: 200 }
     );
   } catch (error) {
+    if (process.env.NODE_ENV === "development") throw error;
     return NextResponse.json(
       { status: "INTERNAL_SERVER_ERROR", message: error },
       { status: 500 }
@@ -87,35 +99,28 @@ export async function DELETE(request: Request) {
 
 export async function PATCH(request: NextRequest) {
   try {
-    const {
-      id,
-      given_name,
-      middle_name,
-      family_name,
-      place_owned,
-      gender,
-      birth_date,
-      profile_pic,
-      contact,
-    } = await request.json();
-    await dbConnect();
-    await User.updateOne(
-      { _id: id },
-      {
-        $set: {
-          given_name,
-          middle_name,
-          family_name,
-          place_owned,
-          gender,
-          birth_date,
-          profile_pic,
-          contact,
-        },
-      }
+    const user: User = await request.json();
+    const prisma = new PrismaClient();
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        first_name: user.first_name,
+        middle_name: user.middle_name,
+        last_name: user.last_name,
+        gender: user.gender,
+        birthday: user.birthday,
+      },
+    });
+    return NextResponse.json(
+      { status: "OK", message: "User updated" },
+      { status: 200 }
     );
-    return NextResponse.json({}, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ message: error }, { status: 200 });
+    if (process.env.NODE_ENV === "development") throw error;
+    return NextResponse.json(
+      { status: "INTERNAL_SERVER_ERROR", message: error },
+      { status: 500 }
+    );
   }
 }

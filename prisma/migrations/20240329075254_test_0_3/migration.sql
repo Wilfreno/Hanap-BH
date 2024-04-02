@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Lodging" ALTER COLUMN "date_created" SET DEFAULT CURRENT_TIMESTAMP;

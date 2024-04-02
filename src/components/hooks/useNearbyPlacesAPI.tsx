@@ -1,12 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
-import { PlaceDetailsType } from "../../lib/types/place-detail";
 import useHTTPRequest from "./useHTTPRequest";
 import useCurrentPosition from "./useCurrentPosition";
 import { HTTPStatusResponseType } from "@/lib/types/http-request-response";
+import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 
 export default function useNearbyPlacesAPI() {
-  const [data, setData] = useState<PlaceDetailsType[]>([]);
+  const [data, setData] = useState<LodgingDetailsType[]>([]);
   const [status, setStatus] = useState<HTTPStatusResponseType>();
   const [next_page_token, setNextPageToken] = useState<string>();
   const { coordinates, position_status_error } = useCurrentPosition();
@@ -40,14 +40,14 @@ export default function useNearbyPlacesAPI() {
     position_status_error,
     next_page_token,
     status,
-    nearby_place: data,
+    nearby_lodgings: data,
     next: async () => {
       const session_token = sessionStorage.getItem("next_page_token");
       if (session_token) {
         const response = await http_request.get("/api/place/nearby/next", {
           page_token: session_token,
-          lat: coordinates?.lat,
-          lng: coordinates?.lng,
+          latitude: coordinates?.lat,
+          longitude: coordinates?.lng,
         });
         setData((prev) => [...prev!, ...response.data]);
         setNextPageToken(response.next_page_token);

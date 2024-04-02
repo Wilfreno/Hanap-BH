@@ -1,7 +1,6 @@
 import Map from "@/components/reusables/Map";
 import Directions from "../map/Directions";
 import { MapPinIcon } from "@heroicons/react/24/outline";
-import { PlaceDetailsType } from "@/lib/types/place-detail";
 import { useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import CarIcon from "@/components/svg/CarIcon";
@@ -15,8 +14,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import DirectionIcon from "@/components/svg/DirectionIcon";
+import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 
-export default function LodgingMap({ place }: { place: PlaceDetailsType }) {
+export default function LodgingMap({
+  lodging,
+}: {
+  lodging: LodgingDetailsType;
+}) {
   const [routes, setRoutes] = useState<google.maps.DirectionsRoute[]>();
   const [route_index, setRouteIndex] = useState(0);
   return (
@@ -68,9 +72,18 @@ export default function LodgingMap({ place }: { place: PlaceDetailsType }) {
       </div>
       <Separator />
       <div className="h-[30vw] w-full rounded-lg overflow-hidden grid border justify-self-center my-5">
-        <Map zoom={16} center={place?.location.coordinates}>
+        <Map
+          zoom={16}
+          center={{
+            lat: Number(lodging.latitude),
+            lng: Number(lodging.longitude),
+          }}
+        >
           <Directions
-            destination={place?.location.coordinates!}
+            destination={{
+              lat: Number(lodging.latitude),
+              lng: Number(lodging.longitude),
+            }}
             getRoutes={(r) => setRoutes(r)}
             route_index={route_index}
           />

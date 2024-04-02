@@ -60,7 +60,7 @@ export default function LoginForm() {
     >
       <Input
         placeholder="Email"
-        className="h-10 sm:w-[20rem] text-base"
+        className="h-10  text-base"
         value={form_data.email}
         onChange={(e) =>
           setFormData((prev) => ({ ...prev, email: e.target.value }))
@@ -70,13 +70,13 @@ export default function LoginForm() {
         <Input
           placeholder="Password"
           type={open ? "text" : "password"}
-          className="h-10 sm:w-[20rem] text-base"
+          className="h-10  text-base"
           value={form_data.password}
           onChange={(e) =>
             setFormData((prev) => ({ ...prev, password: e.target.value }))
           }
         />
-        <span
+        <i
           className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
           onClick={() => setOpen((prev) => !prev)}
         >
@@ -85,7 +85,7 @@ export default function LoginForm() {
           ) : (
             <EyeSlashIcon className="h-5 w-auto " />
           )}
-        </span>
+        </i>
       </span>
       <Button type="submit" className="w-full">
         {submit ? <Spinner className="fill-background h-8 w-auto" /> : "Login"}

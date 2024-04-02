@@ -12,15 +12,8 @@ import { cn } from "@/lib/utils";
 import useCurrentPosition from "@/components/hooks/useCurrentPosition";
 import useHTTPRequest from "@/components/hooks/useHTTPRequest";
 import useInputDebounce from "@/components/hooks/useInputDebounce";
-import { PhilippinesPlaces } from "@/lib/types/psgc-types";
 import { HTTPStatusResponseType } from "@/lib/types/http-request-response";
-import { PlaceDetailsType } from "@/lib/types/place-detail";
-
-export type SearchType = {
-  autocomplete: string;
-  lodging_type: string;
-  location: PhilippinesPlaces;
-};
+import { LodgingDetailsType, LodgingSearchType } from "@/lib/types/lodging-detail-type";
 
 export default function Search({
   disable,
@@ -28,19 +21,19 @@ export default function Search({
   status,
 }: {
   disable?: boolean;
-  result?: (r: PlaceDetailsType[]) => void;
+  result?: (r: LodgingDetailsType[]) => void;
   status?: (s: HTTPStatusResponseType) => void;
 }) {
   const { coordinates } = useCurrentPosition();
   const http_request = useHTTPRequest();
 
-  const [search, setSearch] = useState<SearchType>();
+  const [search, setSearch] = useState<LodgingSearchType>();
   const debounced_value = useInputDebounce(search);
 
   useEffect(() => {
     async function getData() {
       if (
-        !debounced_value?.autocomplete &&
+        !debounced_value?.search_value &&
         !debounced_value?.location &&
         !debounced_value?.lodging_type
       ) {
@@ -50,8 +43,8 @@ export default function Search({
 
       const r = await http_request.post("/api/place/search", {
         ...debounced_value!,
-        lat: coordinates?.lat,
-        lng: coordinates?.lng,
+        latitude: coordinates?.lat,
+        longitude: coordinates?.lng,
       });
 
       if (r.status === "OK" && result) result!(r.data);
@@ -73,7 +66,7 @@ export default function Search({
           disabled={disable}
           placeholder="Search"
           className="border-none focus-visible:ring-0"
-          value={search?.autocomplete ? search.autocomplete : ""}
+          value={search?.search_value ? search.search_value : ""}
           onChange={(e) =>
             setSearch!((prev) => ({ ...prev!, autocomplete: e.target.value }))
           }
@@ -81,7 +74,7 @@ export default function Search({
         <MagnifyingGlassIcon
           className={cn(
             "h-5 w-auto text-muted",
-            search?.autocomplete && "text-primary"
+            search?.search_value && "text-primary"
           )}
         />
       </div>

@@ -1,4 +1,4 @@
-import { PlaceDetailsType } from "./place-detail";
+import { PlaceDetailsType } from "./google-places-api-type";
 import { UserDetailType } from "./user-detail-type";
 
 export type HTTPStatusResponseType =

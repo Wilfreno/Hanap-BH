@@ -1,11 +1,11 @@
-import { PlaceDetailsType } from "@/lib/types/place-detail";
 import UserMarker from "./UserMarker";
 import PlacesMarker from "./PlacesMarker";
-export default function Markers({ places }: { places: PlaceDetailsType[] }) {
+import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
+export default function Markers({ lodgings }: { lodgings: LodgingDetailsType[] }) {
   return (
     <>
       <UserMarker />
-      <PlacesMarker places={places} />
+      <PlacesMarker lodgings={lodgings} />
     </>
   );
 }

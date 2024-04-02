@@ -1,10 +1,10 @@
 import PlaceImage from "@/components/reusables/PlaceImage";
-import { PlaceDetailsType } from "@/lib/types/place-detail";
+import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-export default function LodgingImage({ place }: { place: PlaceDetailsType }) {
+export default function LodgingImage({ lodging }: { lodging: LodgingDetailsType }) {
   const [photo_index, setPhotoIndex] = useState(0);
   const [photo_enhance, setPhotoEnhance] = useState(false);
 
@@ -35,7 +35,7 @@ export default function LodgingImage({ place }: { place: PlaceDetailsType }) {
           className="grow grid my-5"
         >
           <div className="aspect-video relative overflow-hidden justify-self-center h-full w-auto rounded-lg">
-            <PlaceImage photo={place?.photos?.[photo_index]} />
+            <PlaceImage photo={lodging?.photos?.[photo_index].photo_url} />
           </div>
         </motion.div>
         <motion.div
@@ -43,9 +43,9 @@ export default function LodgingImage({ place }: { place: PlaceDetailsType }) {
           animate={photo_enhance ? { width: "90%" } : { width: "70%" }}
           className="flex h-[12dvh] border-2 rounded-lg p-1 space-x-3 justify-self-center"
         >
-          {place?.photos.map((photo, index) => (
+          {lodging?.photos?.map((photo, index) => (
             <motion.span
-              key={photo}
+              key={photo.id}
               whileHover={index !== photo_index ? { scale: 1.05 } : undefined}
               className={cn(
                 "aspect-video h-full w-auto relative  overflow-hidden rounded-lg",
@@ -55,7 +55,7 @@ export default function LodgingImage({ place }: { place: PlaceDetailsType }) {
               )}
               onClick={() => setPhotoIndex(index)}
             >
-              <PlaceImage photo={photo} />
+              <PlaceImage photo={photo.photo_url} />
             </motion.span>
           ))}
         </motion.div>
@@ -66,7 +66,7 @@ export default function LodgingImage({ place }: { place: PlaceDetailsType }) {
       >
         <PlaceImage
           asBackground
-          photo={place?.photos[photo_index]}
+          photo={lodging?.photos?.[photo_index].photo_url}
           className="object-fit blur-sm"
         />
       </motion.div>
