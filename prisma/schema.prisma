@@ -25,7 +25,6 @@ model User {
   gender       String?
   lodgings     Lodging[]
   rated        Rating[]
-  OTP          OTP[]
   contacts     Contact?
   photo        Photo?
   date_created DateTime? @default(now())
@@ -42,6 +41,7 @@ model Lodging {
   longitude    Decimal
   rooms        Room[]
   ratings      Rating[]
+  photos       Photo[]
   house_rules  String
   date_created DateTime? @default(now())
 }
@@ -53,6 +53,7 @@ model Room {
   price          Int
   occupant_count Int
   specification  String
+  photos         Photo[]
   date_created   DateTime? @default(now())
 }
 
@@ -74,13 +75,16 @@ model Photo {
   User         User?     @relation(fields: [user_id], references: [id])
   user_id      String?   @unique
   date_created DateTime? @default(now())
+  Lodging      Lodging?  @relation(fields: [lodging_id], references: [id])
+  lodging_id   String?
+  Room         Room?     @relation(fields: [room_id], references: [id])
+  room_id      String?
 }
 
-model OTP {
+model Otp {
   id           String    @id @unique @default(uuid())
-  user         User      @relation(fields: [user_id], references: [id])
-  user_id      String
-  value        String
+  email        String
+  pin          String
   date_created DateTime? @default(now())
 }
 

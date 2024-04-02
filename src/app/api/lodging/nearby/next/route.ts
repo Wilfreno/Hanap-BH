@@ -2,9 +2,10 @@ export const dynamic = "force-dynamic";
 import getDistance from "@/lib/google-api/distance";
 import {
   NominatimReverseAPiResponse,
-  PlaceDetailsType,
   PlacesAPIResponse,
 } from "@/lib/types/google-places-api-type";
+import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
+import { Decimal } from "@prisma/client/runtime/library";
 import { type NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -13,11 +14,12 @@ export async function GET(request: NextRequest) {
 
   const search_params = request.nextUrl.searchParams;
   const page_token = search_params.get("page_token");
-  const lat = search_params.get("lat");
-  const lng = search_params.get("lng");
+  const latitude = search_params.get("lat");
+  const longitude = search_params.get("lng");
+
   try {
     const nomitatim_response = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
     );
     const nominatim_data: NominatimReverseAPiResponse =
       await nomitatim_response.json();
@@ -34,7 +36,8 @@ export async function GET(request: NextRequest) {
     const next_page_response = await fetch(
       `https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=${page_token}&key=${api_key}`
     );
-    const next_page_data = await next_page_response.json() as  PlacesAPIResponse;
+    const next_page_data =
+      (await next_page_response.json()) as PlacesAPIResponse;
 
     if (next_page_data.status === "OVER_QUERY_LIMIT") {
       return NextResponse.json(
@@ -42,50 +45,51 @@ export async function GET(request: NextRequest) {
         { status: 429 }
       );
     }
-    if (!next_page_data.next_page_token) {
-      next_page_data.next_page_token = null;
+
+    const results = next_page_data.results;
+    const restructured_next_page_data: LodgingDetailsType[] = [];
+
+    for (let i = 0; i < results.length; i++) {
+      restructured_next_page_data.push({
+        owner_id: "",
+        id: results[i].place_id,
+        name: results[i].name,
+        lodging_type: "",
+        address: results[i].vicinity,
+        latitude: results[i].geometry.location.lat as Decimal,
+        longitude: results[i].geometry.location.lng as Decimal,
+        house_rules: "",
+        photos: results[i].photos.map((photo) => ({
+          id: photo.photo_reference,
+          photo_url: photo.photo_reference,
+          width: null,
+          height: null,
+          user_id: null,
+          lodging_id: null,
+          room_id: null,
+          date_created: null,
+        })),
+        distance: getDistance(
+          { lat: Number(latitude)!, lng: Number(longitude)! },
+          {
+            lat: results[i].geometry.location.lat,
+            lng: results[i].geometry.location.lng,
+          }
+        ),
+        ratings: [
+          {
+            id: "",
+            value: new Decimal(results[i].rating),
+            user_id: "",
+            lodging_id: results[i].place_id,
+            date_created: null,
+          },
+        ],
+        database: "GOOGLE",
+        date_created: null,
+      });
     }
-    const restructured_next_page_data = next_page_data.results.map(
-      (details) => {
-        const data: PlaceDetailsType = {
-          owner: "",
-          place_id: details.place_id,
-          name: details.name,
-          photos: details.photos
-            ? details.photos.map((photo) => photo.photo_reference)
-            : [],
-          location: {
-            vicinity: details.vicinity,
-            province: "",
-            town: {
-              city: nominatim_data.address.city || "",
-              municipality: nominatim_data.address.town || "",
-            },
-            barangay: "",
-            street: "",
-            coordinates: details.geometry.location,
-          },
-          price: {
-            max: undefined,
-            min: undefined,
-          },
-          rating: {
-            count: 1,
-            average: details.rating,
-          },
-          rooms: 0,
-          distance: getDistance(
-            { lat: Number(lat), lng: Number(lng) },
-            {
-              lng: details.geometry.location.lng,
-              lat: details.geometry.location.lat,
-            }
-          ),
-          database: "GOOGLE",
-        };
-        return data;
-      }
-    );
+
     return NextResponse.json(
       {
         status: "OK",

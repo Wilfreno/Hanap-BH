@@ -1,13 +1,13 @@
-import { PlaceDetailsType } from "@/lib/types/google-places-api-type";
+import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { cn } from "@/lib/utils";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import React, { DetailedHTMLProps, HTMLAttributes, useState } from "react";
 
 export default function FavoriteMark({
-  place,
+  lodging,
   ...props
 }: {
-  place: PlaceDetailsType;
+  lodging: LodgingDetailsType;
 } & DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>) {
   const [clicked, setClicked] = useState(false);
   return (

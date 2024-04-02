@@ -46,7 +46,14 @@ export default function GoogleMap({
         mapId={theme === "dark" ? "f69c5aeeede1b72c" : "df72364d02a886f2"}
         gestureHandling="greedy"
         zoom={zoom}
-        center={center ? center : coordinates}
+        center={
+          center
+            ? { lat: center.lat as number, lng: center.lng as number }
+            : {
+                lat: coordinates?.lat as number,
+                lng: coordinates?.lng as number,
+              }
+        }
         className={cn(
           "w-full h-full outline-none focus-visible:ring-0 focus-visible:border-none",
           className

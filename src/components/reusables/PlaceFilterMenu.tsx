@@ -7,14 +7,14 @@ import PhilippinesPlacesMenu from "./PhilippinesPlacesMenu";
 import { Dispatch, SetStateAction, useState } from "react";
 import { PhilippinesPlaces } from "@/lib/types/psgc-types";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { SearchType } from "../page/search/Search";
+import { LodgingSearchType } from "@/lib/types/lodging-detail-type";
 
 export default function PlaceFilterMenu({
   search,
   setSearch,
 }: {
-  search: SearchType;
-  setSearch: Dispatch<SetStateAction<SearchType | undefined>>;
+  search: LodgingSearchType;
+  setSearch: Dispatch<SetStateAction<LodgingSearchType | undefined>>;
 }) {
   const [location, setLocation] = useState<PhilippinesPlaces>();
   const [lodging_type, setLodgingType] = useState<string>();

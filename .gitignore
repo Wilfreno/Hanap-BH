@@ -41,5 +41,4 @@ next-env.d.ts
 /react-email-dev/node_modules
 
 # test page 
-
 /src/app/test

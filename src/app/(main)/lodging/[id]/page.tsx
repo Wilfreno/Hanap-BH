@@ -2,37 +2,37 @@
 
 import useCurrentPosition from "@/components/hooks/useCurrentPosition";
 import useHTTPRequest from "@/components/hooks/useHTTPRequest";
-import { PlaceDetailsType } from "@/lib/types/google-places-api-type";
 import { useEffect, useState } from "react";
 import FavoriteMark from "@/components/reusables/FavoriteMark";
 import LodgingImage from "@/components/page/lodging/LodgingImage";
+import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import LodgingMap from "@/components/page/lodging/LodgingMap";
 import LodgingGoogleMessage from "@/components/page/lodging/LodgingGoogleMessage";
 
 export default function page({ params }: { params: { id: string } }) {
   const http_request = useHTTPRequest();
   const { coordinates } = useCurrentPosition();
-  const [place, setPlace] = useState<PlaceDetailsType>();
+  const [lodging, setLodging] = useState<LodgingDetailsType>();
 
   async function getData() {
-    const r = await http_request.get("/api/place/detail", {
-      place_id: params.id,
+    const r = await http_request.get("/api/lodging", {
+      id: params.id,
       lat: coordinates?.lat,
       lng: coordinates?.lng,
     });
-    setPlace(r.data);
+    setLodging(r.data);
   }
 
   useEffect(() => {
-    const session_data = sessionStorage.getItem("nearby_place");
+    const session_data = sessionStorage.getItem("nearby_lodging");
 
-    let p = [] as PlaceDetailsType[];
+    let p = [] as LodgingDetailsType[];
     if (session_data) {
-      const nearby_place = JSON.parse(session_data) as PlaceDetailsType[];
-      p = nearby_place.filter((i) => i.place_id === params.id);
+      const nearby_lodging = JSON.parse(session_data) as LodgingDetailsType[];
+      p = nearby_lodging.filter((lodging) => lodging.id === params.id);
     }
     if (p?.length !== 0) {
-      setPlace(p[0]);
+      setLodging(p[0]);
       return;
     }
 
@@ -41,22 +41,24 @@ export default function page({ params }: { params: { id: string } }) {
 
   return (
     <main className="grid">
-      <LodgingImage place={place!} />
+      <LodgingImage lodging={lodging!} />
       <section className="p-10">
         <div className="flex justify-between items-start">
           <div>
-            <h1 className="text-3xl font-bold">{place?.name}</h1>
+            <h1 className="text-3xl font-bold">{lodging?.name}</h1>
             <h2 className="text-lg text-muted-foreground">
-              {place?.location.vicinity}
+              {lodging?.address}
             </h2>
           </div>
           <div className="h-8">
-            <FavoriteMark place={place!} />
+            <FavoriteMark lodging={lodging!} />
           </div>
         </div>
-        <LodgingMap place={place!} />
+        <LodgingMap lodging={lodging!} />
       </section>
-      {place?.database === "GOOGLE" && <LodgingGoogleMessage place={place} />}
+      {lodging?.database === "GOOGLE" && (
+        <LodgingGoogleMessage lodging={lodging} />
+      )}
     </main>
   );
 }

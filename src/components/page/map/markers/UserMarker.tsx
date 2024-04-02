@@ -1,5 +1,5 @@
 import { MapPinIcon } from "@heroicons/react/24/solid";
-import { AdvancedMarker, useMap } from "@vis.gl/react-google-maps";
+import { AdvancedMarker } from "@vis.gl/react-google-maps";
 import { useEffect, useState } from "react";
 import { LatLngLiteral } from "@/lib/types/google-maps-api-type";
 import { toast } from "sonner";
@@ -34,8 +34,14 @@ export default function UserMarker() {
       <AdvancedMarker
         position={
           user_position
-            ? { lat: user_position?.lat!, lng: user_position?.lng! }
-            : coordinates
+            ? {
+                lat: user_position?.lat! as number,
+                lng: user_position?.lng! as number,
+              }
+            : {
+                lat: coordinates?.lat as number,
+                lng: coordinates?.lng as number,
+              }
         }
       >
         <span className=" flex flex-col justify-center">

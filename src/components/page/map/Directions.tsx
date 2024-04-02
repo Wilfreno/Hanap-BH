@@ -1,7 +1,7 @@
 import useCurrentPosition from "@/components/hooks/useCurrentPosition";
 import UserLocationIcon from "@/components/svg/UserLocationIcon";
 import { LatLngLiteral } from "@/lib/types/google-maps-api-type";
-import { HomeIcon, MapPinIcon } from "@heroicons/react/24/outline";
+import { MapPinIcon } from "@heroicons/react/24/outline";
 import {
   AdvancedMarker,
   useMap,
@@ -34,8 +34,14 @@ export default function Directions({
 
   async function getDirection() {
     const direction_service_response = await direction_service?.route({
-      origin: coordinates!,
-      destination,
+      origin: {
+        lat: coordinates?.lat as number,
+        lng: coordinates?.lng as number,
+      },
+      destination: {
+        lat: destination.lat as number,
+        lng: destination.lng as number,
+      },
       travelMode: google.maps.TravelMode.DRIVING,
       provideRouteAlternatives: true,
     });
@@ -78,10 +84,20 @@ export default function Directions({
   return routes?.[route_index].legs[0] ? (
     <>
       {children}
-      <AdvancedMarker position={coordinates}>
+      <AdvancedMarker
+        position={{
+          lat: coordinates?.lat as number,
+          lng: coordinates?.lng as number,
+        }}
+      >
         <UserLocationIcon className="h-6 w-auto stroke-primary dark:stroke-background stroke-1" />
       </AdvancedMarker>
-      <AdvancedMarker position={destination}>
+      <AdvancedMarker
+        position={{
+          lat: destination.lat as number,
+          lng: destination.lng as number,
+        }}
+      >
         <MapPinIcon className="h-6 w-auto text-primary dark:text-background" />
       </AdvancedMarker>
     </>

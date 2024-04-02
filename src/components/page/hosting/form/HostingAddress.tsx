@@ -57,7 +57,12 @@ export default function HostingAddress() {
             selected_location={(e) => setCoordinates(e)}
           >
             {coordinates ? (
-              <AdvancedMarker position={coordinates}>
+              <AdvancedMarker
+                position={{
+                  lat: coordinates.lat! as number,
+                  lng: coordinates.lng! as number,
+                }}
+              >
                 <MapPinIcon className="h-7 dark:text-background animate-bounce" />
               </AdvancedMarker>
             ) : (

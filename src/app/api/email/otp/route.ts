@@ -1,17 +1,19 @@
-import dbConnect from "@/lib/database/connect";
 import { NextResponse } from "next/server";
 import { createTransport } from "nodemailer";
 import { render } from "@react-email/render";
 import Signup from "@/components/email/EmailSignup";
-import OTP from "@/lib/database/model/OTP";
+import { PrismaClient } from "@prisma/client";
 
+type User = {
+  email: string;
+};
 export async function POST(request: Request) {
   try {
     const password = process.env.GMAIL_APP_2FAUTH_PASS;
     if (!password)
       throw new Error("MISSING GMAIL_APP_2FAUTH_PASS from the .env.local file");
 
-    const user = await request.json();
+    const user: User = await request.json();
 
     const transport = createTransport({
       service: "gmail",
@@ -25,36 +27,37 @@ export async function POST(request: Request) {
 
     if (!verify) throw new Error(verify);
 
-    await dbConnect();
     const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
     let random_string = "";
 
     for (let i = 0; i < 6; i++) {
       random_string += chars[Math.floor(Math.random() * chars.length)];
     }
-    const email_verifier = new OTP({
-      email: user.email,
-      code: random_string,
-    });
 
-    await email_verifier.save();
+    const prisma = new PrismaClient();
+    const otp = await prisma.otp.create({
+      data: {
+        email: user.email,
+        pin: random_string,
+      },
+    });
 
     const at_index = user.email.indexOf("@");
     const user_name = user.email.substring(0, at_index);
-    const html_email = render(Signup({ user_name, code: random_string }));
+    const html = render(Signup({ user_name, code: random_string }));
 
     transport.sendMail(
       {
         from: "hanapbh.dev@gmail.com",
         to: user.email,
         subject: `Welcome to Hanap-BH your verification code is ${random_string}`,
-        html: html_email,
+        html: html,
       },
       (error, info) => {
         if (error) {
           return NextResponse.json(
             {
-              status: error?.name,
+              status: "INTERNAL_SERVER_ERROR",
               message: error?.message,
             },
             { status: 500 }
@@ -84,9 +87,11 @@ export async function POST(request: Request) {
 export async function DELETE(request: Request) {
   try {
     const user = await request.json();
-    await dbConnect();
 
-    await OTP.deleteMany({ email: user.email });
+    const prisma = new PrismaClient();
+    await prisma.otp.deleteMany({
+      where: { email: { startsWith: user.email } },
+    });
 
     return NextResponse.json(
       { status: "OK", message: "OTP has been deleted" },
