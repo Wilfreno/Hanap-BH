@@ -1,4 +1,3 @@
-import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import {
   GlobeAltIcon,
@@ -13,55 +12,96 @@ import { useEffect, useState } from "react";
 export default function HeaderNavigation() {
   const [width, setwidth] = useState<number>();
   const path_name = usePathname();
-  const view_list = [
-    {
-      name: "Nearby",
-      link: "nearby",
-      icon: <ListBulletIcon className="h-6 w-auto stroke-[2px]" />,
-    },
-    {
-      name: "Search",
-      link: "search",
-      icon: <MagnifyingGlassIcon className="h-6 w-auto stroke-[2px]" />,
-    },
-    {
-      name: "Map",
-      link: "map",
-      icon: <MapIcon className="h-6 w-auto stroke-[2px]" />,
-    },
-    {
-      name: "Browse",
-      link: "browse",
-      icon: <GlobeAltIcon className="h-6 w-auto stroke-[2px]" />,
-    },
-  ];
 
-  useEffect(() => {
-    setwidth(window.innerWidth);
-
-    function handleResize() {
-      setwidth(window.innerWidth);
-    }
-
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
   return (
     <nav className="flex items-center sm:justify-center sm:grow sm:mx-auto sm:space-x-10 font-semibold text-base text-muted-foreground sm:pl-16">
-      {view_list.map((l) => (
+      {/* Mobile */}
+      <>
         <Link
-          key={l.name}
-          href={`/${l.link}`}
-          as={`/${l.link}`}
+          href={"/nearby"}
+          as={"/nearby"}
           className={cn(
-            "grow sm:grow-0 flex items-center justify-center p-2 py-3 sm:p-0 sm:py-0 hover:text-primary",
-            path_name.endsWith(l.link) && "text-primary"
+            "sm:hidden grow sm:grow-0 flex items-center justify-center p-2 py-3 sm:p-0 sm:py-0 hover:text-primary",
+            path_name.endsWith("/nearby") && "text-primary"
           )}
         >
-          {width! < 640 ? l.icon : l.name}
+          <ListBulletIcon className="h-6 w-auto stroke-[2px]" />
         </Link>
-      ))}
+        <Link
+          href={"/search"}
+          as={"/search"}
+          className={cn(
+            "sm:hidden grow sm:grow-0 flex items-center justify-center p-2 py-3 sm:p-0 sm:py-0 hover:text-primary",
+            path_name.endsWith("/search") && "text-primary"
+          )}
+        >
+          <MagnifyingGlassIcon className="h-6 w-auto stroke-[2px]" />
+        </Link>
+        <Link
+          href={"/map"}
+          as={"/map"}
+          className={cn(
+            "sm:hidden grow sm:grow-0 flex items-center justify-center p-2 py-3 sm:p-0 sm:py-0 hover:text-primary",
+            path_name.endsWith("/map") && "text-primary"
+          )}
+        >
+          <MapIcon className="h-6 w-auto stroke-[2px]" />
+        </Link>
+        <Link
+          href={"/browse"}
+          as={"/browse"}
+          className={cn(
+            "sm:hidden grow sm:grow-0 flex items-center justify-center p-2 py-3 sm:p-0 sm:py-0 hover:text-primary",
+            path_name.endsWith("/browse") && "text-primary"
+          )}
+        >
+          <GlobeAltIcon className="h-6 w-auto stroke-[2px]" />
+        </Link>
+      </>
+
+      {/* Desktop */}
+      <>
+        <Link
+          href={"/nearby"}
+          as={"/nearby"}
+          className={cn(
+            "hidden grow sm:grow-0 sm:flex items-center justify-center p-2 py-3 sm:p-0 sm:py-0 hover:text-primary",
+            path_name.endsWith("/nearby") && "text-primary"
+          )}
+        >
+          Nearby
+        </Link>
+        <Link
+          href={"/search"}
+          as={"/search"}
+          className={cn(
+            "hidden grow sm:grow-0 sm:flex items-center justify-center p-2 py-3 sm:p-0 sm:py-0 hover:text-primary",
+            path_name.endsWith("/search") && "text-primary"
+          )}
+        >
+          Search
+        </Link>
+        <Link
+          href={"/map"}
+          as={"/map"}
+          className={cn(
+            "hidden grow sm:grow-0 sm:flex items-center justify-center p-2 py-3 sm:p-0 sm:py-0 hover:text-primary",
+            path_name.endsWith("/map") && "text-primary"
+          )}
+        >
+          Map
+        </Link>
+        <Link
+          href={"/browse"}
+          as={"/browse"}
+          className={cn(
+            "hidden grow sm:grow-0 sm:flex items-center justify-center p-2 py-3 sm:p-0 sm:py-0 hover:text-primary",
+            path_name.endsWith("/browse") && "text-primary"
+          )}
+        >
+          Browse
+        </Link>
+      </>
     </nav>
   );
 }

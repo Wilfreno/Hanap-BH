@@ -6,7 +6,7 @@ export interface LodgingDetailsType extends Lodging {
   database: "GOOGLE" | "POSTGERSQL";
   photos?: Photo[];
   rooms?: Room[];
-  ratings: Rating[];
+  ratings?: Rating[];
 }
 
 export type Lodging_Type = "BOARDING_HOUSE";

@@ -14,8 +14,8 @@ export async function GET(request: NextRequest) {
 
   const search_params = request.nextUrl.searchParams;
   const page_token = search_params.get("page_token");
-  const latitude = search_params.get("lat");
-  const longitude = search_params.get("lng");
+  const latitude = search_params.get("latitude");
+  const longitude = search_params.get("longitude");
 
   try {
     const nomitatim_response = await fetch(
@@ -56,35 +56,39 @@ export async function GET(request: NextRequest) {
         name: results[i].name,
         lodging_type: "",
         address: results[i].vicinity,
-        latitude: results[i].geometry.location.lat as Decimal,
-        longitude: results[i].geometry.location.lng as Decimal,
+        latitude: new Decimal(results[i].geometry.location.lat),
+        longitude: new Decimal(results[i].geometry.location.lng),
         house_rules: "",
-        photos: results[i].photos.map((photo) => ({
-          id: photo.photo_reference,
-          photo_url: photo.photo_reference,
-          width: null,
-          height: null,
-          user_id: null,
-          lodging_id: null,
-          room_id: null,
-          date_created: null,
-        })),
+        photos: results[i].photos
+          ? results[i].photos.map((photo) => ({
+              id: photo.photo_reference,
+              photo_url: photo.photo_reference,
+              width: null,
+              height: null,
+              user_id: null,
+              lodging_id: null,
+              room_id: null,
+              date_created: null,
+            }))
+          : [],
         distance: getDistance(
-          { lat: Number(latitude)!, lng: Number(longitude)! },
+          { latitude: Number(latitude)!, longitude: Number(longitude)! },
           {
-            lat: results[i].geometry.location.lat,
-            lng: results[i].geometry.location.lng,
+            latitude: results[i].geometry.location.lat,
+            longitude: results[i].geometry.location.lng,
           }
         ),
-        ratings: [
-          {
-            id: "",
-            value: new Decimal(results[i].rating),
-            user_id: "",
-            lodging_id: results[i].place_id,
-            date_created: null,
-          },
-        ],
+        ratings: results[i].rating
+          ? [
+              {
+                id: "",
+                value: new Decimal(results[i].rating),
+                user_id: "",
+                lodging_id: results[i].place_id,
+                date_created: null,
+              },
+            ]
+          : [],
         database: "GOOGLE",
         date_created: null,
       });
@@ -100,6 +104,7 @@ export async function GET(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
+    if (process.env.NODE_ENV === "development") throw error;
     return NextResponse.json(
       { status: "INTERNAL_SERVER_ERROR", message: error },
       { status: 500 }

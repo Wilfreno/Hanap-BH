@@ -1,22 +1,22 @@
-import { LatLngLiteral } from "../types/google-maps-api-type";
+import { LocationType } from "../types/user-detail-type";
 
 export default function getDistance(
-  location_1: LatLngLiteral  ,
-  location_2: LatLngLiteral 
+  location_1: LocationType  ,
+  location_2: LocationType 
 ) {
   const earth_radius_km = 6371;
 
-  const lat_radiance_1 = (Math.PI / 180) * Number(location_1.lat);
-  const lat_radiance_2 = (Math.PI / 180) * Number(location_2.lat);
+  const latitude_radiance_1 = (Math.PI / 180) * Number(location_1.latitude);
+  const latitude_radiance_2 = (Math.PI / 180) * Number(location_2.latitude);
 
-  const lat_distance = ((Number(location_2.lat) - Number(location_1.lat)) * Math.PI) / 180;
-  const lng_distance = ((Number(location_2.lng) - Number(location_1.lng)) * Math.PI) / 180;
+  const latitude_distance = ((Number(location_2.latitude) - Number(location_1.latitude)) * Math.PI) / 180;
+  const longitude_distance = ((Number(location_2.longitude) - Number(location_1.longitude)) * Math.PI) / 180;
 
   const a =
-    Math.pow(Math.sin(lat_distance / 2), 2) +
-    Math.pow(Math.sin(lng_distance / 2), 2) *
-      Math.cos(lat_radiance_1) *
-      Math.cos(lat_radiance_2);
+    Math.pow(Math.sin(latitude_distance / 2), 2) +
+    Math.pow(Math.sin(longitude_distance / 2), 2) *
+      Math.cos(latitude_radiance_1) *
+      Math.cos(latitude_radiance_2);
 
   const c = 2 * Math.asin(Math.sqrt(a));
 

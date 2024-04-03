@@ -1,22 +1,21 @@
-import { PlaceDetailsType } from "./google-places-api-type";
+import { LodgingDetailsType } from "./lodging-detail-type";
 import { UserDetailType } from "./user-detail-type";
 
-export type HTTPStatusResponseType =
+export type APIStatusResponseType =
   | "OK"
   | "INTERNAL_SERVER_ERROR"
   | "NO_RESULT"
   | "OUT_OF_BOUND"
   | "REQUEST_TIMEOUT"
+  | "CONFLICT"
   | undefined;
 
-  
-export type HTTPDataType = {
-  data: PlaceDetailsType[] | UserDetailType;
-};
-
 export type NextPageTokenType = string;
-export type HTTPResponseType = {
-  status: HTTPStatusResponseType;
+
+export type APIResponseType = {
+  status: APIStatusResponseType;
   message: string;
   next_page_token?: NextPageTokenType;
+  data: LodgingDetailsType[] | LodgingDetailsType | UserDetailType;
+  otp?: string
 };

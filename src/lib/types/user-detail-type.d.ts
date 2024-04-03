@@ -5,3 +5,8 @@ export interface UserDetailType extends Omit<User, "password"> {
   photo?: Photo
   lodging?: Lodging[]
 };
+
+export type LocationType = {
+  latitude?: number,
+  longitude?: number
+}

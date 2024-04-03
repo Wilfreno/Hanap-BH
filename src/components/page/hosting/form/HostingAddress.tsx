@@ -12,9 +12,9 @@ import { APIProvider, AdvancedMarker } from "@vis.gl/react-google-maps";
 import { useState } from "react";
 import UserMarker from "../../map/markers/UserMarker";
 import { cn } from "@/lib/utils";
-import { LatLngLiteral } from "@/lib/types/google-maps-api-type";
 import { usePathname, useRouter } from "next/navigation";
 import Map from "@/components/reusables/Map";
+import { LocationType } from "@/lib/types/user-detail-type";
 
 export default function HostingAddress() {
   const api_key: string = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!;
@@ -22,7 +22,7 @@ export default function HostingAddress() {
 
   const [selected, setSelected] = useState<any>();
   const [fullscreen, setFullSreen] = useState(false);
-  const [coordinates, setCoordinates] = useState<LatLngLiteral>();
+  const [coordinates, setCoordinates] = useState<LocationType>();
   const router = useRouter();
   const path_name = usePathname();
 
@@ -59,8 +59,8 @@ export default function HostingAddress() {
             {coordinates ? (
               <AdvancedMarker
                 position={{
-                  lat: coordinates.lat! as number,
-                  lng: coordinates.lng! as number,
+                  lat: coordinates.latitude!,
+                  lng: coordinates.longitude!,
                 }}
               >
                 <MapPinIcon className="h-7 dark:text-background animate-bounce" />

@@ -51,7 +51,7 @@ export default function SignUpOTPContent({
       const r = await http_request.post("/api/email/otp", {
         email: form_data.email,
       });
-      setCode(r.data);
+      setCode(r.otp);
       toast("Verification code sent", {
         description: r.message,
       });

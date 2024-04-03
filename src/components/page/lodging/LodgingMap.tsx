@@ -75,14 +75,14 @@ export default function LodgingMap({
         <Map
           zoom={16}
           center={{
-            lat: Number(lodging.latitude),
-            lng: Number(lodging.longitude),
+            latitude: Number(lodging.latitude),
+            longitude: Number(lodging.longitude),
           }}
         >
           <Directions
             destination={{
-              lat: Number(lodging.latitude),
-              lng: Number(lodging.longitude),
+              latitude: Number(lodging.latitude),
+              longitude: Number(lodging.longitude),
             }}
             getRoutes={(r) => setRoutes(r)}
             route_index={route_index}

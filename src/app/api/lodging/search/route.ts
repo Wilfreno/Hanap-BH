@@ -58,8 +58,8 @@ export async function POST(request: Request) {
           date_created: null,
         })),
         address: result.vicinity,
-        longitude: result.geometry.location.lng as Decimal,
-        latitude: result.geometry.location.lng as Decimal,
+        longitude:new Decimal( result.geometry.location.lng),
+        latitude: new Decimal(result.geometry.location.lng) ,
         house_rules: "",
         ratings: [
           {
@@ -71,10 +71,10 @@ export async function POST(request: Request) {
           },
         ],
         distance: getDistance(
-          { lat: Number(query.latitude), lng: Number(query.longitude) },
+          { latitude: Number(query.latitude), longitude: Number(query.longitude) },
           {
-            lng: result.geometry?.location?.lng,
-            lat: result.geometry?.location?.lat,
+            longitude: result.geometry?.location?.lng,
+            latitude: result.geometry?.location?.lat,
           }
         ),
         lodging_type: "",

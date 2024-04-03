@@ -23,8 +23,11 @@ export async function GET(request: NextRequest) {
       ...data!,
       database: "POSTGERSQL",
       distance: getDistance(
-        { lat: Number(lat)!, lng: Number(lng)! },
-        { lat: data?.latitude!, lng: data?.latitude! }
+        { latitude: Number(lat)!, longitude: Number(lng)! },
+        {
+          latitude: Number(data?.latitude)!,
+          longitude: Number(data?.latitude)!,
+        }
       ),
     };
 
@@ -49,8 +52,8 @@ export async function GET(request: NextRequest) {
         name: result.name,
         lodging_type: "",
         address: result.vicinity,
-        longitude: result.geometry.location.lng as Decimal,
-        latitude: result.geometry.location.lat as Decimal,
+        longitude: new Decimal(result.geometry.location.lng),
+        latitude: new Decimal(result.geometry.location.lat),
         house_rules: "",
         photos: result.photos.map((photo) => ({
           id: photo.photo_reference,
@@ -63,10 +66,10 @@ export async function GET(request: NextRequest) {
           date_created: null,
         })),
         distance: getDistance(
-          { lat: Number(lat)!, lng: Number(lng)! },
+          { latitude: Number(lat)!, longitude: Number(lng)! },
           {
-            lat: result.geometry.location.lat,
-            lng: result.geometry.location.lng,
+            latitude: result.geometry.location.lat,
+            longitude: result.geometry.location.lng,
           }
         ),
         database: "GOOGLE",

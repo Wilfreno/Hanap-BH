@@ -1,4 +1,5 @@
 import getDistance from "@/lib/google-api/distance";
+import prisma from "@/lib/prisma/client";
 
 import {
   NominatimReverseAPiResponse,
@@ -6,7 +7,7 @@ import {
   PlacesAPIResult,
 } from "@/lib/types/google-places-api-type";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
-import { Lodging, Photo, PrismaClient, Rating, Room } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
 import { type NextRequest } from "next/server";
 import { NextResponse } from "next/server";
@@ -17,8 +18,8 @@ export async function GET(request: NextRequest) {
 
   try {
     const search_params = request.nextUrl.searchParams;
-    const lat = search_params.get("lat");
-    const lng = search_params.get("lng");
+    const lat = search_params.get("latitude");
+    const lng = search_params.get("longitude");
     const nomitatim_response = await fetch(
       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
       { cache: "no-store" }
@@ -67,41 +68,43 @@ export async function GET(request: NextRequest) {
         name: results[i].name,
         lodging_type: "",
         address: results[i].vicinity,
-        latitude: results[i].geometry.location.lat as Decimal,
-        longitude: results[i].geometry.location.lng as Decimal,
+        latitude: new Decimal(results[i].geometry.location.lat),
+        longitude: new Decimal(results[i].geometry.location.lng),
         house_rules: "",
-        photos: results[i].photos.map((photo) => ({
-          id: photo.photo_reference,
-          photo_url: photo?.photo_reference,
-          width: null,
-          height: null,
-          user_id: null,
-          lodging_id: null,
-          room_id: null,
-          date_created: null,
-        })),
+        photos: results[i].photos
+          ? results[i].photos.map((photo) => ({
+              id: photo.photo_reference,
+              photo_url: photo?.photo_reference,
+              width: null,
+              height: null,
+              user_id: null,
+              lodging_id: null,
+              room_id: null,
+              date_created: null,
+            }))
+          : [],
         distance: getDistance(
-          { lat: Number(lat), lng: Number(lng) },
+          { latitude: Number(lat), longitude: Number(lng) },
           {
-            lng: results[i].geometry.location.lng,
-            lat: results[i].geometry.location.lat,
+            longitude: results[i].geometry.location.lng,
+            latitude: results[i].geometry.location.lat,
           }
         ),
-        ratings: [
-          {
-            id: "",
-            value: new Decimal(results[i].rating),
-            user_id: "",
-            lodging_id: results[i].place_id,
-            date_created: null,
-          },
-        ],
+        ratings: results[i].rating
+          ? [
+              {
+                id: "",
+                value: new Decimal(results[i].rating),
+                user_id: "",
+                lodging_id: results[i].place_id,
+                date_created: null,
+              },
+            ]
+          : [],
         database: "GOOGLE",
         date_created: null,
       });
     }
-
-    const prisma = new PrismaClient();
 
     const db_data = await prisma.lodging.findMany({
       where: {
@@ -127,10 +130,10 @@ export async function GET(request: NextRequest) {
       nearby_lodgings.push({
         ...db_data[i],
         distance: getDistance(
-          { lat: Number(lat), lng: Number(lng) },
+          { latitude: Number(lat), longitude: Number(lng) },
           {
-            lng: db_data[i]?.longitude,
-            lat: db_data[i]?.latitude,
+            longitude: Number(db_data[i]?.longitude),
+            latitude: Number(db_data[i]?.latitude),
           }
         ),
         database: "POSTGERSQL",
@@ -157,6 +160,7 @@ export async function GET(request: NextRequest) {
           { status: 404 }
         );
   } catch (error) {
+    if (process.env.NODE_ENV === "development") throw error;
     return NextResponse.json(
       { status: "INTERNAL_SERVER_ERROR", message: error },
       { status: 500 }
