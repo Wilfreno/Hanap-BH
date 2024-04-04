@@ -1,4 +1,5 @@
 "use client";
+import { APIResponseType } from "@/lib/types/api-request-response";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -19,7 +20,7 @@ export default function useHTTPRequest() {
     }
   }, [error]);
   return {
-    post: async <T,>(url: string, body: T) => {
+    post: async <T,>(url: string, body: T): Promise<APIResponseType> => {
       const api_response = await fetch(url, {
         method: "POST",
         headers: {
@@ -39,7 +40,10 @@ export default function useHTTPRequest() {
 
       return r;
     },
-    get: async <T,>(url: string, search_params?: T) => {
+    get: async <T,>(
+      url: string,
+      search_params?: T
+    ): Promise<APIResponseType> => {
       let request = url;
       if (search_params)
         request += "?" + new URLSearchParams(search_params).toString();
@@ -53,7 +57,10 @@ export default function useHTTPRequest() {
       }
       return r;
     },
-    delete: async (url: string, body: Record<string, unknown>) => {
+    delete: async (
+      url: string,
+      body: Record<string, unknown>
+    ): Promise<APIResponseType> => {
       const api_response = await fetch(url, {
         method: "DELETE",
         headers: {
@@ -67,7 +74,7 @@ export default function useHTTPRequest() {
           status: r.status,
           message: r.message,
         });
-        return;
+        return r;
       }
       return r;
     },

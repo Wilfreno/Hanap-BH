@@ -1,3 +1,4 @@
+"use client";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { cn } from "@/lib/utils";
 import { HeartIcon } from "@heroicons/react/24/outline";

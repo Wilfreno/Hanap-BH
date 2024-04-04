@@ -1,10 +1,12 @@
-"use client";
-import FetchingSkeleton from "@/components/loading-skeleton/FetchingSkeleton";
+import GetUserLocationButton from "@/components/reusables/GetUserLocationDialog";
+import { Suspense } from "react";
 
 export default function page() {
   return (
-    <section className="h-screen w-screen flex justify-center bg-background">
-      <FetchingSkeleton />
-    </section>
+    <Suspense>
+      <section>
+        <GetUserLocationButton>hey</GetUserLocationButton>
+      </section>
+    </Suspense>
   );
 }

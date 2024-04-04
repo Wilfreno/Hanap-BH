@@ -1,4 +1,4 @@
-import { LatLngLiteral } from "./google-maps-api-type";
+import { LocationType } from "./user-detail-type";
 
 export type NominatimReverseAPiResponse = {
   address: {
@@ -18,7 +18,10 @@ export type PlacesAPIResponse = {
 export type PlacesAPIResult = {
   business_status: string;
   geometry: {
-    location: LatLngLiteral;
+    location: {
+      lat: number
+      lng: number
+    };
   };
   photos: {
     photo_reference: string;

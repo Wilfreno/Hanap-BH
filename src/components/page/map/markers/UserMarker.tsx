@@ -1,20 +1,20 @@
+import { useAppSelector } from "@/lib/redux/store";
+import { LocationType } from "@/lib/types/user-detail-type";
 import { MapPinIcon } from "@heroicons/react/24/solid";
 import { AdvancedMarker } from "@vis.gl/react-google-maps";
 import { useEffect, useState } from "react";
-import { LatLngLiteral } from "@/lib/types/google-maps-api-type";
 import { toast } from "sonner";
-import useCurrentPosition from "@/components/hooks/useCurrentPosition";
 export default function UserMarker() {
-  const { coordinates } = useCurrentPosition();
-  const [user_position, setUserPosition] = useState<LatLngLiteral>();
+  const [user_position, setUserPosition] = useState<LocationType>();
 
+  const user_location = useAppSelector((state) => state.user_location_reducer);
   useEffect(() => {
     const interval = setInterval(() => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setUserPosition({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
           });
         },
         (error) => {
@@ -35,12 +35,12 @@ export default function UserMarker() {
         position={
           user_position
             ? {
-                lat: user_position?.lat! as number,
-                lng: user_position?.lng! as number,
+                lat: user_position?.latitude!,
+                lng: user_position?.longitude!,
               }
             : {
-                lat: coordinates?.lat as number,
-                lng: coordinates?.lng as number,
+                lat: user_location?.latitude!,
+                lng: user_location?.longitude!,
               }
         }
       >

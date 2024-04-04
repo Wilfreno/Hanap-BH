@@ -35,7 +35,7 @@ export async function POST(request: Request) {
     }
 
     const prisma = new PrismaClient();
-    const otp = await prisma.otp.create({
+    await prisma.otp.create({
       data: {
         email: user.email,
         pin: random_string,

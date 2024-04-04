@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import Spinner from "../svg/loading/Spinner";
-import { LatLngLiteral } from "@/lib/types/google-maps-api-type";
 import { APIProvider } from "@vis.gl/react-google-maps";
+import { LocationType } from "@/lib/types/user-detail-type";
 
 const GoogleMap = dynamic(() => import("@/components/reusables/GoogleMap"), {
   loading: () => (
@@ -17,9 +17,9 @@ export default function Map({
   children,
 }: {
   children?: React.ReactNode;
-  selected_location?: (s: LatLngLiteral) => void;
+  selected_location?: (s: LocationType) => void;
   zoom: number;
-  center?: LatLngLiteral;
+  center?: LocationType;
   className?: string;
 }) {
   const api_key: string = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!;

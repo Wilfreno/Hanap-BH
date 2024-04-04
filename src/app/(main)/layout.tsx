@@ -1,11 +1,9 @@
 "use client";
 import Header from "@/components/layout/header/Header";
-import { useSession } from "next-auth/react";
-import { useTheme } from "next-themes";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { Suspense } from "react";
 
-export default function layout({
+function MainLayout({
   children,
   auth,
 }: {
@@ -13,14 +11,9 @@ export default function layout({
   auth: React.ReactNode;
 }) {
   const path_name = usePathname();
-  const { setTheme, systemTheme } = useTheme();
   const searchParams = useSearchParams();
   const cb = searchParams.get("callbackUrl");
   const router = useRouter();
-
-  useEffect(() => {
-    setTheme(systemTheme!);
-  }, []);
 
   if (cb)
     router.replace(
@@ -29,11 +22,27 @@ export default function layout({
 
   return (
     <>
-      <Header />
       {children}
       {path_name.startsWith("/login") || path_name.startsWith("/signup")
         ? auth
         : null}
+    </>
+  );
+}
+
+export default function layout({
+  children,
+  auth,
+}: {
+  children: React.ReactNode;
+  auth: React.ReactNode;
+}) {
+  return (
+    <>
+      <Header />
+      <Suspense>
+        <MainLayout auth={auth}>{children}</MainLayout>
+      </Suspense>
     </>
   );
 }

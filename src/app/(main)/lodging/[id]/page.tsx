@@ -1,6 +1,5 @@
 "use client";
 
-import useCurrentPosition from "@/components/hooks/useCurrentPosition";
 import useHTTPRequest from "@/components/hooks/useHTTPRequest";
 import { useEffect, useState } from "react";
 import FavoriteMark from "@/components/reusables/FavoriteMark";
@@ -8,19 +7,19 @@ import LodgingImage from "@/components/page/lodging/LodgingImage";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import LodgingMap from "@/components/page/lodging/LodgingMap";
 import LodgingGoogleMessage from "@/components/page/lodging/LodgingGoogleMessage";
+import { useAppSelector } from "@/lib/redux/store";
 
 export default function page({ params }: { params: { id: string } }) {
   const http_request = useHTTPRequest();
-  const { coordinates } = useCurrentPosition();
   const [lodging, setLodging] = useState<LodgingDetailsType>();
-
+  const user_location = useAppSelector((state) => state.user_location_reducer);
   async function getData() {
     const r = await http_request.get("/api/lodging", {
       id: params.id,
-      lat: coordinates?.lat,
-      lng: coordinates?.lng,
+      latitude: user_location?.latitude,
+      longitude: user_location?.longitude,
     });
-    setLodging(r.data);
+    setLodging(r.data as LodgingDetailsType);
   }
 
   useEffect(() => {

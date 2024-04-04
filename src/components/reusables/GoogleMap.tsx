@@ -1,10 +1,10 @@
 "use client";
-import { LatLngLiteral } from "@/lib/types/google-maps-api-type";
 import { Map, useApiIsLoaded } from "@vis.gl/react-google-maps";
 import React, { useEffect, useState } from "react";
-import useCurrentPosition from "../hooks/useCurrentPosition";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
+import { LocationType } from "@/lib/types/user-detail-type";
+import { useAppSelector } from "@/lib/redux/store";
 
 export default function GoogleMap({
   children,
@@ -15,14 +15,15 @@ export default function GoogleMap({
 }: {
   children?: React.ReactNode;
   className?: string;
-  selected_location?: (s: LatLngLiteral) => void;
+  selected_location?: (s: LocationType) => void;
   zoom: number;
-  center?: LatLngLiteral;
+  center?: LocationType;
 }) {
   const { theme } = useTheme();
-  const [selected, setSelected] = useState<LatLngLiteral>();
-  const { coordinates } = useCurrentPosition();
+  const [selected, setSelected] = useState<LocationType>();
+  const user_location = useAppSelector((state) => state.user_location_reducer);
   const is_loaded = useApiIsLoaded();
+
   useEffect(() => {
     if (selected_location) selected_location(selected!);
   }, [selected]);
@@ -48,17 +49,22 @@ export default function GoogleMap({
         zoom={zoom}
         center={
           center
-            ? { lat: center.lat as number, lng: center.lng as number }
+            ? { lat: center.latitude!, lng: center.longitude! }
             : {
-                lat: coordinates?.lat as number,
-                lng: coordinates?.lng as number,
+                lat: user_location?.latitude!,
+                lng: user_location?.longitude!,
               }
         }
         className={cn(
           "w-full h-full outline-none focus-visible:ring-0 focus-visible:border-none",
           className
         )}
-        onClick={(e) => setSelected(e.detail.latLng!)}
+        onClick={(e) =>
+          setSelected({
+            latitude: e.detail.latLng?.lat,
+            longitude: e.detail.latLng?.lng,
+          })
+        }
       >
         {children}
       </Map>

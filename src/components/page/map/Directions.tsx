@@ -1,6 +1,6 @@
-import useCurrentPosition from "@/components/hooks/useCurrentPosition";
 import UserLocationIcon from "@/components/svg/UserLocationIcon";
-import { LatLngLiteral } from "@/lib/types/google-maps-api-type";
+import { useAppSelector } from "@/lib/redux/store";
+import { LocationType } from "@/lib/types/user-detail-type";
 import { MapPinIcon } from "@heroicons/react/24/outline";
 import {
   AdvancedMarker,
@@ -18,13 +18,13 @@ export default function Directions({
 }: {
   getRoutes: (r: google.maps.DirectionsRoute[]) => void;
   route_index?: number;
-  destination: LatLngLiteral;
+  destination: LocationType;
   children?: React.ReactNode;
 }) {
-  const { coordinates } = useCurrentPosition();
   const { theme } = useTheme();
   const map = useMap();
   const routes_library = useMapsLibrary("routes");
+  const user_location = useAppSelector((state) => state.user_location_reducer);
 
   const [direction_service, setDirectionsService] =
     useState<google.maps.DirectionsService>();
@@ -35,12 +35,12 @@ export default function Directions({
   async function getDirection() {
     const direction_service_response = await direction_service?.route({
       origin: {
-        lat: coordinates?.lat as number,
-        lng: coordinates?.lng as number,
+        lat: user_location?.latitude!,
+        lng: user_location?.longitude!,
       },
       destination: {
-        lat: destination.lat as number,
-        lng: destination.lng as number,
+        lat: destination.latitude!,
+        lng: destination.longitude!,
       },
       travelMode: google.maps.TravelMode.DRIVING,
       provideRouteAlternatives: true,
@@ -86,16 +86,16 @@ export default function Directions({
       {children}
       <AdvancedMarker
         position={{
-          lat: coordinates?.lat as number,
-          lng: coordinates?.lng as number,
+          lat: user_location?.latitude!,
+          lng: user_location?.longitude!,
         }}
       >
         <UserLocationIcon className="h-6 w-auto stroke-primary dark:stroke-background stroke-1" />
       </AdvancedMarker>
       <AdvancedMarker
         position={{
-          lat: destination.lat as number,
-          lng: destination.lng as number,
+          lat: destination.latitude!,
+          lng: destination.longitude!,
         }}
       >
         <MapPinIcon className="h-6 w-auto text-primary dark:text-background" />

@@ -1,6 +1,7 @@
 import FavoriteMark from "@/components/reusables/FavoriteMark";
 import GoogleMark from "@/components/reusables/GoogleMark";
 import PlaceImage from "@/components/reusables/PlaceImage";
+import { CardContent } from "@/components/ui/card";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { StarIcon } from "@heroicons/react/24/outline";
 
@@ -10,7 +11,7 @@ export default function MainContentCard({
   lodging: LodgingDetailsType;
 }) {
   return (
-    <>
+    <CardContent>
       <div className="aspect-square relative overflow-hidden w-full h-auto rounded-t-sm sm:rounded-lg">
         <PlaceImage
           photo={
@@ -36,11 +37,11 @@ export default function MainContentCard({
         <div className="flex items-center justify-between text-xs font-semibold p-1">
           <p>{lodging?.distance?.toFixed(2)} Km away</p>
           <p className="flex items-center space-x-2">
-            {lodging?.ratings.reduce((a, b) => a + Number(b.value), 0)}
+            {lodging?.ratings?.reduce((a, b) => a + Number(b.value), 0)}
             <StarIcon className="h-4 w-auto" />
           </p>
         </div>
       </div>
-    </>
+    </CardContent>
   );
 }

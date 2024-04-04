@@ -9,11 +9,14 @@ import {
 import PlaceFilterMenu from "@/components/reusables/PlaceFilterMenu";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import useCurrentPosition from "@/components/hooks/useCurrentPosition";
 import useHTTPRequest from "@/components/hooks/useHTTPRequest";
 import useInputDebounce from "@/components/hooks/useInputDebounce";
-import { HTTPStatusResponseType } from "@/lib/types/http-request-response";
-import { LodgingDetailsType, LodgingSearchType } from "@/lib/types/lodging-detail-type";
+import {
+  LodgingDetailsType,
+  LodgingSearchType,
+} from "@/lib/types/lodging-detail-type";
+import { APIStatusResponseType } from "@/lib/types/api-request-response";
+import { useAppSelector } from "@/lib/redux/store";
 
 export default function Search({
   disable,
@@ -22,11 +25,10 @@ export default function Search({
 }: {
   disable?: boolean;
   result?: (r: LodgingDetailsType[]) => void;
-  status?: (s: HTTPStatusResponseType) => void;
+  status?: (s: APIStatusResponseType) => void;
 }) {
-  const { coordinates } = useCurrentPosition();
   const http_request = useHTTPRequest();
-
+  const user_location = useAppSelector((state) => state.user_location_reducer);
   const [search, setSearch] = useState<LodgingSearchType>();
   const debounced_value = useInputDebounce(search);
 
@@ -43,11 +45,11 @@ export default function Search({
 
       const r = await http_request.post("/api/place/search", {
         ...debounced_value!,
-        latitude: coordinates?.lat,
-        longitude: coordinates?.lng,
+        latitude: user_location?.latitude,
+        longitude: user_location?.longitude,
       });
 
-      if (r.status === "OK" && result) result!(r.data);
+      if (r.status === "OK" && result) result!(r.data as LodgingDetailsType[]);
       if (status) status(r.status);
     }
 
