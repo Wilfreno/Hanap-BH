@@ -1,8 +1,9 @@
 "use client";
 import Header from "@/components/layout/header/Header";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function layout({
+function MainLayout({
   children,
   auth,
 }: {
@@ -21,11 +22,27 @@ export default function layout({
 
   return (
     <>
-      <Header />
       {children}
       {path_name.startsWith("/login") || path_name.startsWith("/signup")
         ? auth
         : null}
+    </>
+  );
+}
+
+export default function layout({
+  children,
+  auth,
+}: {
+  children: React.ReactNode;
+  auth: React.ReactNode;
+}) {
+  return (
+    <>
+      <Header />
+      <Suspense>
+        <MainLayout auth={auth}>{children}</MainLayout>
+      </Suspense>
     </>
   );
 }

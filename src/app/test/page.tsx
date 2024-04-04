@@ -1,9 +1,12 @@
 import GetUserLocationButton from "@/components/reusables/GetUserLocationDialog";
+import { Suspense } from "react";
 
 export default function page() {
   return (
-    <section>
-      <GetUserLocationButton>hey</GetUserLocationButton>
-    </section>
+    <Suspense>
+      <section>
+        <GetUserLocationButton>hey</GetUserLocationButton>
+      </section>
+    </Suspense>
   );
 }

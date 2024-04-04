@@ -17,5 +17,14 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/nearby",
+        permanent: false
+      },
+    ];
+  },
 };
 module.exports = nextConfig;
