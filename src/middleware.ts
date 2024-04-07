@@ -1,16 +1,29 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { getToken } from "next-auth/jwt";
 
 export async function middleware(request: NextRequest) {
-  const cookies = request.cookies.get("next-auth.session-token");
   const exit = request.nextUrl.searchParams.get("exit");
-  const url_callback = request.nextUrl.searchParams.get("url_callback");
+  const token = await getToken({ req: request });
+  const path_name = request.nextUrl.pathname;
+  const dev_url = process.env.DEVELOPMENT_URL!;
+  const production_url = process.env.PRODUCTION_URL!;
 
-  if (request.nextUrl.pathname.startsWith("/hosting") && !cookies)
+  if (!dev_url && !production_url)
+    throw new Error(
+      "DEVELOPMENT_URL or PRODUCTION_URL is missing from your .env.local file"
+    );
+
+  if (path_name.startsWith("/hosting") && !token)
     return process.env.NODE_ENV === "development"
       ? NextResponse.redirect(
-          `http://127.0.0.1:3000/login?exit=${exit}&url_callback=${url_callback}`
+          `${dev_url}/login?exit=${exit}&url_callback=${path_name}`
         )
       : NextResponse.redirect(
-          `https://hanapbh.vercel.app/login?exit=${exit}&url_callback=${url_callback}`
+          `${production_url}/login?exit=${exit}&url_callback=${path_name}`
         );
+
+  if (path_name.startsWith("/login") && token)
+    return process.env.NODE_ENV === "development"
+      ? NextResponse.redirect(dev_url)
+      : NextResponse.redirect(production_url);
 }

@@ -2,7 +2,7 @@
 
 import { SignUpFormDataType } from "@/lib/types/auth-types";
 import { useRouter, useSearchParams } from "next/navigation";
-import {  useState } from "react";
+import { useState } from "react";
 import SignUpName from "./SignUpName";
 import SignUpEmail from "./SignUpEmail";
 import SignUpBirthday from "./birthday/SignUpBirthday";
@@ -45,79 +45,79 @@ export default function SignUp() {
   const http_request = useHTTPRequest();
 
   return (
-      <Dialog
-        defaultOpen
-        onOpenChange={(e) =>
-          e === false && router.replace(exit ? `${exit}` : "/")
-        }
-      >
-        <DialogContent className="w-[95vw] sm:w-fit space-y-5 rounded-lg justify-center">
-          <DialogHeader className="border-b py-5">
-            <DialogTitle className="text-xl text-center">Sign up</DialogTitle>
-          </DialogHeader>
-          <form
-            className="space-y-5"
-            onSubmit={async (e) => {
-              e.preventDefault();
+    <Dialog
+      defaultOpen
+      onOpenChange={(e) =>
+        e === false && router.replace(exit && exit !== "null" ? exit : "/")
+      }
+    >
+      <DialogContent className="w-[95vw] sm:w-fit space-y-5 rounded-lg justify-center">
+        <DialogHeader className="border-b py-5">
+          <DialogTitle className="text-xl text-center">Sign up</DialogTitle>
+        </DialogHeader>
+        <form
+          className="space-y-5"
+          onSubmit={async (e) => {
+            e.preventDefault();
 
-              const r = await http_request.post("/api/user", form_data);
+            const r = await http_request.post("/api/user", form_data);
 
-              if (r.status === "CONFLICT")
-                router.push(`/login?exit=${exit ? exit : ""}`);
-              if (r.status !== "OK") return;
+            if (r.status === "CONFLICT")
+              router.push(`/login?exit=${exit ? exit : ""}`);
+            if (r.status !== "OK") return;
 
-              const sign_in_promise = await signIn("credentials", {
-                email: form_data.email,
-                password: form_data.password,
-                callbackUrl: `/${url_callback}`,
-                url_callback: !!url_callback,
-              });
+            const sign_in_promise = await signIn("credentials", {
+              email: form_data.email,
+              password: form_data.password,
+              callbackUrl: `/${url_callback}`,
+              url_callback: !!url_callback,
+            });
 
-              if (sign_in_promise?.error) {
-                toast("Sign in Error", {
-                  description: sign_in_promise.error,
-                  action: {
-                    label: "ok",
-                    onClick: () => null,
-                  },
-                });
-                router.push(`/login?exit=${exit ? exit : ""}`);
-                return;
-              }
-
-              toast("Sign up successful", {
-                description: r.message,
+            if (sign_in_promise?.error) {
+              toast("Sign in Error", {
+                description: sign_in_promise.error,
                 action: {
                   label: "ok",
                   onClick: () => null,
                 },
               });
-              if (url_callback) {
-                router.push(url_callback);
-                return;
-              }
-              router.push(exit ? exit : "");
-            }}
+              router.push(`/login?exit=${exit ? exit : ""}`);
+              return;
+            }
+
+            toast("Sign up successful", {
+              description: r.message,
+              action: {
+                label: "ok",
+                onClick: () => null,
+              },
+            });
+            if (url_callback) {
+              router.push(url_callback);
+              return;
+            }
+            router.push(exit ? exit : "");
+          }}
+        >
+          <SignUpName form_data={form_data} setFormData={setFormData} />
+          <SignUpEmail form_data={form_data} setFormData={setFormData} />
+          <SignUpBirthday form_data={form_data} setFormData={setFormData} />
+          <SignUPGender form_data={form_data} setFormData={setFormData} />
+          <SignUpPassword form_data={form_data} setFormData={setFormData} />
+          <SignUpOtp form_data={form_data} setFormData={setFormData} />
+        </form>
+        <DialogFooter className="text-center justify-self-center ">
+          <p>Alread have an account ?</p>
+          <Link
+            href={exit ? `/login?exit=${exit}` : "/"}
+            as={exit ? `/login?exit=${exit}` : "/"}
+            prefetch
+            className="font-bold mx-3"
           >
-            <SignUpName form_data={form_data} setFormData={setFormData} />
-            <SignUpEmail form_data={form_data} setFormData={setFormData} />
-            <SignUpBirthday form_data={form_data} setFormData={setFormData} />
-            <SignUPGender form_data={form_data} setFormData={setFormData} />
-            <SignUpPassword form_data={form_data} setFormData={setFormData} />
-            <SignUpOtp form_data={form_data} setFormData={setFormData} />
-          </form>
-          <DialogFooter className="text-center justify-self-center ">
-            <p>Alread have an account ?</p>
-            <Link
-              href={exit ? `/login?exit=${exit}` : "/"}
-              as={exit ? `/login?exit=${exit}` : "/"}
-              prefetch
-              className="font-bold mx-3"
-            >
-              Login
-            </Link>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+            Login
+          </Link>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

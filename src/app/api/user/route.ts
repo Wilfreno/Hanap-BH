@@ -29,6 +29,7 @@ export async function POST(request: Request) {
         birthday: user.birthday,
         email: user.email,
         password: hashed_pass,
+        provider: "DB",
       },
     });
 
@@ -36,6 +37,7 @@ export async function POST(request: Request) {
       {
         status: "OK",
         message: "New account created successfully",
+        data: new_user,
       },
       { status: 200 }
     );

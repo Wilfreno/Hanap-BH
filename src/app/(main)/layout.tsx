@@ -11,14 +11,6 @@ function MainLayout({
   auth: React.ReactNode;
 }) {
   const path_name = usePathname();
-  const searchParams = useSearchParams();
-  const cb = searchParams.get("callbackUrl");
-  const router = useRouter();
-
-  if (cb)
-    router.replace(
-      `${path_name}?redirect=${cb.replace(window.location.origin + "/", "")}`
-    );
 
   return (
     <>

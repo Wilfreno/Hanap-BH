@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import { PrismaClient, User } from "@prisma/client";
 import exclude from "@/lib/prisma/exclude";
 import { UserDetailType } from "@/lib/types/user-detail-type";
+import { AuthOptions } from "next-auth";
 
 const google_client_id = process.env.GOOGLE_CLIENT_ID;
 if (!google_client_id) throw new Error("Missing GOOGLE_CLIENT_ID");
@@ -19,7 +20,7 @@ if (!google_client_secret) throw new Error("Missing GOOGLE_CLIENT_SECRET");
 const secret = process.env.NEXTAUTH_SECRET;
 if (!secret) throw new Error("Missing NEXTAUTH_SECRET");
 
-const handler = nextAuth({
+ const auth_options: AuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -91,9 +92,9 @@ const handler = nextAuth({
                     photo_url: profile.picture,
                   },
                 },
+                provider: "GOOGLE",
               },
             });
-            console.log("SignIn::", new_user);
           }
         }
         return true;
@@ -128,6 +129,8 @@ const handler = nextAuth({
       }
     },
   },
-});
+};
+
+const handler = nextAuth(auth_options);
 
 export { handler as GET, handler as POST };
