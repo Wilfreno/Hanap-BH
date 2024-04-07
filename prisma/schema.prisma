@@ -23,6 +23,7 @@ model User {
   last_name    String
   birthday     DateTime?
   gender       String?
+  provider     String
   lodgings     Lodging[]
   rated        Rating[]
   contacts     Contact?
