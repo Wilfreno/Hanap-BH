@@ -1,18 +1,28 @@
 "use client";
-
 import useHTTPRequest from "@/components/hooks/useHTTPRequest";
 import { useEffect, useState } from "react";
-import FavoriteMark from "@/components/reusables/FavoriteMark";
-import LodgingImage from "@/components/page/lodging/LodgingImage";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
-import LodgingMap from "@/components/page/lodging/LodgingMap";
 import LodgingGoogleMessage from "@/components/page/lodging/LodgingGoogleMessage";
 import { useAppSelector } from "@/lib/redux/store";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import LodgingImage from "@/components/page/lodging/Image/LodgingImage";
+import LodgingDetails from "@/components/page/lodging/LodgingDetails";
+import LodgingRooms from "@/components/page/lodging/LodgingRooms";
+import LodgingMap from "@/components/page/lodging/LodgingMap";
 
 export default function page({ params }: { params: { id: string } }) {
-  const http_request = useHTTPRequest();
   const [lodging, setLodging] = useState<LodgingDetailsType>();
+  const http_request = useHTTPRequest();
   const user_location = useAppSelector((state) => state.user_location_reducer);
+  const selected_lodging = useAppSelector(
+    (state) => state.selected_lodging_reducer
+  );
+  const tabs_list = [
+    { name: "Details", value: "details" },
+    { name: "Rooms", value: "rooms" },
+    { name: "Map", value: "map" },
+  ];
+
   async function getData() {
     const r = await http_request.get("/api/lodging", {
       id: params.id,
@@ -30,7 +40,10 @@ export default function page({ params }: { params: { id: string } }) {
       const nearby_lodging = JSON.parse(session_data) as LodgingDetailsType[];
       p = nearby_lodging.filter((lodging) => lodging.id === params.id);
     }
-    if (p?.length !== 0) {
+    if (selected_lodging.id) {
+      setLodging(selected_lodging);
+      return;
+    } else if (p?.length !== 0) {
       setLodging(p[0]);
       return;
     }
@@ -40,24 +53,19 @@ export default function page({ params }: { params: { id: string } }) {
 
   return (
     <main className="grid">
-      <LodgingImage lodging={lodging!} />
-      <section className="p-10">
-        <div className="flex justify-between items-start">
-          <div>
-            <h1 className="text-3xl font-bold">{lodging?.name}</h1>
-            <h2 className="text-lg text-muted-foreground">
-              {lodging?.address}
-            </h2>
-          </div>
-          <div className="h-8">
-            <FavoriteMark lodging={lodging!} />
-          </div>
-        </div>
+      <LodgingImage photos={lodging?.photos!} />
+      <Tabs defaultValue="details">
+        <TabsList className="grid grid-cols-3 h-auto">
+          {tabs_list.map((tab) => (
+            <TabsTrigger key={tab.value} value={tab.value} className="text-lg">
+              {tab.name}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        <LodgingDetails lodging={lodging!} />
+        <LodgingRooms lodging={lodging!} />
         <LodgingMap lodging={lodging!} />
-      </section>
-      {lodging?.database === "GOOGLE" && (
-        <LodgingGoogleMessage lodging={lodging} />
-      )}
+      </Tabs>
     </main>
   );
 }

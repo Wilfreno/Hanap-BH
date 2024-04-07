@@ -1,6 +1,6 @@
 import FavoriteMark from "@/components/reusables/FavoriteMark";
 import GoogleMark from "@/components/reusables/GoogleMark";
-import PlaceImage from "@/components/reusables/PlaceImage";
+import CustomImage from "@/components/reusables/CustomImage";
 import { CardContent } from "@/components/ui/card";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { StarIcon } from "@heroicons/react/24/outline";
@@ -13,7 +13,7 @@ export default function MainContentCard({
   return (
     <CardContent>
       <div className="aspect-square relative overflow-hidden w-full h-auto rounded-t-sm sm:rounded-lg">
-        <PlaceImage
+        <CustomImage
           photo={
             lodging?.photos?.length! > 0
               ? lodging?.photos?.[0].photo_url

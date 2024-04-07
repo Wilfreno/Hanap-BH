@@ -58,20 +58,23 @@ export async function POST(request: Request) {
           date_created: null,
         })),
         address: result.vicinity,
-        longitude:new Decimal( result.geometry.location.lng),
-        latitude: new Decimal(result.geometry.location.lng) ,
+        longitude: result.geometry.location.lng,
+        latitude: result.geometry.location.lat,
         house_rules: "",
         ratings: [
           {
             id: "",
-            value: new Decimal(result.rating),
+            value: result.rating,
             user_id: "",
             lodging_id: result.place_id,
             date_created: null,
           },
         ],
         distance: getDistance(
-          { latitude: Number(query.latitude), longitude: Number(query.longitude) },
+          {
+            latitude: Number(query.latitude),
+            longitude: Number(query.longitude),
+          },
           {
             longitude: result.geometry?.location?.lng,
             latitude: result.geometry?.location?.lat,

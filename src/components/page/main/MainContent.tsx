@@ -4,6 +4,9 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { Card } from "@/components/ui/card";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/lib/redux/store";
+import { setSelectedLodging } from "@/lib/redux/slice/selected-lodging";
 
 export default function MainContent({
   lodgings,
@@ -13,6 +16,8 @@ export default function MainContent({
   children?: React.ReactNode;
 }) {
   const MotionCard = motion(Card);
+  const dispatch = useDispatch<AppDispatch>();
+
   return (
     <main className={cn("grid", children && "grid-rows-[auto_1fr]")}>
       {children}
@@ -26,6 +31,7 @@ export default function MainContent({
                 href={`/lodging/${lodging.id}`}
                 as={`/lodging/${lodging.id}`}
                 prefetch
+                onClick={() => dispatch(setSelectedLodging({ ...lodging }))}
               >
                 <MotionCard
                   key={lodging.name}

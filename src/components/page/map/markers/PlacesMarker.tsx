@@ -8,7 +8,7 @@ import { HomeIcon } from "@heroicons/react/24/outline";
 import { AdvancedMarker, useMap } from "@vis.gl/react-google-maps";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-import PlaceImage from "@/components/reusables/PlaceImage";
+import CustomImage from "@/components/reusables/CustomImage";
 import LodgingGoogleMessage from "../../lodging/LodgingGoogleMessage";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 
@@ -58,13 +58,11 @@ export default function PlacesMarker({
             <SheetContent>
               <SheetHeader className="my-5">
                 <div className=" aspect-square w-full h-auto rounded-lg overflow-hidden">
-                  <PlaceImage photo={lodging.photos?.[0].photo_url} />
+                  <CustomImage photo={lodging.photos?.[0].photo_url} />
                 </div>
               </SheetHeader>
               <h1 className="text-lg font-semibold">{lodging.name}</h1>
-              <p className="text-sm text-muted-foreground">
-                {lodging.address}
-              </p>
+              <p className="text-sm text-muted-foreground">{lodging.address}</p>
               <div className="my-5">
                 <p>{lodging.distance.toFixed(2)} km away</p>
               </div>

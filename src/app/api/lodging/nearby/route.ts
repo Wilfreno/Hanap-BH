@@ -68,8 +68,8 @@ export async function GET(request: NextRequest) {
         name: results[i].name,
         lodging_type: "",
         address: results[i].vicinity,
-        latitude: new Decimal(results[i].geometry.location.lat),
-        longitude: new Decimal(results[i].geometry.location.lng),
+        latitude: results[i].geometry.location.lat,
+        longitude: results[i].geometry.location.lng,
         house_rules: "",
         photos: results[i].photos
           ? results[i].photos.map((photo) => ({
@@ -94,7 +94,7 @@ export async function GET(request: NextRequest) {
           ? [
               {
                 id: "",
-                value: new Decimal(results[i].rating),
+                value: results[i].rating,
                 user_id: "",
                 lodging_id: results[i].place_id,
                 date_created: null,
@@ -129,8 +129,14 @@ export async function GET(request: NextRequest) {
     for (let i = 0; i < db_data!?.length; i++) {
       nearby_lodgings.push({
         ...db_data[i],
+        ratings: db_data[i].ratings.map((rating) => ({
+          ...rating,
+          value: Number(rating.value),
+        })),
+        latitude: Number(db_data[i].latitude)!,
+        longitude: Number(db_data[i].longitude)!,
         distance: getDistance(
-          { latitude: Number(lat), longitude: Number(lng) },
+          { latitude: Number(lat)!, longitude: Number(lng)! },
           {
             longitude: Number(db_data[i]?.longitude),
             latitude: Number(db_data[i]?.latitude),

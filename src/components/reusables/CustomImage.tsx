@@ -2,7 +2,7 @@ import Image from "next/image";
 import NoImageSvg from "../svg/NoImageSvg";
 import { cn } from "@/lib/utils";
 
-export default function PlaceImage({
+export default function CustomImage({
   photo,
   className,
   asBackground,

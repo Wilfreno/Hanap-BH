@@ -3,7 +3,7 @@
 import useNearbyLodgingAPI from "@/components/hooks/useNearbyLodgingsAPI";
 import MainContent from "@/components/page/main/MainContent";
 import NoSearchResults from "@/components/page/error/NoSearchResults";
-import LocationAccesDenied from "@/components/reusables/GetUserLocationDialog";
+import LocationAccesDenied from "@/components/reusables/LocationAccessDebied";
 import { Suspense } from "react";
 
 export default function page() {

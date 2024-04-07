@@ -56,8 +56,8 @@ export async function GET(request: NextRequest) {
         name: results[i].name,
         lodging_type: "",
         address: results[i].vicinity,
-        latitude: new Decimal(results[i].geometry.location.lat),
-        longitude: new Decimal(results[i].geometry.location.lng),
+        latitude: results[i].geometry.location.lat,
+        longitude: results[i].geometry.location.lng,
         house_rules: "",
         photos: results[i].photos
           ? results[i].photos.map((photo) => ({
@@ -82,7 +82,7 @@ export async function GET(request: NextRequest) {
           ? [
               {
                 id: "",
-                value: new Decimal(results[i].rating),
+                value: results[i].rating,
                 user_id: "",
                 lodging_id: results[i].place_id,
                 date_created: null,
