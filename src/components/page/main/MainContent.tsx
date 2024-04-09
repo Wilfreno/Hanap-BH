@@ -21,7 +21,7 @@ export default function MainContent({
   return (
     <main className={cn("grid", children && "grid-rows-[auto_1fr]")}>
       {children}
-      <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-32 mb-5 sm:my-[8rem] sm:mx-[5vw]">
+      <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 my-[10dvh] sm:mx-[10vw] gap-y-10">
         <AnimatePresence>
           {lodgings
             .sort((a, b) => a.distance - b.distance)

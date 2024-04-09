@@ -2,7 +2,6 @@
 import useHTTPRequest from "@/components/hooks/useHTTPRequest";
 import { useEffect, useState } from "react";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
-import LodgingGoogleMessage from "@/components/page/lodging/LodgingGoogleMessage";
 import { useAppSelector } from "@/lib/redux/store";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import LodgingImage from "@/components/page/lodging/Image/LodgingImage";
@@ -54,7 +53,7 @@ export default function page({ params }: { params: { id: string } }) {
   return (
     <main className="grid">
       <LodgingImage photos={lodging?.photos!} />
-      <Tabs defaultValue="details">
+      <Tabs defaultValue="details" className="min-h-[92dvh]">
         <TabsList className="grid grid-cols-3 h-auto">
           {tabs_list.map((tab) => (
             <TabsTrigger key={tab.value} value={tab.value} className="text-lg">

@@ -7,8 +7,6 @@ import {
   PlacesAPIResult,
 } from "@/lib/types/google-places-api-type";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
-import { PrismaClient } from "@prisma/client";
-import { Decimal } from "@prisma/client/runtime/library";
 import { type NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
@@ -18,10 +16,11 @@ export async function GET(request: NextRequest) {
 
   try {
     const search_params = request.nextUrl.searchParams;
-    const lat = search_params.get("latitude");
-    const lng = search_params.get("longitude");
+    const latitude = search_params.get("latitude");
+    const longitude = search_params.get("longitude");
+
     const nomitatim_response = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`,
       { cache: "no-store" }
     );
     const nominatim_data: NominatimReverseAPiResponse =
@@ -42,7 +41,7 @@ export async function GET(request: NextRequest) {
     }
 
     const places_api_response = await fetch(
-      `https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=${api_key}&location=${lat}%2C${lng}&type=lodging&rankby=distance`,
+      `https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=${api_key}&location=${latitude}%2C${longitude}&type=lodging&rankby=distance`,
       { cache: "no-store" }
     );
 
@@ -84,7 +83,7 @@ export async function GET(request: NextRequest) {
             }))
           : [],
         distance: getDistance(
-          { latitude: Number(lat), longitude: Number(lng) },
+          { latitude: Number(latitude), longitude: Number(longitude) },
           {
             longitude: results[i].geometry.location.lng,
             latitude: results[i].geometry.location.lat,
@@ -136,7 +135,7 @@ export async function GET(request: NextRequest) {
         latitude: Number(db_data[i].latitude)!,
         longitude: Number(db_data[i].longitude)!,
         distance: getDistance(
-          { latitude: Number(lat)!, longitude: Number(lng)! },
+          { latitude: Number(latitude)!, longitude: Number(longitude)! },
           {
             longitude: Number(db_data[i]?.longitude),
             latitude: Number(db_data[i]?.latitude),

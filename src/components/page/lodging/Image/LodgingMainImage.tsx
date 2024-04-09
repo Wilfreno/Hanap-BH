@@ -14,6 +14,7 @@ export default function LodgingMainImage({
     <>
       {/* Desktop */}
       <motion.div
+        initial={{ height: "70dvh" }}
         animate={photo_enhance ? { height: "70dvh" } : { height: "60dvh" }}
         className="hidden sm:grid aspect-video relative overflow-hidden h-auto rounded-lg"
       >

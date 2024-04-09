@@ -34,7 +34,6 @@ export default function LodgingMap({
 }) {
   const [routes, setRoutes] = useState<google.maps.DirectionsRoute[]>();
   const [route_index, setRouteIndex] = useState(0);
-  const [zoom, setZoom] = useState(false);
   return (
     <LocationAccesDenied>
       <TabsContent value="map" className="grid grid-cols-[auto-1fr] my-10">

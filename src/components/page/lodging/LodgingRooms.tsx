@@ -8,9 +8,9 @@ export default function LodgingRooms({
   lodging: LodgingDetailsType;
 }) {
   return (
-    <TabsContent value="rooms">
+    <TabsContent value="rooms" className="p-10">
       {lodging?.database! === "GOOGLE" && (
-        <div className="my-10">
+        <div className="mt-[30dvh]">
           <LodgingGoogleMessage lodging={lodging} />
         </div>
       )}
