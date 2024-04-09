@@ -10,7 +10,6 @@ export default function page() {
   const { request_status, nearby_lodgings } = useNearbyLodgingAPI();
 
   return (
-    <Suspense>
       <LocationAccesDenied>
         {request_status === "NO_RESULT" ? (
           <NoSearchResults />
@@ -18,6 +17,5 @@ export default function page() {
           <MainContent lodgings={nearby_lodgings} />
         )}
       </LocationAccesDenied>
-    </Suspense>
   );
 }

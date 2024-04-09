@@ -17,8 +17,9 @@ export default function LodgingImageList({
 }) {
   return (
     <motion.div
+      initial={{ width: "90%" }}
       animate={photo_enhance ? { width: "90%" } : { width: "70%" }}
-      className="grid grid-flow-col h-[10dvh] border-2 rounded-lg p-1 space-x-3"
+      className="grid grid-flow-col h-[10dvh] border rounded-lg p-1 space-x-3"
     >
       {photos?.map((photo, index) => (
         <motion.span

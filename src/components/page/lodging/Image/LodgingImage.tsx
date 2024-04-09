@@ -29,7 +29,7 @@ export default function LodgingImage({
     <section
       className={cn("relative grid", photo_enhance ? "h-[92dvh]" : "h-fit p-4")}
     >
-      <div className="grid grid-rows-[1fr_auto] place-items-center">
+      <div className="grid grid-rows-[1fr_auto] place-items-center py-5">
         <LodgingMainImage
           photo_enhance={photo_enhance}
           photo={photos?.[photo_index]!}
