@@ -14,6 +14,12 @@ import { AppDispatch, useAppSelector } from "@/lib/redux/store";
 import { setNewLodging } from "@/lib/redux/slice/new-lodging";
 import UserMarker from "../../map/markers/UserMarker";
 import { PhilippinesPlaces } from "@/lib/types/psgc-types";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function HostingAddress({
   setFormIndex,
@@ -42,17 +48,20 @@ export default function HostingAddress({
             }}
           />
         </div>
-        <div className=" grow relative grid border rounded-lg">
-          <i
-            className="absolute right-2 top-2 dark:text-background z-50 h-6 w-auto cursor-pointer hover:scale-110"
-            onClick={() => setFullSreen((prev) => !prev)}
-          >
-            {fullscreen ? (
-              <ArrowsPointingInIcon className="h-full w-auto" />
-            ) : (
-              <ArrowsPointingOutIcon className="h-full w-auto" />
-            )}
-          </i>
+        <div className="grow relative grid border rounded-lg">
+          <AlertDialog>
+            <AlertDialogTrigger className="absolute right-2 top-2 z-50 cursor-pointer hover:scale-110">
+              <ArrowsPointingOutIcon className="h-6 w-auto" />
+            </AlertDialogTrigger>
+            <AlertDialogContent className="max-w-[90vw] h-[90dvh] p-0">
+              <AlertDialogCancel className="absolute right-2 top-2 z-50 cursor-pointer hover:scale-110 bg-transparent border-none hover:bg-transparent shadow-none">
+                <ArrowsPointingInIcon className="h-6 w-auto" />
+              </AlertDialogCancel>
+              <Map zoom={17} className="rounded-lg">
+                <UserMarker />
+              </Map>
+            </AlertDialogContent>
+          </AlertDialog>
           <Map zoom={17} className="rounded-lg">
             <UserMarker />
           </Map>

@@ -18,8 +18,9 @@ export async function GET(request: NextRequest) {
     const search_params = request.nextUrl.searchParams;
     const latitude = search_params.get("latitude");
     const longitude = search_params.get("longitude");
-    console.log("latitude:", latitude);
-    console.log("longitude:", longitude);
+
+
+
     const nomitatim_response = await fetch(
       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`,
       { cache: "no-store" }
