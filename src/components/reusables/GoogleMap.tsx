@@ -19,15 +19,15 @@ export default function GoogleMap({
   zoom: number;
   center?: LocationType;
 }) {
-  const { theme } = useTheme();
   const [selected, setSelected] = useState<LocationType>();
   const user_location = useAppSelector((state) => state.user_location_reducer);
   const is_loaded = useApiIsLoaded();
 
   useEffect(() => {
-    if (selected_location) selected_location(selected!);
+    if (selected_location && selected) selected_location(selected);
   }, [selected]);
 
+  console.log(center);
   return (
     is_loaded && (
       <Map
@@ -44,7 +44,7 @@ export default function GoogleMap({
         fullscreenControl={false}
         clickableIcons={false}
         disableDefaultUI={true}
-        mapId={theme === "dark" ? "f69c5aeeede1b72c" : "df72364d02a886f2"}
+        mapId={"df72364d02a886f2"}
         gestureHandling="greedy"
         zoom={zoom}
         center={
