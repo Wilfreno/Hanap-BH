@@ -23,8 +23,7 @@ export default function LodgingTypeCard({
       >
         <Link
           className={cn(
-            "flex flex-col justify-center w-full h-full overflow-hidden",
-            hover && "justify-evenly"
+            "flex flex-col justify-center w-full h-full overflow-hidden hover:justify-evenly"
           )}
           href={`${path_name}/${lodging.link}`}
           as={`${path_name}/${lodging.link}`}
