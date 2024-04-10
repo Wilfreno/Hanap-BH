@@ -6,80 +6,93 @@ import {
   ArrowsPointingOutIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  MapPinIcon,
 } from "@heroicons/react/24/outline";
-import { APIProvider, AdvancedMarker } from "@vis.gl/react-google-maps";
-import { useState } from "react";
-import UserMarker from "../../map/markers/UserMarker";
-import { cn } from "@/lib/utils";
-import { usePathname, useRouter } from "next/navigation";
+import { Dispatch, SetStateAction, useState } from "react";
 import Map from "@/components/reusables/Map";
-import { LocationType } from "@/lib/types/user-detail-type";
+import { useDispatch } from "react-redux";
+import { AppDispatch, useAppSelector } from "@/lib/redux/store";
+import { setNewLodging } from "@/lib/redux/slice/new-lodging";
+import UserMarker from "../../map/markers/UserMarker";
+import { PhilippinesPlaces } from "@/lib/types/psgc-types";
 
-export default function HostingAddress() {
-  const api_key: string = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!;
-  if (!api_key) throw new Error("NEXT_PUBLIC_GOOGLE_MAPS_API_KEY missing");
-
-  const [selected, setSelected] = useState<any>();
+export default function HostingAddress({
+  setFormIndex,
+}: {
+  setFormIndex: Dispatch<SetStateAction<number>>;
+}) {
   const [fullscreen, setFullSreen] = useState(false);
-  const [coordinates, setCoordinates] = useState<LocationType>();
-  const router = useRouter();
-  const path_name = usePathname();
-
+  const [street, setStreet] = useState("");
+  const [selected_place, setSelectedPlace] = useState<PhilippinesPlaces>();
+  const dispatch = useDispatch<AppDispatch>();
+  const new_lodging = useAppSelector((state) => state.new_lodging_reducer);
   return (
     <div className="flex flex-col w-full h-full space-y-10">
       <h1 className="text-2xl font-bold mx-auto">Address</h1>
-      <div className="space-y-10 mx-auto">
-        <PhilippinesPlacesMenu selected={(s) => setSelected(s)} />
-        <Input placeholder="Street" className="text-base" />
-      </div>
-      <div
-        className={cn(
-          "w-full h-full flex border rounded-lg bg-muted relative",
-          fullscreen &&
-            "fixed aspect-video h-[80svh] w-auto top-0 left-1/2 -translate-x-1/2 z-50"
-        )}
-      >
-        <i
-          className="absolute right-2 top-2 dark:text-background z-50 h-6 w-auto cursor-pointer hover:scale-110"
-          onClick={() => setFullSreen((prev) => !prev)}
-        >
-          {fullscreen ? (
-            <ArrowsPointingInIcon className="h-full w-auto" />
-          ) : (
-            <ArrowsPointingOutIcon className="h-full w-auto" />
-          )}
-        </i>
-        <APIProvider apiKey={api_key}>
-          <Map
-            zoom={18}
-            className="rounded-lg cursor-pointer"
-            selected_location={(e) => setCoordinates(e)}
+      <section className="flex space-x-10 grow">
+        <div className="flex flex-col py-10 w-[40%]">
+          <PhilippinesPlacesMenu
+            selected={(place) => setSelectedPlace(place)}
+          />
+          <Input
+            placeholder="Street"
+            className="text-base h-[10dvh] my-auto"
+            value={street}
+            onChange={(e) => {
+              setStreet(e.currentTarget.value);
+            }}
+          />
+        </div>
+        <div className=" grow relative grid border rounded-lg">
+          <i
+            className="absolute right-2 top-2 dark:text-background z-50 h-6 w-auto cursor-pointer hover:scale-110"
+            onClick={() => setFullSreen((prev) => !prev)}
           >
-            {coordinates ? (
-              <AdvancedMarker
-                position={{
-                  lat: coordinates.latitude!,
-                  lng: coordinates.longitude!,
-                }}
-              >
-                <MapPinIcon className="h-7 dark:text-background animate-bounce" />
-              </AdvancedMarker>
+            {fullscreen ? (
+              <ArrowsPointingInIcon className="h-full w-auto" />
             ) : (
-              <UserMarker />
+              <ArrowsPointingOutIcon className="h-full w-auto" />
             )}
+          </i>
+          <Map zoom={17} className="rounded-lg">
+            <UserMarker />
           </Map>
-        </APIProvider>
-      </div>
+        </div>
+      </section>
       <div className="flex justify-between">
         <Button
           className="text-base font-semibold"
           type="button"
-          onClick={() => router.replace(`${path_name}?form=name`)}
+          onClick={() => setFormIndex(0)}
         >
           <ChevronLeftIcon className="h-5 w-auto mr-3" /> Back
         </Button>
-        <Button className="text-base font-semibold" type="button">
+        <Button
+          className="text-base font-semibold"
+          type="button"
+          onClick={() => {
+            let address = "";
+
+            if (street) address += street + ",";
+
+            if (selected_place?.barangay.name)
+              address += selected_place!.barangay.name + ",";
+
+            if (selected_place?.municipality_city.name)
+              address += selected_place!.municipality_city.name + ",";
+
+            if (selected_place?.province.name)
+              address += selected_place!.province.name;
+
+            dispatch(
+              setNewLodging({
+                ...new_lodging,
+                address,
+              })
+            );
+            // setFormIndex(2);
+          }}
+          disabled={!street || !selected_place}
+        >
           Next <ChevronRightIcon className="h-5 w-auto ml-3" />
         </Button>
       </div>

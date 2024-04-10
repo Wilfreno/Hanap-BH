@@ -9,8 +9,8 @@ export default function AddPlace() {
   if (status === "unauthenticated") search_params += `?exit=${path_name}`;
   return (
     <Link
-      href={`/hosting${search_params}`}
-      as={`/hosting${search_params}`}
+      href={`/hosting/new${search_params}`}
+      as={`/hosting/new${search_params}`}
       prefetch={true}
       className="items-center hidden lg:inline-flex whitespace-nowrap font-bold text-muted-foreground text-sm hover:drop-shadow-lg mr-20"
     >
