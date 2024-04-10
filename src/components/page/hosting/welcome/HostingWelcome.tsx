@@ -1,13 +1,17 @@
 import LodgingTypes from "@/components/reusables/LodgingTypes";
 import LodgingTypeCard from "../LodgingTypeCard";
+import Link from "next/link";
 
 export default function HostingWelcome() {
   const lodging_type = LodgingTypes();
 
   return (
-    <main className="flex flex-col grow justify-evenly space-y-20 my-[10svh]">
-      <h1 className=" text-3xl mx-auto">
-        Welcome to{" "}
+    <main className="grid">
+      <Link href="/" as="/" prefetch className="underline m-10 text-base">
+        Go back to Hanap-BH
+      </Link>
+      <h1 className="text-3xl mx-auto">
+        Welcome to
         <strong className="italic">
           Hanap-BH
           <sub className="text-sm text-muted-foreground">Hosting</sub>

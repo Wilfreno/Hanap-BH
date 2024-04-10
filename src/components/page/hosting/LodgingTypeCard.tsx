@@ -26,8 +26,8 @@ export default function LodgingTypeCard({
             "flex flex-col justify-center w-full h-full overflow-hidden",
             hover && "justify-evenly"
           )}
-          href={`${path_name}${lodging.link}`}
-          as={`${path_name}${lodging.link}`}
+          href={`${path_name}/${lodging.link}`}
+          as={`${path_name}/${lodging.link}`}
         >
           <h2
             className={cn("text-2xl font-bold mx-auto", hover && "text-base")}

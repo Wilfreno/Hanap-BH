@@ -51,7 +51,7 @@ export default function LocationAccesDenied({
   }, [get_position]);
 
   return location === "off" ? (
-    <main className="grid place-items-center place-content-center space-y-5">
+    <section className="grid place-items-center place-content-center space-y-5">
       <LocationDeniedMapPinIcon className="h-12 w-auto stroke-2 stroke-primary " />
       <div>
         <p className="text-center">Location access is denied</p>
@@ -66,7 +66,7 @@ export default function LocationAccesDenied({
       >
         Turn on
       </Button>
-    </main>
+    </section>
   ) : (
     children
   );

@@ -22,13 +22,18 @@ const nextConfig = {
       {
         source: "/",
         destination: "/nearby",
-        permanent: false
+        permanent: false,
       },
       {
         source: "/lodging",
         destination: "/nearby",
-        permanent: false
-      }
+        permanent: false,
+      },
+      {
+        source: "/hosting",
+        destination: "/hosting/new",
+        permanent: false,
+      },
     ];
   },
 };

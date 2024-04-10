@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import Spinner from "../svg/loading/Spinner";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import { LocationType } from "@/lib/types/user-detail-type";
+import LocationAccesDenied from "./LocationAccessDebied";
 
 const GoogleMap = dynamic(() => import("@/components/reusables/GoogleMap"), {
   loading: () => (
@@ -25,15 +26,17 @@ export default function Map({
   const api_key: string = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!;
   if (!api_key) throw new Error("NEXT_PUBLIC_GOOGLE_MAPS_API_KEY missing");
   return (
-    <APIProvider apiKey={api_key}>
-      <GoogleMap
-        zoom={zoom}
-        center={center}
-        className={className}
-        selected_location={selected_location}
-      >
-        {children}
-      </GoogleMap>
-    </APIProvider>
+    <LocationAccesDenied>
+      <APIProvider apiKey={api_key}>
+        <GoogleMap
+          zoom={zoom}
+          center={center}
+          className={className}
+          selected_location={selected_location}
+        >
+          {children}
+        </GoogleMap>
+      </APIProvider>
+    </LocationAccesDenied>
   );
 }

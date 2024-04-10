@@ -74,6 +74,7 @@ export default function PhilippinesPlacesMenu({
     }
     if (!place_selected.municipality_city.code) {
       setList((prev) => ({ ...prev, barangay: [] }));
+      return
     }
     getList();
   }, [place_selected.municipality_city]);
@@ -88,10 +89,7 @@ export default function PhilippinesPlacesMenu({
         onOpenChange={(e) => setOpen((prev) => ({ ...prev, province: e }))}
       >
         <DropdownMenuTrigger asChild>
-          <Button
-            className={cn("rounded-full focus-visible:ring-0")}
-            variant="ghost"
-          >
+          <Button className={cn("rounded-full focus-visible:ring-0")}>
             {place_selected.province.name ? (
               <p className="font-bold">{place_selected.province.name}</p>
             ) : (
@@ -106,7 +104,7 @@ export default function PhilippinesPlacesMenu({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <ScrollArea className="h-[40svh]">
+          <ScrollArea className="h-[40dvh]">
             <DropdownMenuGroup>
               {list.province
                 ?.sort((a, b) => a.name.localeCompare(b.name))
@@ -154,7 +152,6 @@ export default function PhilippinesPlacesMenu({
               "rounded-full focus-visible:ring-0",
               !place_selected.province.code && "text-muted-foreground"
             )}
-            variant="ghost"
           >
             {place_selected.municipality_city.name ? (
               <p className="font-bold">
@@ -174,8 +171,8 @@ export default function PhilippinesPlacesMenu({
         <DropdownMenuContent>
           <ScrollArea
             className={cn(
-              "h-[40svh]",
-              list.municipality_city.length < 20 && "h-fit"
+              "h-[40dvh]",
+              list.municipality_city.length < 8 && "h-fit"
             )}
           >
             <DropdownMenuGroup>
@@ -224,7 +221,6 @@ export default function PhilippinesPlacesMenu({
               "rounded-full focus-visible:ring-0",
               !place_selected.municipality_city.code && "text-muted-foreground"
             )}
-            variant="ghost"
           >
             {place_selected.barangay.name ? (
               <p className="font-bold">{place_selected.barangay.name}</p>
@@ -241,7 +237,7 @@ export default function PhilippinesPlacesMenu({
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <ScrollArea
-            className={cn("h-[40svh]", list.barangay.length < 20 && "h-fit")}
+            className={cn("h-[40dvh]", list.barangay.length < 8 && "h-fit")}
           >
             <DropdownMenuGroup>
               {list.barangay.map((barangay) => (

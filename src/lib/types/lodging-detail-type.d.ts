@@ -12,11 +12,16 @@ export interface LodgingDetailsType
   database: "GOOGLE" | "POSTGERSQL";
 }
 
-export interface RatingDetailsType extends Omit<Rating, "value">{
-  value : number
+export interface RatingDetailsType extends Omit<Rating, "value"> {
+  value: number;
 }
 
-export type Lodging_Type = "BOARDING_HOUSE";
+export type LodgingType =
+  | "BOARDING_HOUSE"
+  | "APARTMENT"
+  | "HOTEL"
+  | "MOTEL"
+  | "B&B";
 
 export type LodgingSearchType = {
   search_value: string;
