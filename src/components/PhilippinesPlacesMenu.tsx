@@ -5,12 +5,12 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { ScrollArea } from "../ui/scroll-area";
+} from "./ui/dropdown-menu";
+import { ScrollArea } from "./ui/scroll-area";
 import { motion } from "framer-motion";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { cn } from "@/lib/utils";
-import { Button } from "../ui/button";
+import { Button } from "./ui/button";
 import {
   PSGCResponseType,
   PhilippinesPlaces,
@@ -74,7 +74,7 @@ export default function PhilippinesPlacesMenu({
     }
     if (!place_selected.municipality_city.code) {
       setList((prev) => ({ ...prev, barangay: [] }));
-      return
+      return;
     }
     getList();
   }, [place_selected.municipality_city]);

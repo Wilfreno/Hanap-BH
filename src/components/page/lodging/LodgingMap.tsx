@@ -1,4 +1,4 @@
-import Map from "@/components/reusables/Map";
+import Map from "@/components/Map";
 import Directions from "../map/Directions";
 import { MapPinIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
@@ -15,7 +15,7 @@ import { CaretSortIcon } from "@radix-ui/react-icons";
 import DirectionIcon from "@/components/svg/DirectionIcon";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { TabsContent } from "@/components/ui/tabs";
-import LocationAccesDenied from "@/components/reusables/LocationAccessDebied";
+import LocationAccesDenied from "@/components/LocationAccessDebied";
 import {
   ArrowsPointingInIcon,
   ArrowsPointingOutIcon,

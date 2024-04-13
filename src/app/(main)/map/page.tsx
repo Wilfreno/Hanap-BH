@@ -2,7 +2,7 @@
 import useNearbyLodgingAPI from "@/components/hooks/useNearbyLodgingsAPI";
 import Markers from "@/components/page/map/markers/Markers";
 import Search from "@/components/page/search/Search";
-import Map from "@/components/reusables/Map";
+import Map from "@/components/Map";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { ControlPosition, MapControl, useMap } from "@vis.gl/react-google-maps";
 import { useRouter } from "next/navigation";

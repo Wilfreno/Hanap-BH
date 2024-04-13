@@ -2,7 +2,10 @@ import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import selectedLodging from "./selected-lodging";
 
-const initialState: Omit<LodgingDetailsType, "id" | "distance" | "date_created"> = {
+const initialState: Omit<
+  LodgingDetailsType,
+  "id" | "distance" | "date_created"
+> = {
   address: "",
   house_rules: "",
   latitude: 0,
@@ -19,7 +22,9 @@ export const new_lodging = createSlice({
   reducers: {
     setNewLodging: (
       _,
-      action: PayloadAction<Omit<LodgingDetailsType, "id" | "distance" | "date_created">>
+      action: PayloadAction<
+        Omit<LodgingDetailsType, "id" | "distance" | "date_created">
+      >
     ) => {
       return action.payload;
     },

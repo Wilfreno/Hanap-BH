@@ -1,6 +1,6 @@
-import FavoriteMark from "@/components/reusables/FavoriteMark";
-import GoogleMark from "@/components/reusables/GoogleMark";
-import CustomImage from "@/components/reusables/CustomImage";
+import FavoriteMark from "@/components/FavoriteMark";
+import GoogleMark from "@/components/GoogleMark";
+import CustomImage from "@/components/CustomImage";
 import { CardContent } from "@/components/ui/card";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { StarIcon } from "@heroicons/react/24/outline";

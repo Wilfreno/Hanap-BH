@@ -14,6 +14,7 @@ export default function LodgingTypeCard({
   const [hover, setHover] = useState(false);
   const MotionCard = motion(CardContent);
   const path_name = usePathname();
+  
   return (
     <Card key={lodging.link}>
       <MotionCard

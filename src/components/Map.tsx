@@ -1,10 +1,10 @@
 import dynamic from "next/dynamic";
-import Spinner from "../svg/loading/Spinner";
+import Spinner from "./svg/loading/Spinner";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import { LocationType } from "@/lib/types/user-detail-type";
 import LocationAccesDenied from "./LocationAccessDebied";
 
-const GoogleMap = dynamic(() => import("@/components/reusables/GoogleMap"), {
+const GoogleMap = dynamic(() => import("@/components/GoogleMap"), {
   loading: () => (
     <Spinner className="w-[10vw] h-auto self-center justify-self-center fill-primary" />
   ),

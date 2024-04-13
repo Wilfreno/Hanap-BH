@@ -1,7 +1,7 @@
-import { Button } from "../ui/button";
-import { DialogClose } from "../ui/dialog";
-import { Label } from "../ui/label";
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { Button } from "./ui/button";
+import { DialogClose } from "./ui/dialog";
+import { Label } from "./ui/label";
+import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import LodgingTypes from "./LodgingTypes";
 import PhilippinesPlacesMenu from "./PhilippinesPlacesMenu";
 import { Dispatch, SetStateAction, useState } from "react";

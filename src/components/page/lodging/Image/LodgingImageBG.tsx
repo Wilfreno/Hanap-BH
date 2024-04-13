@@ -1,4 +1,4 @@
-import CustomImage from "@/components/reusables/CustomImage";
+import CustomImage from "@/components/CustomImage";
 import { Photo } from "@prisma/client";
 import { motion } from "framer-motion";
 

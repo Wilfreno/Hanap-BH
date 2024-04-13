@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Button } from "../ui/button";
+import { Button } from "./ui/button";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import LocationDeniedMapPinIcon from "../svg/LocationDeniedMapPinIcon";
+import LocationDeniedMapPinIcon from "./svg/LocationDeniedMapPinIcon";
 import { setUserLocation } from "@/lib/redux/slice/user-location";
 
 export default function LocationAccesDenied({

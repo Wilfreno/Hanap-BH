@@ -21,7 +21,8 @@ export type LodgingType =
   | "APARTMENT"
   | "HOTEL"
   | "MOTEL"
-  | "B&B";
+  | "B&B"
+  | string;
 
 export type LodgingSearchType = {
   search_value: string;

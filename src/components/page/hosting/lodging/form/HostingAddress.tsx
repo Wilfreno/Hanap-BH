@@ -1,4 +1,4 @@
-import PhilippinesPlacesMenu from "@/components/reusables/PhilippinesPlacesMenu";
+import PhilippinesPlacesMenu from "@/components/PhilippinesPlacesMenu";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -8,11 +8,11 @@ import {
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
 import { Dispatch, SetStateAction, useState } from "react";
-import Map from "@/components/reusables/Map";
+import Map from "@/components/Map";
 import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/lib/redux/store";
 import { setNewLodging } from "@/lib/redux/slice/new-lodging";
-import UserMarker from "../../map/markers/UserMarker";
+import UserMarker from "../../../map/markers/UserMarker";
 import { PhilippinesPlaces } from "@/lib/types/psgc-types";
 import {
   AlertDialog,

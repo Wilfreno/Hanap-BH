@@ -8,7 +8,7 @@ import { HomeIcon } from "@heroicons/react/24/outline";
 import { AdvancedMarker, useMap } from "@vis.gl/react-google-maps";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-import CustomImage from "@/components/reusables/CustomImage";
+import CustomImage from "@/components/CustomImage";
 import LodgingGoogleMessage from "../../lodging/LodgingGoogleMessage";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 
