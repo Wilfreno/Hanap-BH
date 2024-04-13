@@ -6,7 +6,7 @@ import {
   AdjustmentsHorizontalIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
-import PlaceFilterMenu from "@/components/reusables/PlaceFilterMenu";
+import PlaceFilterMenu from "@/components/PlaceFilterMenu";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import useHTTPRequest from "@/components/hooks/useHTTPRequest";

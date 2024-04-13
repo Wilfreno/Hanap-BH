@@ -1,5 +1,5 @@
-import HostingWelcome from "@/components/page/hosting/welcome/HostingWelcome";
+import HostingLodgingForm from "@/components/page/hosting/lodging/form/HostingLodgingForm";
 
 export default function page() {
-  return <HostingWelcome />;
+  return <HostingLodgingForm />;
 }

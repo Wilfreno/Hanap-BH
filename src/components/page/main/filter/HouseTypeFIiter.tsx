@@ -1,4 +1,4 @@
-import LodgingTypes from "@/components/reusables/LodgingTypes";
+import LodgingTypes from "@/components/LodgingTypes";
 import {
   DropdownMenu,
   DropdownMenuContent,

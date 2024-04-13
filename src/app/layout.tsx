@@ -1,13 +1,13 @@
-import React, { Suspense } from "react";
+import React from "react";
 import "./globals.css";
 import { Manrope } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
-
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { Toaster } from "@/components/ui/sonner";
 import NextAuthProvider from "@/components/page/auth/NextAuthProvider";
 import ReduxProvidex from "@/components/ReduxProvidex";
+import { Toaster } from "@/components/ui/toaster";
+
 const poppins = Manrope({
   subsets: ["latin"],
   weight: ["300", "400", "700"],

@@ -1,6 +1,6 @@
 import { TabsContent } from "@/components/ui/tabs";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
-import FavoriteMark from "@/components/reusables/FavoriteMark";
+import FavoriteMark from "@/components/FavoriteMark";
 import LodgingGoogleMessage from "./LodgingGoogleMessage";
 
 export default function LodgingDetails({

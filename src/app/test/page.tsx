@@ -1,4 +1,4 @@
-import GetUserLocationButton from "@/components/reusables/LocationAccessDebied";
+import GetUserLocationButton from "@/components/LocationAccessDebied";
 import { Suspense } from "react";
 
 export default function page() {

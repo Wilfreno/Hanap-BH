@@ -1,4 +1,4 @@
-import LodgingTypes from "@/components/reusables/LodgingTypes";
+import LodgingTypes from "@/components/LodgingTypes";
 import LodgingTypeCard from "../LodgingTypeCard";
 import Link from "next/link";
 

@@ -1,4 +1,4 @@
-import CustomImage from "@/components/reusables/CustomImage";
+import CustomImage from "@/components/CustomImage";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";

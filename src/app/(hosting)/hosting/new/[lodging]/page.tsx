@@ -1,6 +1,6 @@
 "use client";
-import HostingForm from "@/components/page/hosting/form/HostingForm";
-import LodgingTypes from "@/components/reusables/LodgingTypes";
+import HostingForm from "@/components/page/hosting/lodging/form/HostingLodgingForm";
+import LodgingTypes from "@/components/LodgingTypes";
 import { setNewLodging } from "@/lib/redux/slice/new-lodging";
 import { AppDispatch, useAppSelector } from "@/lib/redux/store";
 import { useSession } from "next-auth/react";

@@ -1,9 +1,5 @@
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "../ui/hover-card";
-import googleSvg from "../../../public/icons/social-media/google-color-svgrepo-com.svg";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card";
+import googleSvg from "../../public/icons/social-media/google-color-svgrepo-com.svg";
 import Image from "next/image";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 
