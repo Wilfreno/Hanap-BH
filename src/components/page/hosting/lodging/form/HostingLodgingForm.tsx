@@ -1,20 +1,16 @@
 "use client";
 import HostingLodgingName from "./HostingLodgingName";
 import HostingHouseRules from "./HostingLodgingHouseRules";
-import HostingPhotos from "./HostingLodgingPhotos";
+import HostingPhotos from "./photos/HostingLodgingPhotos";
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/lib/redux/store";
-import useHTTPRequest from "@/components/hooks/useHTTPRequest";
 import HostingLodgingType from "./HostingLodgingType";
-import { useToast } from "@/components/ui/use-toast";
 import { useRef } from "react";
 import HostingLodgingLocation from "./HostingLodgingLocation";
 
 export default function HostingLodgingForm() {
   const new_lodging = useAppSelector((state) => state.new_lodging_reducer);
-  const http_request = useHTTPRequest();
   const form_ref = useRef<HTMLFormElement>(null);
-  const { toast } = useToast();
 
   return (
     <form

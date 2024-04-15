@@ -2,10 +2,10 @@ import nextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
-import { PrismaClient, User } from "@prisma/client";
+import { User } from "@prisma/client";
 import exclude from "@/lib/prisma/exclude";
-import { UserDetailType } from "@/lib/types/user-detail-type";
 import { AuthOptions } from "next-auth";
+import prisma from "@/lib/prisma/client";
 
 const google_client_id = process.env.GOOGLE_CLIENT_ID;
 if (!google_client_id) throw new Error("Missing GOOGLE_CLIENT_ID");
@@ -20,7 +20,7 @@ if (!google_client_secret) throw new Error("Missing GOOGLE_CLIENT_SECRET");
 const secret = process.env.NEXTAUTH_SECRET;
 if (!secret) throw new Error("Missing NEXTAUTH_SECRET");
 
- const auth_options: AuthOptions = {
+const auth_options: AuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -34,9 +34,9 @@ if (!secret) throw new Error("Missing NEXTAUTH_SECRET");
       },
       async authorize(credentials) {
         try {
-          const prisma = new PrismaClient();
+          const prisma_client = prisma;
 
-          const user = await prisma.user.findFirst({
+          const user = await prisma_client.user.findFirst({
             where: { email: { startsWith: credentials?.email } },
           });
 
@@ -76,13 +76,13 @@ if (!secret) throw new Error("Missing NEXTAUTH_SECRET");
       try {
         if (profile) {
           const { email } = user;
-          const prisma = new PrismaClient();
-          const db_user = await prisma.user.findFirst({
+          const prisma_client = prisma;
+          const db_user = await prisma_client.user.findFirst({
             where: { email: { startsWith: email! } },
           });
 
           if (!db_user) {
-            const new_user = await prisma.user.create({
+            await prisma_client.user.create({
               data: {
                 email: email!,
                 first_name: profile.given_name,
@@ -104,8 +104,8 @@ if (!secret) throw new Error("Missing NEXTAUTH_SECRET");
     },
     async jwt({ token, profile, user }) {
       if (profile) {
-        const prisma = new PrismaClient();
-        const db_user = await prisma.user.findFirst({
+        const prisma_client = prisma;
+        const db_user = await prisma_client.user.findFirst({
           where: { email: { startsWith: profile.email } },
           include: {
             photo: true,

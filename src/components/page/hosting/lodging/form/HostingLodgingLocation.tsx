@@ -125,7 +125,7 @@ export default function HostingLodgingLocation() {
               value={
                 coordinates?.latitude
                   ? coordinates.latitude
-                  : user_location.latitude
+                  : user_location.latitude || ""
               }
               onChange={(e) =>
                 setCoordinates((prev) => ({
@@ -157,7 +157,7 @@ export default function HostingLodgingLocation() {
               value={
                 coordinates?.longitude
                   ? coordinates.longitude
-                  : user_location.longitude
+                  : user_location.longitude || ""
               }
               onChange={(e) => {
                 setCoordinates((prev) => ({
