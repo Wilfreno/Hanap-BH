@@ -122,27 +122,7 @@ export default function HostingAddress({
           className="text-base font-semibold"
           type="button"
           onClick={() => {
-            let address = "";
-
-            if (street) address += street + ",";
-
-            if (selected_place?.barangay.name)
-              address += selected_place!.barangay.name + ",";
-
-            if (selected_place?.municipality_city.name)
-              address += selected_place!.municipality_city.name + ",";
-
-            if (selected_place?.province.name)
-              address += selected_place!.province.name;
-
-            dispatch(
-              setNewLodging({
-                ...new_lodging,
-                address,
-                latitude: coordinates?.latitude!,
-                longitude: coordinates?.longitude!,
-              })
-            );
+           
             // setFormIndex(2);
           }}
           disabled={!street || !selected_place || !coordinates}

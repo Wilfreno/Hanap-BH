@@ -16,12 +16,14 @@ export default function Map({
   center,
   selected_location,
   children,
+  map,
 }: {
   children?: React.ReactNode;
   selected_location?: (s: LocationType) => void;
   zoom: number;
   center?: LocationType;
   className?: string;
+  map?: (m: google.maps.Map) => void;
 }) {
   const api_key: string = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!;
   if (!api_key) throw new Error("NEXT_PUBLIC_GOOGLE_MAPS_API_KEY missing");
@@ -33,6 +35,7 @@ export default function Map({
           center={center}
           className={className}
           selected_location={selected_location}
+          map={map}
         >
           {children}
         </GoogleMap>

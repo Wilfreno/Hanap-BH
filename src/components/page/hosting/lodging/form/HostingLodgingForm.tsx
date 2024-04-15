@@ -8,6 +8,7 @@ import useHTTPRequest from "@/components/hooks/useHTTPRequest";
 import HostingLodgingType from "./HostingLodgingType";
 import { useToast } from "@/components/ui/use-toast";
 import { useRef } from "react";
+import HostingLodgingLocation from "./HostingLodgingLocation";
 
 export default function HostingLodgingForm() {
   const new_lodging = useAppSelector((state) => state.new_lodging_reducer);
@@ -34,7 +35,7 @@ export default function HostingLodgingForm() {
       <HostingLodgingType />
       <HostingPhotos />
       <HostingHouseRules />
-
+      <HostingLodgingLocation />
       <Button className="justify-self-end font-bold text-base">Save</Button>
     </form>
   );

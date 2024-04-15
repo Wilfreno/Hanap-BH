@@ -53,6 +53,7 @@ export default function HostingLodgingName() {
           className="aspect-square p-2"
           disabled={!name}
           onClick={() => setEdit((prev) => !prev)}
+          type="button"
         >
           <PencilIcon className="h-full" />
         </Button>
