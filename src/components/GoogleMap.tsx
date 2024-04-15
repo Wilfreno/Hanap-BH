@@ -1,5 +1,5 @@
 "use client";
-import { Map, useApiIsLoaded } from "@vis.gl/react-google-maps";
+import { Map, useApiIsLoaded, useMap } from "@vis.gl/react-google-maps";
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
@@ -12,24 +12,29 @@ export default function GoogleMap({
   selected_location,
   zoom,
   center,
+  map,
 }: {
   children?: React.ReactNode;
   className?: string;
   selected_location?: (s: LocationType) => void;
   zoom: number;
   center?: LocationType;
+  map?: (m: google.maps.Map) => void;
 }) {
   const [selected, setSelected] = useState<LocationType>();
   const user_location = useAppSelector((state) => state.user_location_reducer);
   const is_loaded = useApiIsLoaded();
-
+  const m = useMap();
   useEffect(() => {
     if (selected_location && selected) selected_location(selected);
   }, [selected]);
 
-  console.log(center);
+  if (map) map(m!);
+
   return (
-    is_loaded && (
+    is_loaded &&
+    user_location.latitude &&
+    user_location.longitude && (
       <Map
         restriction={{
           latLngBounds: {
@@ -44,6 +49,7 @@ export default function GoogleMap({
         fullscreenControl={false}
         clickableIcons={false}
         disableDefaultUI={true}
+        draggableCursor="pointer"
         mapId={"df72364d02a886f2"}
         gestureHandling="greedy"
         zoom={zoom}
@@ -56,7 +62,7 @@ export default function GoogleMap({
               }
         }
         className={cn(
-          "w-full h-full outline-none focus-visible:ring-0 focus-visible:border-none",
+          "w-full h-full outline-none focus-visible:ring-0 focus-visible:border-none ",
           className
         )}
         onClick={(e) =>

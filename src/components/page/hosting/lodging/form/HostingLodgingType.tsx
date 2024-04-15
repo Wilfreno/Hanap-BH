@@ -13,7 +13,7 @@ import {
 import { setNewLodging } from "@/lib/redux/slice/new-lodging";
 import { AppDispatch, useAppSelector } from "@/lib/redux/store";
 import { cn } from "@/lib/utils";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 export default function HostingLodgingType() {

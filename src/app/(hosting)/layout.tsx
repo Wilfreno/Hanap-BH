@@ -1,4 +1,3 @@
-import Logo from "@/components/layout/header/logo/Logo";
 import Menu from "@/components/layout/header/menu/Menu";
 import HostingSideNavBar from "@/components/page/hosting/HostingSideNavBar";
 import { Separator } from "@/components/ui/separator";
