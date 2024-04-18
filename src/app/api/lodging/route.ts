@@ -93,6 +93,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: Request) {
   try {
     const lodging: Lodging = await request.json();
+
     const prisma = new PrismaClient();
     const new_lodging = await prisma.lodging.create({
       data: {
@@ -110,7 +111,7 @@ export async function POST(request: Request) {
       { status: 200 }
     );
   } catch (error) {
-    if (process.env.NODE_ENV === "development") throw error;
+    if (process.env.NODE_ENV === "development") console.error(error);
     return NextResponse.json(
       { status: "INTERNAL_SERVER_ERROR", message: error },
       { status: 500 }

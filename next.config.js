@@ -31,7 +31,7 @@ const nextConfig = {
       },
       {
         source: "/hosting",
-        destination: "/hosting/new",
+        destination: "/hosting/manage",
         permanent: false,
       },
     ];
