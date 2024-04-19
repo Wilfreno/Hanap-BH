@@ -20,7 +20,7 @@ if (!google_client_secret) throw new Error("Missing GOOGLE_CLIENT_SECRET");
 const secret = process.env.NEXTAUTH_SECRET;
 if (!secret) throw new Error("Missing NEXTAUTH_SECRET");
 
-const auth_options: AuthOptions = {
+export const auth_options: AuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",

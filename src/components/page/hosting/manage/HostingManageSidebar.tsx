@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import AddLodging from "./HostingManageAddLodging";
+import AddLodging from "./AddLodging";
 import { PlusIcon } from "@heroicons/react/24/outline";
 
 export default function HostingManageSideBar() {

@@ -1,3 +1,5 @@
+"use client";
+
 import Spinner from "@/components/svg/loading/Spinner";
 import { Button } from "@/components/ui/button";
 import {
@@ -55,7 +57,7 @@ export default function AddLodging({
     update({ lodgings: lodging });
     setLoading(false);
     close_ref.current?.click();
-    // router.push(`/hosting/new/${lodging_data.id}`);
+    router.push(`/hosting/${lodging_data.id}`);
   }
 
   return (

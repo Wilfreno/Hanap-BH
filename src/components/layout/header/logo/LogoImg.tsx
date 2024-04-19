@@ -1,3 +1,4 @@
+"use client"
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import logoDark from "../../../../../public/logo/hanap-bh-dark.png";

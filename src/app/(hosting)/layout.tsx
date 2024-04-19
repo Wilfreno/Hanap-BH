@@ -1,10 +1,15 @@
+import LogoImg from "@/components/layout/header/logo/LogoImg";
 import Menu from "@/components/layout/header/menu/Menu";
 import { Separator } from "@/components/ui/separator";
+import Link from "next/link";
 
 export default function layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <header className="flex justify-end p-5">
+      <header className="flex justify-between p-5">
+        <Link href="/">
+          <LogoImg />
+        </Link>
         <Menu />
       </header>
       <main className="grid grid-rows-[auto_auto_1fr]">
@@ -15,9 +20,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
           </h1>
         </section>
         <Separator className="w-[95vw] justify-self-center my-6" />
-        <section className="grid grid-cols-[auto_1fr]">
-          {children}
-        </section>
+        {children}
       </main>
     </>
   );
