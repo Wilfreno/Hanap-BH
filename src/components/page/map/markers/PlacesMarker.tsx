@@ -26,8 +26,8 @@ export default function PlacesMarker({
     const lodging = lodgings.filter((p) => p.id === lodging_id);
     if (lodging.length > 0)
       map?.panTo({
-        lat: Number(lodging[0].latitude),
-        lng: Number(lodging[0].latitude),
+        lat: Number(lodging[0].location.latitude),
+        lng: Number(lodging[0].location.latitude),
       });
   }, [lodgings]);
 
@@ -37,14 +37,14 @@ export default function PlacesMarker({
         <AdvancedMarker
           key={lodging.id}
           position={{
-            lat: Number(lodging.latitude),
-            lng: Number(lodging.longitude),
+            lat: Number(lodging.location.latitude),
+            lng: Number(lodging.location.longitude),
           }}
           onClick={() => {
             router.replace(`/map?lodging_id=${lodging.id}`);
             map?.panTo({
-              lat: Number(lodging.latitude),
-              lng: Number(lodging.longitude),
+              lat: Number(lodging.location.latitude),
+              lng: Number(lodging.location.longitude),
             });
           }}
         >
@@ -58,11 +58,11 @@ export default function PlacesMarker({
             <SheetContent>
               <SheetHeader className="my-5">
                 <div className=" aspect-square w-full h-auto rounded-lg overflow-hidden">
-                  <CustomImage photo={lodging.photos?.[0].photo_url} />
+                  <CustomImage database={lodging.database} url={lodging.photos?.[0].photo_url} />
                 </div>
               </SheetHeader>
               <h1 className="text-lg font-semibold">{lodging.name}</h1>
-              <p className="text-sm text-muted-foreground">{lodging.address}</p>
+              <p className="text-sm text-muted-foreground">{lodging.location.address}</p>
               <div className="my-5">
                 <p>{lodging.distance.toFixed(2)} km away</p>
               </div>

@@ -13,7 +13,7 @@ export default function LodgingDetails({
       <div className="grow flex justify-between items-start">
         <div>
           <h1 className="text-3xl font-bold">{lodging?.name}</h1>
-          <h2 className="text-lg text-muted-foreground">{lodging?.address}</h2>
+          <h2 className="text-lg text-muted-foreground">{lodging?.location.address}</h2>
         </div>
         <div className="h-8">
           <FavoriteMark lodging={lodging!} />

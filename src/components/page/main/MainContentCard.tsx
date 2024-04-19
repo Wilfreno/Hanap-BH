@@ -14,7 +14,8 @@ export default function MainContentCard({
     <CardContent>
       <div className="aspect-square relative overflow-hidden w-full h-auto rounded-t-sm sm:rounded-lg">
         <CustomImage
-          photo={
+          database={lodging.database}
+          url={
             lodging?.photos?.length! > 0
               ? lodging?.photos?.[0].photo_url
               : undefined
@@ -31,7 +32,7 @@ export default function MainContentCard({
         <div>
           <h1 className="font-bold sm:text-sm truncate">{lodging.name}</h1>
           <h2 className="text-xs text-muted-foreground truncate">
-            {lodging?.address}
+            {lodging?.location.address}
           </h2>
         </div>
         <div className="flex items-center justify-between text-xs font-semibold p-1">

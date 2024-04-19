@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { useAppSelector } from "@/lib/redux/store";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import LodgingImage from "@/components/page/lodging/Image/LodgingImage";
 import LodgingDetails from "@/components/page/lodging/LodgingDetails";
 import LodgingRooms from "@/components/page/lodging/LodgingRooms";
 import LodgingMap from "@/components/page/lodging/LodgingMap";
@@ -52,7 +51,7 @@ export default function page({ params }: { params: { id: string } }) {
 
   return (
     <main className="grid">
-      <LodgingImage photos={lodging?.photos!} />
+      {/* <LodgingImage database={lodging?.database!} photos={lodging?.photos!} />
       <Tabs defaultValue="details" className="min-h-[92dvh]">
         <TabsList className="grid grid-cols-3 h-auto">
           {tabs_list.map((tab) => (
@@ -64,7 +63,7 @@ export default function page({ params }: { params: { id: string } }) {
         <LodgingDetails lodging={lodging!} />
         <LodgingRooms lodging={lodging!} />
         <LodgingMap lodging={lodging!} />
-      </Tabs>
+      </Tabs> */}
     </main>
   );
 }

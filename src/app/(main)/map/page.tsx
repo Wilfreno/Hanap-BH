@@ -17,14 +17,14 @@ export default function page() {
 
   return (
     <main className="grid">
-      <Map zoom={17}>
+      {/* <Map zoom={17}>
         <MapControl position={ControlPosition.TOP_RIGHT}>
           <section className="mx-10">
             <Search result={(r) => setResult(r)} />
           </section>
         </MapControl>
         <Markers lodgings={result ? result : nearby_lodgings} />
-      </Map>
+      </Map> */}
     </main>
   );
 }

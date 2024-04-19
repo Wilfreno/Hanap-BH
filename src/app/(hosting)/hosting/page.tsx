@@ -1,9 +1,9 @@
-import { auth_options } from "@/app/api/auth/[...nextauth]/route";
 import HostingLodgingList from "@/components/page/hosting/lodging/list/HostingLodgingList";
 import AddLodging from "@/components/page/hosting/lodging/AddLodging";
 import Spinner from "@/components/svg/loading/Spinner";
 import { Button } from "@/components/ui/button";
 import { getServerSession } from "next-auth";
+import auth_options from "@/lib/next-auth/next-auth-options";
 
 export default async function page() {
   const data = await getServerSession(auth_options);
