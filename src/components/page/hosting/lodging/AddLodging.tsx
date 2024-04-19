@@ -46,11 +46,13 @@ export default function AddLodging({
       owner_id: data?.user.id,
       name,
       lodging_type: "",
-      latitude: 0,
-      longitude: 0,
-      address: "",
+      location: {
+        latitude: 0,
+        longitude: 0,
+        address: "",
+      },
       house_rules: "",
-    } as Omit<LodgingDetailsType, "id">);
+    } as Omit<LodgingDetailsType, "id" | "location.id">);
 
     const lodging_data = lodging.data as LodgingDetailsType;
 

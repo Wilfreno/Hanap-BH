@@ -37,7 +37,6 @@ model Lodging {
   owner_id     String
   name         String
   lodging_type String
-  address      String
   rooms        Room[]
   ratings      Rating[]
   photos       Photo[]

@@ -12,21 +12,35 @@ export async function GET(request: NextRequest) {
   try {
     const search_params = request.nextUrl.searchParams;
     const id = search_params.get("id");
-    const lat = search_params.get("lat");
-    const lng = search_params.get("lng");
+    const latitude = search_params.get("latitude");
+    const longitude = search_params.get("longitude");
+
+    if (!id || !latitude || !longitude)
+      return NextResponse.json(
+        {
+          status: "BAD_REQUEST",
+          message: "id, latitude, & longitude url parameter is required",
+        },
+        { status: 400 }
+      );
 
     const prisma = new PrismaClient();
-    let data: LodgingDetailsType | null | Lodging;
+    let data;
 
-    data = await prisma.lodging.findFirst({ where: { id: id! } });
+    data = await prisma.lodging.findFirst({
+      where: { id: id! },
+      include: { location: true },
+      relationLoadStrategy: "join",
+    });
+
     data = {
       ...data!,
       database: "POSTGERSQL",
       distance: getDistance(
-        { latitude: Number(lat)!, longitude: Number(lng)! },
+        { latitude: Number(latitude)!, longitude: Number(longitude)! },
         {
-          latitude: Number(data?.latitude)!,
-          longitude: Number(data?.latitude)!,
+          latitude: Number(data?.location!.latitude!)!,
+          longitude: Number(data?.location!.longitude)!,
         }
       ),
     };
@@ -51,9 +65,16 @@ export async function GET(request: NextRequest) {
         owner_id: "",
         name: result.name,
         lodging_type: "",
-        address: result.vicinity,
-        longitude: new Decimal(result.geometry.location.lng),
-        latitude: new Decimal(result.geometry.location.lat),
+        location: {
+          id: result.place_id,
+          address: result.vicinity,
+          province: "",
+          municipality_city: "",
+          barangay: "",
+          street: "",
+          longitude: new Decimal(result.geometry.location.lng),
+          latitude: new Decimal(result.geometry.location.lat),
+        },
         house_rules: "",
         photos: result.photos.map((photo) => ({
           id: photo.photo_reference,
@@ -66,7 +87,7 @@ export async function GET(request: NextRequest) {
           date_created: null,
         })),
         distance: getDistance(
-          { latitude: Number(lat)!, longitude: Number(lng)! },
+          { latitude: Number(latitude)!, longitude: Number(longitude)! },
           {
             latitude: result.geometry.location.lat,
             longitude: result.geometry.location.lng,
@@ -92,7 +113,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: Request) {
   try {
-    const lodging: Lodging = await request.json();
+    const lodging: LodgingDetailsType = await request.json();
 
     const prisma = new PrismaClient();
     const new_lodging = await prisma.lodging.create({
@@ -100,10 +121,21 @@ export async function POST(request: Request) {
         owner_id: lodging.owner_id,
         name: lodging.name,
         lodging_type: lodging.lodging_type,
-        address: lodging.address,
-        latitude: lodging.latitude,
-        longitude: lodging.longitude,
+        location: {
+          create: {
+            address: lodging.location.address,
+            province: lodging.location.province,
+            municipality_city: lodging.location.municipality_city,
+            barangay: lodging.location.barangay,
+            street: lodging.location.street,
+            latitude: lodging.location.latitude,
+            longitude: lodging.location.longitude,
+          },
+        },
         house_rules: lodging.house_rules,
+      },
+      include: {
+        location: true,
       },
     });
     return NextResponse.json(

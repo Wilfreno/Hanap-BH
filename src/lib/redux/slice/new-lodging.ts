@@ -1,15 +1,21 @@
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import selectedLodging from "./selected-lodging";
 
 const initialState: Omit<
   LodgingDetailsType,
   "id" | "distance" | "date_created"
 > = {
-  address: "",
   house_rules: "",
-  latitude: 0,
-  longitude: 0,
+  location: {
+    id: "",
+    address: "",
+    province: "",
+    municipality_city: "",
+    barangay: "",
+    street: "",
+    longitude: 0,
+    latitude: 0,
+  },
   lodging_type: "",
   owner_id: "",
   name: "",
