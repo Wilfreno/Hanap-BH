@@ -1,17 +1,23 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { setNewLodging } from "@/lib/redux/slice/new-lodging";
 import { AppDispatch, useAppSelector } from "@/lib/redux/store";
+import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { cn } from "@/lib/utils";
 import { PencilIcon } from "@heroicons/react/24/outline";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 
-export default function HostingLodgingName() {
+export default function HostingLodgingName({
+  lodging,
+}: {
+  lodging: LodgingDetailsType;
+}) {
   const dispatch = useDispatch<AppDispatch>();
   const new_lodging = useAppSelector((state) => state.new_lodging_reducer);
-  const [name, setName] = useState("");
+  const [name, setName] = useState(lodging.name);
   const [edit, setEdit] = useState(false);
   const [show_error, setShowError] = useState(false);
   const input_ref = useRef<HTMLInputElement>(null);
@@ -26,17 +32,17 @@ export default function HostingLodgingName() {
     return () => document.removeEventListener("submit", handleSubmit);
   }, []);
   return (
-    <div className="space-y-5">
-      <Label htmlFor="name" className="font-bold text-lg">
-        Lodging Name
+    <div className="space-y-5 relative">
+      <Label htmlFor="name" className="my-3 text-lg font-bold">
+        Name
       </Label>
-      <div className="flex relative">
+      <div className="flex w-fit border-b relative py-2">
         <Input
           ref={input_ref}
-          disabled={!!new_lodging.name && !edit}
+          disabled={!edit}
           id="name"
           className={cn(
-            "w-2/3",
+            "w-[70vw] text-2xl font-bold border-none focus-visible:ring-0",
             show_error && !name && "focus-visible:ring-red-600 border-red-600"
           )}
           value={name}
@@ -47,20 +53,24 @@ export default function HostingLodgingName() {
           }}
         />
         <Button
-          variant="secondary"
-          className="aspect-square p-2"
+          variant="ghost"
+          className="aspect-square p-0 m-0 absolute right-2 top-0"
           disabled={!name}
-          onClick={() => setEdit((prev) => !prev)}
+          onClick={() => {
+            setEdit((prev) => !prev);
+            input_ref.current?.focus();
+          }}
           type="button"
+          size="sm"
         >
-          <PencilIcon className="h-full" />
+          <PencilIcon className="h-4" />
         </Button>
-        {show_error && !name && (
-          <p className="absolute top-full my-1 text-red-600 text-xs">
-            Cannot be empty
-          </p>
-        )}
       </div>
+      {show_error && !name && (
+        <p className="absolute top-full my-1 text-red-600 text-xs">
+          Cannot be empty
+        </p>
+      )}
     </div>
   );
 }

@@ -1,14 +1,13 @@
-import useHTTPRequest from "@/components/hooks/useHTTPRequest";
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { setNewLodging } from "@/lib/redux/slice/new-lodging";
 import { AppDispatch, useAppSelector } from "@/lib/redux/store";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
-import { XMarkIcon } from "@heroicons/react/24/outline";
 import { ArrowUpTrayIcon } from "@heroicons/react/24/solid";
 import { Photo } from "@prisma/client";
 import {
-  CldImage,
   CldUploadWidget,
   CloudinaryUploadWidgetInfo,
   CloudinaryUploadWidgetResults,
@@ -17,10 +16,15 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import HostingLodgingPhotosPreview from "./HostingLodgingPhotosPreview";
 
-export default function HostingPhotos() {
+export default function HostingPhotos({
+  lodging,
+}: {
+  lodging: LodgingDetailsType;
+}) {
   const [lodging_photo_info_list, setImageInfoList] = useState<
     LodgingDetailsType["photos"]
-  >([]);
+    >(lodging.photos);
+  
   const [show_error, setShowError] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const new_lodging = useAppSelector((state) => state.new_lodging_reducer);

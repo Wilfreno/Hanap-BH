@@ -1,3 +1,4 @@
+"use client";
 import LodgingTypes from "@/components/LodgingTypes";
 import { Input } from "@/components/ui/input";
 
@@ -12,12 +13,20 @@ import {
 } from "@/components/ui/select";
 import { setNewLodging } from "@/lib/redux/slice/new-lodging";
 import { AppDispatch, useAppSelector } from "@/lib/redux/store";
+import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
-export default function HostingLodgingType() {
-  const [other_type, setOtherType] = useState({ open: false, value: "" });
+export default function HostingLodgingType({
+  lodging,
+}: {
+  lodging: LodgingDetailsType;
+}) {
+  const [other_type, setOtherType] = useState({
+    open: false,
+    value: lodging.lodging_type,
+  });
   const lodging_types = LodgingTypes();
   const [show_error, setShowError] = useState(false);
 
@@ -45,6 +54,11 @@ export default function HostingLodgingType() {
           dispatch(setNewLodging({ ...new_lodging, lodging_type: e }));
           setOtherType({ value: "", open: false });
         }}
+        defaultValue={
+          lodging_types.find((l) => l.type === lodging.lodging_type)
+            ? lodging.lodging_type
+            : "other"
+        }
       >
         <SelectTrigger
           className={cn(

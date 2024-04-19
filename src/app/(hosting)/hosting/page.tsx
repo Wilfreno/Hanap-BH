@@ -1,6 +1,6 @@
 import { auth_options } from "@/app/api/auth/[...nextauth]/route";
 import HostingLodgingList from "@/components/page/hosting/lodging/list/HostingLodgingList";
-import AddLodging from "@/components/page/hosting/manage/AddLodging";
+import AddLodging from "@/components/page/hosting/lodging/AddLodging";
 import Spinner from "@/components/svg/loading/Spinner";
 import { Button } from "@/components/ui/button";
 import { getServerSession } from "next-auth";
@@ -11,7 +11,7 @@ export default async function page() {
   return data?.user.lodgings?.length! > 0 ? (
     <HostingLodgingList />
   ) : (
-    <div className="place-self-center grid place-items-center space-y-5">
+    <section className="place-self-center grid place-items-center space-y-5">
       <p className="text-sm text-muted-foreground">
         Add your lodging now for every on to see
       </p>
@@ -20,6 +20,6 @@ export default async function page() {
           <p className="mx-auto">Add</p>
         </Button>
       </AddLodging>
-    </div>
+    </section>
   );
 }

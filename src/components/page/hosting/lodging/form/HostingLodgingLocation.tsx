@@ -1,3 +1,6 @@
+"use client";
+
+
 import Map from "@/components/Map";
 import PhilippinesPlacesMenu from "@/components/PhilippinesPlacesMenu";
 import UserMarker from "@/components/page/map/markers/UserMarker";
@@ -6,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { setNewLodging } from "@/lib/redux/slice/new-lodging";
 import { AppDispatch, useAppSelector } from "@/lib/redux/store";
+import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { PhilippinesPlaces } from "@/lib/types/psgc-types";
 import { LocationType } from "@/lib/types/user-detail-type";
 import { cn } from "@/lib/utils";
@@ -15,8 +19,8 @@ import { AdvancedMarker } from "@vis.gl/react-google-maps";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
-export default function HostingLodgingLocation() {
-  const [street, setStreet] = useState("");
+export default function HostingLodgingLocation({ lodging }: { lodging: LodgingDetailsType }) {
+  const [street, setStreet] = useState();
   const [selected_place, setSelectedPlace] = useState<PhilippinesPlaces>();
   const new_lodging = useAppSelector((state) => state.new_lodging_reducer);
   const user_location = useAppSelector((state) => state.user_location_reducer);
