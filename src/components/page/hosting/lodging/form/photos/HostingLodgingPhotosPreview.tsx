@@ -18,7 +18,7 @@ export default function HostingLodgingPhotosPreview({
 }: {
   image_info: Photo;
   lodging_photo_info_list: Photo[];
-  setImageInfoList: Dispatch<SetStateAction<Photo[] | undefined>>;
+  setImageInfoList: Dispatch<SetStateAction<LodgingDetailsType["photos"]>>;
   index: number;
 }) {
   const [fetching, setFetching] = useState(false);

@@ -13,13 +13,12 @@ import { useDispatch } from "react-redux";
 export default function HostingHouseRules({
   lodging,
 }: {
-  lodging: LodgingDetailsType;
+  lodging: Omit<LodgingDetailsType, "database" | "distance">;
 }) {
   const [house_rules, setHouseRules] = useState([
     ...JSON.parse(lodging.house_rules),
   ]);
 
-  
   const dispatch = useDispatch<AppDispatch>();
   const new_lodging = useAppSelector((state) => state.new_lodging_reducer);
 

@@ -7,9 +7,8 @@ import { useDispatch } from "react-redux";
 export default function HostingLodgingFormSubmitButon({
   lodging,
 }: {
-  lodging: LodgingDetailsType;
+  lodging: Omit<LodgingDetailsType, "database" | "distance">;
 }) {
-  const dispatch = useDispatch<AppDispatch>();
   const new_lodging = useAppSelector((state) => state.new_lodging_reducer);
 
   return (
@@ -23,7 +22,7 @@ export default function HostingLodgingFormSubmitButon({
           lodging.lodging_type ||
           lodging.photos?.length! < 1 ||
           lodging.house_rules.length < 1 ||
-          !lodging.location.address
+          !lodging.location?.address
         ) {
           return;
         }

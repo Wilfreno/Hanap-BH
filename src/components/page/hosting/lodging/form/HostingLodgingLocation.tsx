@@ -21,9 +21,9 @@ import { useDispatch } from "react-redux";
 export default function HostingLodgingLocation({
   lodging,
 }: {
-  lodging: LodgingDetailsType;
+  lodging: Omit<LodgingDetailsType, "database" | "distance">;
 }) {
-  const [street, setStreet] = useState(lodging.location.street!);
+  const [street, setStreet] = useState(lodging.location?.street!);
   const [selected_place, setSelectedPlace] = useState<PhilippinesPlaces>();
   const new_lodging = useAppSelector((state) => state.new_lodging_reducer);
   const user_location = useAppSelector((state) => state.user_location_reducer);
@@ -59,9 +59,9 @@ export default function HostingLodgingLocation({
 
       dispatch(
         setNewLodging({
-          ...new_lodging,
+          ...new_lodging!,
           location: {
-            ...new_lodging.location,
+            ...new_lodging?.location!,
             id: lodging.id,
             address,
             province: selected_place?.province.name!,

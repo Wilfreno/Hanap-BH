@@ -15,13 +15,14 @@ import { setNewLodging } from "@/lib/redux/slice/new-lodging";
 import { AppDispatch, useAppSelector } from "@/lib/redux/store";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { cn } from "@/lib/utils";
+import { Lodging } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 export default function HostingLodgingType({
   lodging,
 }: {
-  lodging: LodgingDetailsType;
+  lodging: Lodging;
 }) {
   const [other_type, setOtherType] = useState({
     open: false,

@@ -50,6 +50,10 @@ export default function AddLodging({
         latitude: 0,
         longitude: 0,
         address: "",
+        province: "",
+        municipality_city: "",
+        barangay: "",
+        street: "",
       },
       house_rules: "",
     } as Omit<LodgingDetailsType, "id" | "location.id">);

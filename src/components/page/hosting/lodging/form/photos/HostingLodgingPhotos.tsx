@@ -6,7 +6,7 @@ import { setNewLodging } from "@/lib/redux/slice/new-lodging";
 import { AppDispatch, useAppSelector } from "@/lib/redux/store";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { ArrowUpTrayIcon } from "@heroicons/react/24/solid";
-import { Photo } from "@prisma/client";
+import { Lodging, Photo } from "@prisma/client";
 import {
   CldUploadWidget,
   CloudinaryUploadWidgetInfo,
@@ -19,12 +19,12 @@ import HostingLodgingPhotosPreview from "./HostingLodgingPhotosPreview";
 export default function HostingPhotos({
   lodging,
 }: {
-  lodging: LodgingDetailsType;
+  lodging: Omit<LodgingDetailsType, "database" | "distance">;
 }) {
   const [lodging_photo_info_list, setImageInfoList] = useState<
     LodgingDetailsType["photos"]
-    >(lodging.photos);
-  
+  >(lodging.photos);
+
   const [show_error, setShowError] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const new_lodging = useAppSelector((state) => state.new_lodging_reducer);
@@ -108,7 +108,7 @@ export default function HostingPhotos({
             image_info={image_info}
             index={index}
             lodging_photo_info_list={lodging_photo_info_list}
-            setImageInfoList={setImageInfoList!}
+            setImageInfoList={setImageInfoList}
           />
         ))}
       </section>

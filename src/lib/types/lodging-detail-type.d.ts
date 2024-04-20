@@ -1,14 +1,14 @@
-import { Location, Lodging, Photo, Rating, Room } from "@prisma/client";
-import { Decimal } from "@prisma/client/runtime/library";
+import { Location, Lodging, Photo, Prisma, Rating, Room } from "@prisma/client";
+
+const LodgingWithRelations = Prisma.validator<Prisma.LodgingDefaultArgs>()({
+  include: { photos: true, rooms: true, location:true, ratings: true },
+});
 
 export interface LodgingDetailsType
-  extends Omit<Lodging, "latitude" | "longitude"> {
+  extends Prisma.LodgingGetPayload<typeof LodgingWithRelations> {
   distance: number;
-  photos?: Photo[];
-  rooms?: Room[];
-  location: LodgingLocationType;
-  ratings?: RatingDetailsType[];
   database: "GOOGLE" | "POSTGERSQL";
+  location: LodgingLocationType;
 }
 
 export interface LodgingLocationType
@@ -16,6 +16,7 @@ export interface LodgingLocationType
   latitude: number;
   longitude: number;
 }
+
 export interface RatingDetailsType extends Omit<Rating, "value"> {
   value: number;
 }

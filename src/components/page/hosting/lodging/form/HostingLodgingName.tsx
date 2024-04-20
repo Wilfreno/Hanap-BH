@@ -4,17 +4,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { setNewLodging } from "@/lib/redux/slice/new-lodging";
 import { AppDispatch, useAppSelector } from "@/lib/redux/store";
-import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { cn } from "@/lib/utils";
 import { PencilIcon } from "@heroicons/react/24/outline";
+import { Lodging } from "@prisma/client";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 
-export default function HostingLodgingName({
-  lodging,
-}: {
-  lodging: LodgingDetailsType;
-}) {
+export default function HostingLodgingName({ lodging }: { lodging: Lodging }) {
   const dispatch = useDispatch<AppDispatch>();
   const new_lodging = useAppSelector((state) => state.new_lodging_reducer);
   const [name, setName] = useState(lodging.name);

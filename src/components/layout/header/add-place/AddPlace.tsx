@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -12,9 +13,14 @@ export default function AddPlace() {
       href={`/hosting${search_params}`}
       as={`/hosting${search_params}`}
       prefetch={true}
-      className="items-center hidden lg:inline-flex whitespace-nowrap font-bold text-muted-foreground text-sm hover:drop-shadow-lg mr-20"
+      className="hidden lg:inline-flex mr-20"
     >
-      Add your place
+      <Button
+        variant="ghost"
+        className="p-0 rounded-full whitespace-nowrap font-bold text-muted-foreground text-sm px-1 hover:bg-transparent"
+      >
+        Add your place
+      </Button>
     </Link>
   );
 }

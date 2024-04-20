@@ -4,15 +4,28 @@ import HostingLodgingLocation from "@/components/page/hosting/lodging/form/Hosti
 import HostingLodgingName from "@/components/page/hosting/lodging/form/HostingLodgingName";
 import HostingLodgingType from "@/components/page/hosting/lodging/form/HostingLodgingType";
 import HostingPhotos from "@/components/page/hosting/lodging/form/photos/HostingLodgingPhotos";
-import auth_options from "@/lib/next-auth/next-auth-options";
-import { getServerSession } from "next-auth";
+import prisma from "@/lib/prisma/client";
+import { redirect } from "next/navigation";
+
+export async function getLodging(id: string): Promise<any | null> {
+  try {
+    const lodging = await prisma.lodging.findFirst({
+      where: { id },
+      include: { photos: true, location: true },
+      relationLoadStrategy: "join",
+    });
+
+    return lodging;
+  } catch (error) {
+    throw error;
+  }
+}
 
 export default async function page({ params }: { params: { id: string } }) {
-  const data = await getServerSession(auth_options);
+  const lodging = await getLodging(params.id);
 
-  const lodging = data?.user.lodgings!.find(
-    (lodging) => lodging.id === params.id
-  );
+  if (!lodging) redirect("/hosting");
+
   return (
     <section className="px-10">
       <form className="grow grid py-5 px-10 space-y-[5rem]">

@@ -1,7 +1,7 @@
 import getDistance from "@/lib/google-api/distance";
 import { PlacesAPIResult } from "@/lib/types/google-places-api-type";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
-import { Lodging, PrismaClient } from "@prisma/client";
+import {  PrismaClient } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
 import { type NextRequest, NextResponse } from "next/server";
 

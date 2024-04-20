@@ -1,11 +1,22 @@
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
+import { Photo, Room } from "@prisma/client";
+import { Decimal } from "@prisma/client/runtime/library";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-const initialState: Omit<
-  LodgingDetailsType,
-  "id" | "distance" | "date_created"
-> = {
+interface NewLodgingType
+  extends Omit<
+    LodgingDetailsType,
+    "id" | "distance" | "date_created" | "photos" | "rooms" | "ratings"
+  > {
+  photos?: Omit<Photo, "date_created">[];
+  rooms?: Omit<Room, "date_created">[];
+}
+
+const initialState: NewLodgingType = {
   house_rules: "",
+  lodging_type: "",
+  owner_id: "",
+  name: "",
   location: {
     id: "",
     address: "",
@@ -16,9 +27,6 @@ const initialState: Omit<
     longitude: 0,
     latitude: 0,
   },
-  lodging_type: "",
-  owner_id: "",
-  name: "",
   database: "POSTGERSQL",
 };
 
@@ -26,12 +34,7 @@ export const new_lodging = createSlice({
   name: "CreateSlice",
   initialState,
   reducers: {
-    setNewLodging: (
-      _,
-      action: PayloadAction<
-        Omit<LodgingDetailsType, "id" | "distance" | "date_created">
-      >
-    ) => {
+    setNewLodging: (_, action: PayloadAction<NewLodgingType>) => {
       return action.payload;
     },
   },

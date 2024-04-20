@@ -1,15 +1,73 @@
-import HostingLodgingList from "@/components/page/hosting/lodging/list/HostingLodgingList";
 import AddLodging from "@/components/page/hosting/lodging/AddLodging";
-import Spinner from "@/components/svg/loading/Spinner";
 import { Button } from "@/components/ui/button";
 import { getServerSession } from "next-auth";
 import auth_options from "@/lib/next-auth/next-auth-options";
+import Link from "next/link";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { HeartIcon } from "@radix-ui/react-icons";
+import CustomImage from "@/components/CustomImage";
+import prisma_client from "@/lib/prisma/client";
+import { Lodging } from "@prisma/client";
+
+export async function getLodgings(user_id: string): Promise<Lodging[]> {
+  try {
+    const lodgings = await prisma_client.lodging.findMany({
+      where: { owner_id: user_id },
+      include: {
+        location: true,
+        photos: true,
+        ratings: true,
+      },
+      relationLoadStrategy: "join",
+    });
+
+    return lodgings;
+  } catch (error) {
+    throw error;
+  }
+}
 
 export default async function page() {
   const data = await getServerSession(auth_options);
 
-  return data?.user.lodgings?.length! > 0 ? (
-    <HostingLodgingList />
+  const lodgings = await getLodgings(data?.user.id!);
+
+  return lodgings.length! > 0 ? (
+    <section className="flex space-x-5 p-5 px-10 h-fit">
+      {lodgings!.map((lodging) => (
+        <Link href={`/hosting/${lodging.id}`}>
+          <Card
+            key={lodging.id}
+            className="hover:bg-muted hover:cursor-pointer w-[25vw]"
+          >
+            <CardHeader>
+              <CardTitle className="flex justify-between">
+                {lodging.name}
+                <div className="flex items-center">
+                  <span className="text-xs font-bold mx-1">300</span>
+                  <HeartIcon className="h-5 fill-red-500 stroke-red-500" />
+                </div>
+              </CardTitle>
+              <CardDescription>{lodging.lodging_type}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="rounded-lg overflow-hidden aspect-video w-full">
+                {/* <CustomImage
+                  url={lodging.photos?.[0]?.photo_url}
+                  database={lodging.database}
+                /> */}
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
+      ))}
+    </section>
   ) : (
     <section className="place-self-center grid place-items-center space-y-5">
       <p className="text-sm text-muted-foreground">

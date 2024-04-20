@@ -101,20 +101,13 @@ const auth_options: AuthOptions = {
         return false;
       }
     },
-    async jwt({ token, profile, user, trigger, session }) {
-      if (trigger && session?.lodgings)
-        return {
-          ...token,
-          lodgings: [...token.lodgings!, session.lodgings.data],
-        };
-
+    async jwt({ token, profile, user }) {
       if (profile) {
         const prisma_client = prisma;
         const db_user = await prisma_client.user.findFirst({
           where: { email: { startsWith: profile.email } },
           include: {
             photo: true,
-            lodgings: { include: { rooms: true } },
             rated: true,
             contacts: true,
           },
