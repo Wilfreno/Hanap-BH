@@ -15,7 +15,7 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import HostingLodgingPhotosPreview from "./HostingLodgingPhotosPreview";
-import { DBLodging } from "@/app/(hosting)/hosting/[id]/page";
+import { DBLodging } from "@/app/(hosting)/hosting/lodging/[lodging_id]/page";
 
 export default function HostingPhotos({ lodging }: { lodging: DBLodging }) {
   const [lodging_photo_info_list, setImageInfoList] = useState<

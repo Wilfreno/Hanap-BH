@@ -1,5 +1,5 @@
 "use client";
-import { DBLodging } from "@/app/(hosting)/hosting/[id]/page";
+import { DBLodging } from "@/app/(hosting)/hosting/lodging/[lodging_id]/page";
 import LodgingTypes from "@/components/LodgingTypes";
 import { Input } from "@/components/ui/input";
 
@@ -14,9 +14,7 @@ import {
 } from "@/components/ui/select";
 import { setNewLodging } from "@/lib/redux/slice/new-lodging";
 import { AppDispatch, useAppSelector } from "@/lib/redux/store";
-import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { cn } from "@/lib/utils";
-import { Lodging } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -25,15 +23,22 @@ export default function HostingLodgingType({
 }: {
   lodging: DBLodging;
 }) {
-  const [other_type, setOtherType] = useState({
-    open: false,
-    value: lodging.lodging_type,
-  });
   const lodging_types = LodgingTypes();
-  const [show_error, setShowError] = useState(false);
-
   const new_lodging = useAppSelector((state) => state.new_lodging_reducer);
   const dispatch = useDispatch<AppDispatch>();
+
+  let default_value = "";
+
+  if (lodging.lodging_type)
+    default_value =
+      lodging_types.find((l) => l.type === lodging.lodging_type)?.type ||
+      "other";
+
+  const [other_type, setOtherType] = useState({
+    open: default_value === "other",
+    value: lodging.lodging_type,
+  });
+  const [show_error, setShowError] = useState(false);
 
   useEffect(() => {
     function handleSubmit() {
@@ -56,11 +61,7 @@ export default function HostingLodgingType({
           dispatch(setNewLodging({ ...new_lodging, lodging_type: e }));
           setOtherType({ value: "", open: false });
         }}
-        defaultValue={
-          lodging_types.find((l) => l.type === lodging.lodging_type)
-            ? lodging.lodging_type
-            : "other"
-        }
+        defaultValue={default_value}
       >
         <SelectTrigger
           className={cn(

@@ -1,6 +1,6 @@
 "use client";
 
-import { DBLodging } from "@/app/(hosting)/hosting/[id]/page";
+import { DBLodging } from "@/app/(hosting)/hosting/lodging/[lodging_id]/page";
 import Map from "@/components/Map";
 import PhilippinesPlacesMenu from "@/components/PhilippinesPlacesMenu";
 import UserMarker from "@/components/page/map/markers/UserMarker";
@@ -22,7 +22,7 @@ import { useDispatch } from "react-redux";
 export default function HostingLodgingLocation({
   lodging,
 }: {
-  lodging: DBLodging
+  lodging: DBLodging;
 }) {
   const [street, setStreet] = useState(lodging!.location?.street!);
   const [selected_place, setSelectedPlace] = useState<PhilippinesPlaces>();

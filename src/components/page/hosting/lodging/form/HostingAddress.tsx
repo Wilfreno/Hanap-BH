@@ -122,7 +122,6 @@ export default function HostingAddress({
           className="text-base font-semibold"
           type="button"
           onClick={() => {
-           
             // setFormIndex(2);
           }}
           disabled={!street || !selected_place || !coordinates}

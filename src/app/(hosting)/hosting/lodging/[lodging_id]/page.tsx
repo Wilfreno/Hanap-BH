@@ -4,6 +4,7 @@ import HostingLodgingLocation from "@/components/page/hosting/lodging/form/Hosti
 import HostingLodgingName from "@/components/page/hosting/lodging/form/HostingLodgingName";
 import HostingLodgingType from "@/components/page/hosting/lodging/form/HostingLodgingType";
 import HostingPhotos from "@/components/page/hosting/lodging/form/photos/HostingLodgingPhotos";
+
 import prisma from "@/lib/prisma/client";
 import { Prisma } from "@prisma/client";
 import { redirect } from "next/navigation";
@@ -36,7 +37,7 @@ export default async function page({ params }: { params: { id: string } }) {
 
   if (!lodging) redirect("/hosting");
   return (
-    <section className="px-10">
+    <main className="p-10">
       <form className="grow grid py-5 px-10 space-y-[5rem]">
         <HostingLodgingName lodging={lodging} />
         <HostingLodgingType lodging={lodging} />
@@ -45,6 +46,6 @@ export default async function page({ params }: { params: { id: string } }) {
         <HostingLodgingLocation lodging={lodging} />
         <HostingLodgingFormSubmitButon lodging={lodging} />
       </form>
-    </section>
+    </main>
   );
 }

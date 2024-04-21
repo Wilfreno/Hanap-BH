@@ -1,5 +1,5 @@
 "use client";
-import { DBLodging } from "@/app/(hosting)/hosting/[id]/page";
+import { DBLodging } from "@/app/(hosting)/hosting/lodging/[lodging_id]/page";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
