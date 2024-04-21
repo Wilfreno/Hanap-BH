@@ -11,11 +11,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { HeartIcon } from "@radix-ui/react-icons";
-import CustomImage from "@/components/CustomImage";
 import prisma_client from "@/lib/prisma/client";
-import { Lodging } from "@prisma/client";
+import CustomImage from "@/components/CustomImage";
 
-export async function getLodgings(user_id: string): Promise<Lodging[]> {
+export async function getLodgings(user_id: string) {
   try {
     const lodgings = await prisma_client.lodging.findMany({
       where: { owner_id: user_id },
@@ -41,7 +40,7 @@ export default async function page() {
   return lodgings.length! > 0 ? (
     <section className="flex space-x-5 p-5 px-10 h-fit">
       {lodgings!.map((lodging) => (
-        <Link href={`/hosting/${lodging.id}`}>
+        <Link key={lodging.id} href={`/hosting/${lodging.id}`}>
           <Card
             key={lodging.id}
             className="hover:bg-muted hover:cursor-pointer w-[25vw]"
@@ -58,10 +57,10 @@ export default async function page() {
             </CardHeader>
             <CardContent>
               <div className="rounded-lg overflow-hidden aspect-video w-full">
-                {/* <CustomImage
+                <CustomImage
                   url={lodging.photos?.[0]?.photo_url}
-                  database={lodging.database}
-                /> */}
+                  database="POSTGERSQL"
+                />
               </div>
             </CardContent>
           </Card>

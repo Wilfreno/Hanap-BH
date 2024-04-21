@@ -1,13 +1,12 @@
 "use client";
+import { DBLodging } from "@/app/(hosting)/hosting/[id]/page";
 import { Button } from "@/components/ui/button";
-import { AppDispatch, useAppSelector } from "@/lib/redux/store";
-import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
-import { useDispatch } from "react-redux";
+import { useAppSelector } from "@/lib/redux/store";
 
 export default function HostingLodgingFormSubmitButon({
   lodging,
 }: {
-  lodging: Omit<LodgingDetailsType, "database" | "distance">;
+  lodging: DBLodging;
 }) {
   const new_lodging = useAppSelector((state) => state.new_lodging_reducer);
 
@@ -19,10 +18,10 @@ export default function HostingLodgingFormSubmitButon({
         e.preventDefault();
         if (
           !new_lodging.name ||
-          lodging.lodging_type ||
-          lodging.photos?.length! < 1 ||
-          lodging.house_rules.length < 1 ||
-          !lodging.location?.address
+          lodging!.lodging_type ||
+          lodging!.photos?.length! < 1 ||
+          lodging!.house_rules?.length! < 1 ||
+          !lodging!.location?.address
         ) {
           return;
         }

@@ -1,5 +1,6 @@
 "use client";
 
+import { DBLodging } from "@/app/(hosting)/hosting/[id]/page";
 import Map from "@/components/Map";
 import PhilippinesPlacesMenu from "@/components/PhilippinesPlacesMenu";
 import UserMarker from "@/components/page/map/markers/UserMarker";
@@ -21,9 +22,9 @@ import { useDispatch } from "react-redux";
 export default function HostingLodgingLocation({
   lodging,
 }: {
-  lodging: Omit<LodgingDetailsType, "database" | "distance">;
+  lodging: DBLodging
 }) {
-  const [street, setStreet] = useState(lodging.location?.street!);
+  const [street, setStreet] = useState(lodging!.location?.street!);
   const [selected_place, setSelectedPlace] = useState<PhilippinesPlaces>();
   const new_lodging = useAppSelector((state) => state.new_lodging_reducer);
   const user_location = useAppSelector((state) => state.user_location_reducer);
@@ -62,7 +63,7 @@ export default function HostingLodgingLocation({
           ...new_lodging!,
           location: {
             ...new_lodging?.location!,
-            id: lodging.id,
+            id: lodging!.id,
             address,
             province: selected_place?.province.name!,
             municipality_city: selected_place?.municipality_city.name!,

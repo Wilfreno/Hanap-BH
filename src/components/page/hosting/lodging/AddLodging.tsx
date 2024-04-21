@@ -19,6 +19,9 @@ import { FormEvent, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { useDispatch } from "react-redux";
+import { AppDispatch, useAppSelector } from "@/lib/redux/store";
+import { new_lodging, setNewLodging } from "@/lib/redux/slice/new-lodging";
 
 export default function AddLodging({
   children,
@@ -27,11 +30,14 @@ export default function AddLodging({
 }) {
   const http_request = useHTTPRequest();
   const router = useRouter();
-  const { data, update } = useSession();
+  const { data } = useSession();
+  const dispatch = useDispatch<AppDispatch>();
+  const new_lodging = useAppSelector((state) => state.new_lodging_reducer);
 
   const [name, setName] = useState("");
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const close_ref = useRef<HTMLButtonElement>(null);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -59,8 +65,7 @@ export default function AddLodging({
     } as Omit<LodgingDetailsType, "id" | "location.id">);
 
     const lodging_data = lodging.data as LodgingDetailsType;
-
-    update({ lodgings: lodging });
+    dispatch(setNewLodging({ ...new_lodging, ...lodging_data }));
     setLoading(false);
     close_ref.current?.click();
     router.push(`/hosting/${lodging_data.id}`);

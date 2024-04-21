@@ -1,4 +1,5 @@
 "use client";
+import { DBLodging } from "@/app/(hosting)/hosting/[id]/page";
 import LodgingTypes from "@/components/LodgingTypes";
 import { Input } from "@/components/ui/input";
 
@@ -22,7 +23,7 @@ import { useDispatch } from "react-redux";
 export default function HostingLodgingType({
   lodging,
 }: {
-  lodging: Lodging;
+  lodging: DBLodging;
 }) {
   const [other_type, setOtherType] = useState({
     open: false,
