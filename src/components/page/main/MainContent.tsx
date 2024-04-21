@@ -19,7 +19,7 @@ export default function MainContent({
   const dispatch = useDispatch<AppDispatch>();
 
   return (
-    <main className={cn("grid", children && "grid-rows-[auto_1fr]")}>
+    <main className={cn("grid", children ? "grid-rows-[auto_1fr]" : "")}>
       {children}
       <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 my-[10dvh] sm:mx-[10vw] gap-y-10">
         {/* <AnimatePresence>
