@@ -1,10 +1,10 @@
 "use client";
-import { DBLodging } from "@/app/(hosting)/hosting/lodging/[lodging_id]/page";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { setNewLodging } from "@/lib/redux/slice/new-lodging";
 import { AppDispatch, useAppSelector } from "@/lib/redux/store";
+import { DBLodging } from "@/lib/server/getLodging";
 import { cn } from "@/lib/utils";
 import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";

@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import useHTTPRequest from "@/components/hooks/useHTTPRequest";
+import UseHTTPRequest from "@/components/hooks/useHTTPRequest";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { useRouter } from "next/navigation";
 import { FormEvent, useRef, useState } from "react";
@@ -28,7 +28,7 @@ export default function AddLodging({
 }: {
   children: React.ReactNode;
 }) {
-  const http_request = useHTTPRequest();
+  const http_request = UseHTTPRequest();
   const router = useRouter();
   const { data } = useSession();
   const dispatch = useDispatch<AppDispatch>();

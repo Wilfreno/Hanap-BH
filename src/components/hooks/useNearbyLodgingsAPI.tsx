@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import useHTTPRequest from "./useHTTPRequest";
+import UseHTTPRequest from "./useHTTPRequest";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { useAppSelector } from "@/lib/redux/store";
 import {
@@ -13,7 +13,7 @@ export default function useNearbyLodgingAPI() {
     []
   );
   const [request_status, setRequestStatus] = useState<APIStatusResponseType>();
-  const http_request = useHTTPRequest();
+  const http_request = UseHTTPRequest();
   const user_location = useAppSelector((state) => state.user_location_reducer);
 
   async function getNearbyPlace() {
@@ -57,7 +57,7 @@ export default function useNearbyLodgingAPI() {
     }
 
     if (user_location.latitude && user_location.longitude) getNearbyPlace();
-  }, [user_location]);
+  }, [user_location, getNearbyPlace]);
 
   return {
     request_status,

@@ -4,33 +4,11 @@ import HostingLodgingLocation from "@/components/page/hosting/lodging/form/Hosti
 import HostingLodgingName from "@/components/page/hosting/lodging/form/HostingLodgingName";
 import HostingLodgingType from "@/components/page/hosting/lodging/form/HostingLodgingType";
 import HostingPhotos from "@/components/page/hosting/lodging/form/photos/HostingLodgingPhotos";
+import { getLodging } from "@/lib/server/getLodging";
 
-import prisma from "@/lib/prisma/client";
-import { Prisma } from "@prisma/client";
 import { redirect } from "next/navigation";
 
-export type DBLodging = Prisma.PromiseReturnType<typeof getLodging>;
 
-export async function getLodging(id: string) {
-  try {
-    let lodging = await prisma.lodging.findFirst({
-      where: { id },
-      include: { photos: true, location: true },
-      relationLoadStrategy: "join",
-    });
-
-    return {
-      ...lodging,
-      location: {
-        ...lodging?.location,
-        latitude: Number(lodging?.location?.latitude),
-        longitude: Number(lodging?.location?.longitude),
-      },
-    };
-  } catch (error) {
-    throw error;
-  }
-}
 
 export default async function page({ params }: { params: { id: string } }) {
   const lodging = await getLodging(params.id);

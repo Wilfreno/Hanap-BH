@@ -2,7 +2,6 @@
 import { Map, useApiIsLoaded, useMap } from "@vis.gl/react-google-maps";
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { useTheme } from "next-themes";
 import { LocationType } from "@/lib/types/user-detail-type";
 import { useAppSelector } from "@/lib/redux/store";
 
@@ -27,7 +26,7 @@ export default function GoogleMap({
   const m = useMap();
   useEffect(() => {
     if (selected_location && selected) selected_location(selected);
-  }, [selected]);
+  }, [selected, selected_location]);
 
   if (map) map(m!);
 

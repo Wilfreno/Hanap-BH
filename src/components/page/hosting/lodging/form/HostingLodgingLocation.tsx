@@ -1,6 +1,5 @@
 "use client";
 
-import { DBLodging } from "@/app/(hosting)/hosting/lodging/[lodging_id]/page";
 import Map from "@/components/Map";
 import PhilippinesPlacesMenu from "@/components/PhilippinesPlacesMenu";
 import UserMarker from "@/components/page/map/markers/UserMarker";
@@ -9,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { setNewLodging } from "@/lib/redux/slice/new-lodging";
 import { AppDispatch, useAppSelector } from "@/lib/redux/store";
-import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
+import { DBLodging } from "@/lib/server/getLodging";
 import { PhilippinesPlaces } from "@/lib/types/psgc-types";
 import { LocationType } from "@/lib/types/user-detail-type";
 import { cn } from "@/lib/utils";
@@ -63,7 +62,7 @@ export default function HostingLodgingLocation({
           ...new_lodging!,
           location: {
             ...new_lodging?.location!,
-            id: lodging!.id,
+            id: lodging!.id!,
             address,
             province: selected_place?.province.name!,
             municipality_city: selected_place?.municipality_city.name!,

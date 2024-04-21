@@ -4,7 +4,7 @@ import { SignUpFormDataType } from "@/lib/types/auth-types";
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 import SignUpOTPContent from "./SignUpOTPContent";
 import Spinner from "@/components/svg/loading/Spinner";
-import useHTTPRequest from "@/components/hooks/useHTTPRequest";
+import UseHTTPRequest from "@/components/hooks/useHTTPRequest";
 import { toast } from "sonner";
 
 export default function SignUpOTP({
@@ -25,7 +25,7 @@ export default function SignUpOTP({
     password,
     confirm_password,
   } = form_data;
-  const http_request = useHTTPRequest();
+  const http_request = UseHTTPRequest();
   const [code, setCode] = useState<string>();
   return (
     <Dialog>

@@ -1,20 +1,23 @@
 import { Location, Lodging, Photo, Prisma, Rating, Room } from "@prisma/client";
 
-const LodgingWithRelations = Prisma.validator<Prisma.LodgingDefaultArgs>()({
-  include: { photos: true, rooms: true, location:true, ratings: true },
-});
 
 export interface LodgingDetailsType
-  extends Prisma.LodgingGetPayload<typeof LodgingWithRelations> {
+  extends Lodging {
   distance: number;
-  database: "GOOGLE" | "POSTGERSQL";
+  photos?: Photo[]
   location: LodgingLocationType;
+  ratings?: LodgingRating[];
+  database: "GOOGLE" | "POSTGERSQL";
 }
 
 export interface LodgingLocationType
   extends Omit<Location, "longitude" | "latitude"> {
   latitude: number;
   longitude: number;
+}
+
+export interface LodgingRating extends Omit<Rating, "value"> {
+  value: number;
 }
 
 export interface RatingDetailsType extends Omit<Rating, "value"> {

@@ -11,29 +11,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { HeartIcon } from "@radix-ui/react-icons";
-import prisma_client from "@/lib/prisma/client";
-import CustomImage from "@/components/CustomImage";
 import LogoImg from "@/components/layout/header/logo/LogoImg";
 import Menu from "@/components/layout/header/menu/Menu";
 import HostingNavigation from "@/components/page/hosting/HostingNavigation";
-
-export async function getLodgings(user_id: string) {
-  try {
-    const lodgings = await prisma_client.lodging.findMany({
-      where: { owner_id: user_id },
-      include: {
-        location: true,
-        photos: true,
-        ratings: true,
-      },
-      relationLoadStrategy: "join",
-    });
-
-    return lodgings;
-  } catch (error) {
-    throw error;
-  }
-}
+import { getLodgings } from "@/lib/server/getLodgings";
 
 export default async function page() {
   const data = await getServerSession(auth_options);

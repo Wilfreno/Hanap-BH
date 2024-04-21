@@ -5,7 +5,6 @@ import {
   PlacesAPIResponse,
 } from "@/lib/types/google-places-api-type";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
-import { Decimal } from "@prisma/client/runtime/library";
 import { type NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {

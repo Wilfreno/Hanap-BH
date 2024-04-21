@@ -15,12 +15,12 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import HostingLodgingPhotosPreview from "./HostingLodgingPhotosPreview";
-import { DBLodging } from "@/app/(hosting)/hosting/lodging/[lodging_id]/page";
+import { DBLodging } from "@/lib/server/getLodging";
 
 export default function HostingPhotos({ lodging }: { lodging: DBLodging }) {
   const [lodging_photo_info_list, setImageInfoList] = useState<
     LodgingDetailsType["photos"]
-  >(lodging!.photos);
+  >(lodging!.photos!);
 
   const [show_error, setShowError] = useState(false);
   const dispatch = useDispatch<AppDispatch>();

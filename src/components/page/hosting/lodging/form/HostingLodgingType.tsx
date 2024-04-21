@@ -1,5 +1,4 @@
 "use client";
-import { DBLodging } from "@/app/(hosting)/hosting/lodging/[lodging_id]/page";
 import LodgingTypes from "@/components/LodgingTypes";
 import { Input } from "@/components/ui/input";
 
@@ -14,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import { setNewLodging } from "@/lib/redux/slice/new-lodging";
 import { AppDispatch, useAppSelector } from "@/lib/redux/store";
+import { DBLodging } from "@/lib/server/getLodging";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";

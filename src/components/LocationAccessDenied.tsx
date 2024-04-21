@@ -48,7 +48,7 @@ export default function LocationAccesDenied({
       return;
     }
     if (get_position) getPosition();
-  }, [get_position]);
+  }, [get_position, getPosition]);
 
   return location === "off" ? (
     <section className="grid place-items-center place-content-center space-y-5">

@@ -1,9 +1,9 @@
 import LogoImg from "@/components/layout/header/logo/LogoImg";
 import Menu from "@/components/layout/header/menu/Menu";
 import HostingLodgingNavigation from "@/components/page/hosting/lodging/HostingLodgingNavigation";
+import { getLodging } from "@/lib/server/getLodging";
 import Link from "next/link";
 import React from "react";
-import { getLodging } from "./page";
 
 export default async function layout({
   children,

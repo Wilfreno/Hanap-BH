@@ -1,4 +1,4 @@
-import useHTTPRequest from "@/components/hooks/useHTTPRequest";
+import UseHTTPRequest from "@/components/hooks/useHTTPRequest";
 import Spinner from "@/components/svg/loading/Spinner";
 import { Button } from "@/components/ui/button";
 import { setNewLodging } from "@/lib/redux/slice/new-lodging";
@@ -22,7 +22,7 @@ export default function HostingLodgingPhotosPreview({
   index: number;
 }) {
   const [fetching, setFetching] = useState(false);
-  const http_request = useHTTPRequest();
+  const http_request = UseHTTPRequest();
   const dispatch = useDispatch<AppDispatch>();
   const new_lodging = useAppSelector((state) => state.new_lodging_reducer);
   async function handleDelete() {

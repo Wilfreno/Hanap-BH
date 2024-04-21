@@ -81,7 +81,7 @@ export default function PhilippinesPlacesMenu({
 
   useEffect(() => {
     selected(place_selected);
-  }, [place_selected]);
+  }, [selected]);
 
   return (
     <section className="space-x-5 flex w-fit h-fit self-center justify-self-center">
