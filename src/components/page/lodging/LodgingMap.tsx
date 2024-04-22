@@ -15,7 +15,6 @@ import { CaretSortIcon } from "@radix-ui/react-icons";
 import DirectionIcon from "@/components/svg/DirectionIcon";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { TabsContent } from "@/components/ui/tabs";
-import LocationAccesDenied from "@/components/LocationAccessDebied";
 import {
   ArrowsPointingInIcon,
   ArrowsPointingOutIcon,
@@ -93,15 +92,15 @@ export default function LodgingMap({
             <Map
               zoom={16}
               center={{
-                latitude: lodging?.latitude,
-                longitude: lodging?.longitude,
+                latitude: lodging?.location.latitude,
+                longitude: lodging?.location.longitude,
               }}
               className="rounded-lg"
             >
               <Directions
                 destination={{
-                  latitude: Number(lodging?.latitude!),
-                  longitude: Number(lodging?.longitude!),
+                  latitude: Number(lodging?.location.latitude!),
+                  longitude: Number(lodging?.location.longitude!),
                 }}
                 getRoutes={(r) => setRoutes(r)}
                 route_index={route_index}
@@ -112,14 +111,14 @@ export default function LodgingMap({
         <Map
           zoom={16}
           center={{
-            latitude: lodging?.latitude,
-            longitude: lodging?.longitude,
+            latitude: lodging?.location.latitude,
+            longitude: lodging?.location.longitude,
           }}
         >
           <Directions
             destination={{
-              latitude: Number(lodging?.latitude!),
-              longitude: Number(lodging?.longitude!),
+              latitude: Number(lodging?.location.latitude!),
+              longitude: Number(lodging?.location.longitude!),
             }}
             getRoutes={(r) => setRoutes(r)}
             route_index={route_index}

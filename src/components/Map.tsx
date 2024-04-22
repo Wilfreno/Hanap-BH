@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import Spinner from "./svg/loading/Spinner";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import { LocationType } from "@/lib/types/user-detail-type";
-import LocationAccesDenied from "./LocationAccessDebied";
+import LocationAccesDenied from "./LocationAccessDenied";
 
 const GoogleMap = dynamic(() => import("@/components/GoogleMap"), {
   loading: () => (

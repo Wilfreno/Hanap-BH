@@ -54,10 +54,13 @@ export async function DELETE(request: Request) {
 
     console.log(photo);
     if (!photo)
-      return NextResponse.json({
-        status: "BAD_REQUEST",
-        message: "no photo data is given",
-      });
+      return NextResponse.json(
+        {
+          status: "BAD_REQUEST",
+          message: "no photo data is given",
+        },
+        { status: 400 }
+      );
 
     await cloudinary.v2.uploader.destroy(photo.photo_url);
 

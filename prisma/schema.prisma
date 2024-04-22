@@ -37,14 +37,24 @@ model Lodging {
   owner_id     String
   name         String
   lodging_type String
-  address      String
-  latitude     Decimal
-  longitude    Decimal
   rooms        Room[]
   ratings      Rating[]
   photos       Photo[]
+  location     Location?
   house_rules  String
   date_created DateTime? @default(now())
+}
+
+model Location {
+  id                String  @id @unique
+  lodging           Lodging @relation(fields: [id], references: [id])
+  address           String
+  street            String?
+  province          String
+  municipality_city String
+  barangay          String
+  latitude          Decimal
+  longitude         Decimal
 }
 
 model Room {

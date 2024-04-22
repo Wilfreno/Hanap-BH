@@ -19,7 +19,14 @@ export async function GET(request: NextRequest) {
     const latitude = search_params.get("latitude");
     const longitude = search_params.get("longitude");
 
-
+    if (!latitude || !longitude)
+      return NextResponse.json(
+        {
+          status: "BAD_REQUEST",
+          message: "latitude & longitude field is required",
+        },
+        { status: 400 }
+      );
 
     const nomitatim_response = await fetch(
       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`,
@@ -68,9 +75,16 @@ export async function GET(request: NextRequest) {
         owner_id: "",
         name: results[i].name,
         lodging_type: "",
-        address: results[i].vicinity,
-        latitude: results[i].geometry.location.lat,
-        longitude: results[i].geometry.location.lng,
+        location: {
+          id: results[i].place_id,
+          address: results[i].vicinity,
+          province: "",
+          municipality_city: "",
+          barangay: "",
+          street: "",
+          latitude: results[i].geometry.location.lat,
+          longitude: results[i].geometry.location.lng,
+        },
         house_rules: "",
         photos: results[i].photos
           ? results[i].photos.map((photo) => ({
@@ -109,10 +123,12 @@ export async function GET(request: NextRequest) {
 
     const db_data = await prisma.lodging.findMany({
       where: {
-        address: {
-          contains: nominatim_data.address.city
-            ? nominatim_data.address.city
-            : nominatim_data.address.town,
+        location: {
+          address: {
+            contains: nominatim_data.address.city
+              ? nominatim_data.address.city
+              : nominatim_data.address.town,
+          },
         },
       },
       include: {
@@ -123,6 +139,7 @@ export async function GET(request: NextRequest) {
         },
         ratings: true,
         photos: true,
+        location: true,
       },
       relationLoadStrategy: "join",
     });
@@ -134,13 +151,21 @@ export async function GET(request: NextRequest) {
           ...rating,
           value: Number(rating.value),
         })),
-        latitude: Number(db_data[i].latitude)!,
-        longitude: Number(db_data[i].longitude)!,
+        location: {
+          id: db_data[i].id,
+          address: db_data[i].location?.address!,
+          province: db_data[i].location?.province!,
+          municipality_city: db_data[i].location?.municipality_city!,
+          barangay: db_data[i].location?.barangay!,
+          street: db_data[i].location?.street!,
+          latitude: Number(db_data[i].location?.latitude),
+          longitude: Number(db_data[i].location?.longitude),
+        },
         distance: getDistance(
           { latitude: Number(latitude)!, longitude: Number(longitude)! },
           {
-            longitude: Number(db_data[i]?.longitude),
-            latitude: Number(db_data[i]?.latitude),
+            longitude: Number(db_data[i]?.location?.longitude),
+            latitude: Number(db_data[i]?.location?.latitude),
           }
         ),
         database: "POSTGERSQL",

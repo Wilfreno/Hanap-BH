@@ -29,11 +29,6 @@ const nextConfig = {
         destination: "/nearby",
         permanent: false,
       },
-      {
-        source: "/hosting",
-        destination: "/hosting/new",
-        permanent: false,
-      },
     ];
   },
 };

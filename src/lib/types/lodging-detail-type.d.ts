@@ -1,15 +1,23 @@
-import { Lodging, Photo, Rating, Room } from "@prisma/client";
-import { Decimal } from "@prisma/client/runtime/library";
+import { Location, Lodging, Photo, Prisma, Rating, Room } from "@prisma/client";
+
 
 export interface LodgingDetailsType
-  extends Omit<Lodging, "latitude" | "longitude"> {
+  extends Lodging {
   distance: number;
+  photos?: Photo[]
+  location: LodgingLocationType;
+  ratings?: LodgingRating[];
+  database: "GOOGLE" | "POSTGERSQL";
+}
+
+export interface LodgingLocationType
+  extends Omit<Location, "longitude" | "latitude"> {
   latitude: number;
   longitude: number;
-  photos?: Photo[];
-  rooms?: Room[];
-  ratings?: RatingDetailsType[];
-  database: "GOOGLE" | "POSTGERSQL";
+}
+
+export interface LodgingRating extends Omit<Rating, "value"> {
+  value: number;
 }
 
 export interface RatingDetailsType extends Omit<Rating, "value"> {

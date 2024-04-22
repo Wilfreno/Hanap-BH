@@ -5,7 +5,6 @@ import {
   LodgingSearchType,
 } from "@/lib/types/lodging-detail-type";
 import { PrismaClient } from "@prisma/client";
-import { Decimal } from "@prisma/client/runtime/library";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -24,7 +23,7 @@ export async function POST(request: Request) {
           },
         ],
         AND: {
-          address: { contains: query.location },
+          location: { address: { contains: query.location } },
           lodging_type: { contains: query.lodging_type },
         },
       },
@@ -57,9 +56,16 @@ export async function POST(request: Request) {
           height: null,
           date_created: null,
         })),
-        address: result.vicinity,
-        longitude: result.geometry.location.lng,
-        latitude: result.geometry.location.lat,
+        location: {
+          id: result.place_id,
+          address: result.vicinity,
+          province: "",
+          municipality_city: "",
+          barangay: "",
+          street: "",
+          longitude: result.geometry.location.lng,
+          latitude: result.geometry.location.lat,
+        },
         house_rules: "",
         ratings: [
           {

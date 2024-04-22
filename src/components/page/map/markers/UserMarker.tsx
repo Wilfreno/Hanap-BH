@@ -5,9 +5,11 @@ import { AdvancedMarker } from "@vis.gl/react-google-maps";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
+
 export default function UserMarker() {
   const user_location = useAppSelector((state) => state.user_location_reducer);
   const dispatch = useDispatch<AppDispatch>();
+
   useEffect(() => {
     const interval = setInterval(() => {
       navigator.geolocation.getCurrentPosition(
@@ -39,7 +41,7 @@ export default function UserMarker() {
       }}
     >
       <span className=" flex flex-col justify-center">
-        <p className="text-xs font-bold">You're here!</p>
+        <p className="text-xs font-bold">You&apos;re here!</p>
         <MapPinIcon className="h-7 w-auto animate-bounce dark:text-background" />
       </span>
     </AdvancedMarker>

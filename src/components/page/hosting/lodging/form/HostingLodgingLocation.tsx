@@ -1,3 +1,5 @@
+"use client";
+
 import Map from "@/components/Map";
 import PhilippinesPlacesMenu from "@/components/PhilippinesPlacesMenu";
 import UserMarker from "@/components/page/map/markers/UserMarker";
@@ -6,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { setNewLodging } from "@/lib/redux/slice/new-lodging";
 import { AppDispatch, useAppSelector } from "@/lib/redux/store";
+import { DBLodging } from "@/lib/server/getLodging";
 import { PhilippinesPlaces } from "@/lib/types/psgc-types";
 import { LocationType } from "@/lib/types/user-detail-type";
 import { cn } from "@/lib/utils";
@@ -15,8 +18,12 @@ import { AdvancedMarker } from "@vis.gl/react-google-maps";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
-export default function HostingLodgingLocation() {
-  const [street, setStreet] = useState("");
+export default function HostingLodgingLocation({
+  lodging,
+}: {
+  lodging: DBLodging;
+}) {
+  const [street, setStreet] = useState(lodging!.location?.street!);
   const [selected_place, setSelectedPlace] = useState<PhilippinesPlaces>();
   const new_lodging = useAppSelector((state) => state.new_lodging_reducer);
   const user_location = useAppSelector((state) => state.user_location_reducer);
@@ -52,10 +59,16 @@ export default function HostingLodgingLocation() {
 
       dispatch(
         setNewLodging({
-          ...new_lodging,
-          address,
-          latitude: coordinates?.latitude!,
-          longitude: coordinates?.longitude!,
+          ...new_lodging!,
+          location: {
+            ...new_lodging?.location!,
+            id: lodging!.id!,
+            address,
+            province: selected_place?.province.name!,
+            municipality_city: selected_place?.municipality_city.name!,
+            barangay: selected_place?.barangay.name!,
+            street,
+          },
         })
       );
     }
@@ -66,8 +79,11 @@ export default function HostingLodgingLocation() {
       dispatch(
         setNewLodging({
           ...new_lodging,
-          latitude: coordinates.latitude!,
-          longitude: coordinates.longitude!,
+          location: {
+            ...new_lodging.location,
+            latitude: coordinates.latitude!,
+            longitude: coordinates.longitude!,
+          },
         })
       );
       return;
@@ -75,8 +91,11 @@ export default function HostingLodgingLocation() {
     dispatch(
       setNewLodging({
         ...new_lodging,
-        latitude: user_location.latitude!,
-        longitude: user_location.longitude!,
+        location: {
+          ...new_lodging.location,
+          latitude: user_location.latitude!,
+          longitude: user_location.longitude!,
+        },
       })
     );
     if (user_location.latitude && user_location.longitude)
@@ -104,7 +123,7 @@ export default function HostingLodgingLocation() {
           value={street}
           onChange={(e) => setStreet(e.currentTarget.value)}
         />
-        {show_error && !new_lodging.address && (
+        {show_error && !new_lodging.location.address && (
           <p className="absolute -bottom-5 left-0 text-red-600 text-xs">
             Provide an address
           </p>

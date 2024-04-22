@@ -20,11 +20,11 @@ export default function NoSearchResults({
       <XMarkIcon className="h-[5rem] stroke-[4]" />
       <div>
         <p className="text-lg ">
-          Seems like there's no lodgings nearby your location
+          Seems like there&apos;s no lodgings nearby your location
         </p>
         <p className="text-sm">
-          If you want too see lodging on specific places you can{" "}
-          <span className="underline font-bold">search</span> or{" "}
+          If you want too see lodging on specific places you can
+          <span className="underline font-bold">search</span> or
           <span className="underline font-bold">browse</span> for places
         </p>
       </div>

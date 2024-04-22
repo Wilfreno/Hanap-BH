@@ -9,8 +9,8 @@ import {
 import PlaceFilterMenu from "@/components/PlaceFilterMenu";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import useHTTPRequest from "@/components/hooks/useHTTPRequest";
-import useInputDebounce from "@/components/hooks/useInputDebounce";
+import UseHTTPRequest from "@/components/hooks/useHTTPRequest";
+import UseInputDebounce from "@/components/hooks/useInputDebounce";
 import {
   LodgingDetailsType,
   LodgingSearchType,
@@ -27,10 +27,10 @@ export default function Search({
   result?: (r: LodgingDetailsType[]) => void;
   status?: (s: APIStatusResponseType) => void;
 }) {
-  const http_request = useHTTPRequest();
+  const http_request = UseHTTPRequest();
   const user_location = useAppSelector((state) => state.user_location_reducer);
   const [search, setSearch] = useState<LodgingSearchType>();
-  const debounced_value = useInputDebounce(search);
+  const debounced_value = UseInputDebounce(search);
 
   useEffect(() => {
     async function getData() {

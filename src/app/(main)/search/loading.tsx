@@ -4,8 +4,8 @@ import Search from "@/components/page/search/Search";
 export default function loading() {
   return (
     <>
-      <Search disable />
-      <PlaceCardSkeleton />
+      {/* <Search disable />
+      <PlaceCardSkeleton /> */}
     </>
   );
 }

@@ -8,7 +8,7 @@ import SignUpEmail from "./SignUpEmail";
 import SignUpBirthday from "./birthday/SignUpBirthday";
 import SignUpPassword from "./SignUpPassword";
 import SignUpOtp from "./otp/SignUpOTP";
-import useHTTPRequest from "@/components/hooks/useHTTPRequest";
+import UseHTTPRequest from "@/components/hooks/useHTTPRequest";
 import SignUPGender from "./SignUPGender";
 import { toast } from "sonner";
 import { signIn } from "next-auth/react";
@@ -42,7 +42,7 @@ export default function SignUp() {
   const exit = searchParams.get("exit");
   const url_callback = searchParams.get("url_callback");
 
-  const http_request = useHTTPRequest();
+  const http_request = UseHTTPRequest();
 
   return (
     <Dialog

@@ -5,7 +5,6 @@ import {
   PlacesAPIResponse,
 } from "@/lib/types/google-places-api-type";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
-import { Decimal } from "@prisma/client/runtime/library";
 import { type NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -16,6 +15,15 @@ export async function GET(request: NextRequest) {
   const page_token = search_params.get("page_token");
   const latitude = search_params.get("latitude");
   const longitude = search_params.get("longitude");
+
+  if (!page_token || !latitude || !longitude)
+    return NextResponse.json(
+      {
+        status: "BAD_REQUEST",
+        message: "page_token, latitude, & longitude url parameter is required",
+      },
+      { status: 400 }
+    );
 
   try {
     const nomitatim_response = await fetch(
@@ -55,9 +63,16 @@ export async function GET(request: NextRequest) {
         id: results[i].place_id,
         name: results[i].name,
         lodging_type: "",
-        address: results[i].vicinity,
-        latitude: results[i].geometry.location.lat,
-        longitude: results[i].geometry.location.lng,
+        location: {
+          id: results[i].place_id,
+          address: results[i].vicinity,
+          province: "",
+          municipality_city: "",
+          barangay: "",
+          street: "",
+          latitude: results[i].geometry.location.lat,
+          longitude: results[i].geometry.location.lng,
+        },
         house_rules: "",
         photos: results[i].photos
           ? results[i].photos.map((photo) => ({
