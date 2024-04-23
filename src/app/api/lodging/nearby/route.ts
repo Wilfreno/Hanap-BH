@@ -75,17 +75,14 @@ export async function GET(request: NextRequest) {
         owner_id: "",
         name: results[i].name,
         lodging_type: "",
-        location: {
-          id: results[i].place_id,
-          address: results[i].vicinity,
-          province: "",
-          municipality_city: "",
-          barangay: "",
-          street: "",
-          latitude: results[i].geometry.location.lat,
-          longitude: results[i].geometry.location.lng,
-        },
-        house_rules: "",
+        distance: getDistance(
+          { latitude: Number(latitude), longitude: Number(longitude) },
+          {
+            longitude: results[i].geometry.location.lng,
+            latitude: results[i].geometry.location.lat,
+          }
+        ),
+        house_rules: [],
         photos: results[i].photos
           ? results[i].photos.map((photo) => ({
               id: photo.photo_reference,
@@ -98,13 +95,17 @@ export async function GET(request: NextRequest) {
               date_created: null,
             }))
           : [],
-        distance: getDistance(
-          { latitude: Number(latitude), longitude: Number(longitude) },
-          {
-            longitude: results[i].geometry.location.lng,
-            latitude: results[i].geometry.location.lat,
-          }
-        ),
+        location: {
+          id: results[i].place_id,
+          address: results[i].vicinity,
+          province: "",
+          municipality_city: "",
+          barangay: "",
+          street: "",
+          latitude: results[i].geometry.location.lat,
+          longitude: results[i].geometry.location.lng,
+          date_created: null,
+        },
         ratings: results[i].rating
           ? [
               {
@@ -140,6 +141,7 @@ export async function GET(request: NextRequest) {
         ratings: true,
         photos: true,
         location: true,
+        favorited: true
       },
       relationLoadStrategy: "join",
     });
@@ -151,6 +153,9 @@ export async function GET(request: NextRequest) {
           ...rating,
           value: Number(rating.value),
         })),
+        house_rules: db_data[i].house_rules
+          ? JSON.parse(db_data[i].house_rules)
+          : [],
         location: {
           id: db_data[i].id,
           address: db_data[i].location?.address!,
@@ -160,6 +165,7 @@ export async function GET(request: NextRequest) {
           street: db_data[i].location?.street!,
           latitude: Number(db_data[i].location?.latitude),
           longitude: Number(db_data[i].location?.longitude),
+          date_created: null,
         },
         distance: getDistance(
           { latitude: Number(latitude)!, longitude: Number(longitude)! },

@@ -72,8 +72,9 @@ export async function GET(request: NextRequest) {
           street: "",
           latitude: results[i].geometry.location.lat,
           longitude: results[i].geometry.location.lng,
+          date_created: null
         },
-        house_rules: "",
+        house_rules: [],
         photos: results[i].photos
           ? results[i].photos.map((photo) => ({
               id: photo.photo_reference,

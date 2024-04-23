@@ -58,13 +58,18 @@ export default function PlacesMarker({
             <SheetContent>
               <SheetHeader className="my-5">
                 <div className=" aspect-square w-full h-auto rounded-lg overflow-hidden">
-                  <CustomImage database={lodging.database} url={lodging.photos?.[0].photo_url} />
+                  <CustomImage
+                    database={lodging.database}
+                    url={lodging.photos?.[0].photo_url}
+                  />
                 </div>
               </SheetHeader>
               <h1 className="text-lg font-semibold">{lodging.name}</h1>
-              <p className="text-sm text-muted-foreground">{lodging.location.address}</p>
+              <p className="text-sm text-muted-foreground">
+                {lodging.location.address}
+              </p>
               <div className="my-5">
-                <p>{lodging.distance.toFixed(2)} km away</p>
+                <p>{lodging.distance!.toFixed(2)} km away</p>
               </div>
               {lodging.database === "GOOGLE" && (
                 <LodgingGoogleMessage lodging={lodging} className="text-xs" />

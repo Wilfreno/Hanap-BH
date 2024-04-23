@@ -13,6 +13,7 @@ export async function getLodging(id: string) {
 
     return {
       ...lodging,
+      house_rules: JSON.parse(lodging!.house_rules) as string[],
       location: {
         ...lodging?.location,
         latitude: Number(lodging?.location?.latitude),

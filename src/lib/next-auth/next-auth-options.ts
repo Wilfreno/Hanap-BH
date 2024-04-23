@@ -109,7 +109,7 @@ const auth_options: AuthOptions = {
           include: {
             photo: true,
             rated: true,
-            contacts: true,
+            contact: true,
           },
           relationLoadStrategy: "join",
         });

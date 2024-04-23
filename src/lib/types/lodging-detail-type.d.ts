@@ -1,17 +1,26 @@
-import { Location, Lodging, Photo, Prisma, Rating, Room } from "@prisma/client";
+import {
+  Favorite,
+  Location,
+  Lodging,
+  Photo,
+  Prisma,
+  Rating,
+  Room,
+} from "@prisma/client";
 
-
-export interface LodgingDetailsType
-  extends Lodging {
-  distance: number;
-  photos?: Photo[]
+export interface LodgingDetailsType extends Omit<Lodging, "house_rules"> {
+  distance?: number;
+  house_rules: string[];
+  photos?: Photo[];
   location: LodgingLocationType;
   ratings?: LodgingRating[];
+  favorited?: Favorite[];
   database: "GOOGLE" | "POSTGERSQL";
 }
 
 export interface LodgingLocationType
-  extends Omit<Location, "longitude" | "latitude"> {
+  extends Omit<Location, "longitude" | "latitude" | "id"> {
+  id?: string;
   latitude: number;
   longitude: number;
 }

@@ -1,9 +1,10 @@
 import getDistance from "@/lib/google-api/distance";
 import { PlacesAPIResult } from "@/lib/types/google-places-api-type";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
-import {  PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
 import { type NextRequest, NextResponse } from "next/server";
+import { json } from "stream/consumers";
 
 export async function GET(request: NextRequest) {
   const api_key = process.env.NEXT_PUBLIC_GOOGLE_PLACE_API_KEY;
@@ -132,7 +133,7 @@ export async function POST(request: Request) {
             longitude: lodging.location.longitude,
           },
         },
-        house_rules: lodging.house_rules,
+        house_rules: JSON.stringify(lodging.house_rules),
       },
       include: {
         location: true,

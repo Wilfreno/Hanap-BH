@@ -15,8 +15,8 @@ datasource db {
 }
 
 model User {
-  id           String    @id @unique @default(uuid())
-  email        String    @unique
+  id           String      @id @unique @default(uuid())
+  email        String      @unique
   password     String?
   first_name   String
   middle_name  String?
@@ -26,28 +26,54 @@ model User {
   provider     String
   lodgings     Lodging[]
   rated        Rating[]
-  contacts     Contact?
+  contact      Contact?
   photo        Photo?
-  date_created DateTime? @default(now())
+  favorites    Favorite[]
+  date_created DateTime?   @default(now())
 }
 
 model Lodging {
-  id           String    @id @unique @default(uuid())
-  owner        User      @relation(fields: [owner_id], references: [id])
+  id           String     @id @unique @default(uuid())
+  owner        User       @relation(fields: [owner_id], references: [id])
   owner_id     String
   name         String
   lodging_type String
   rooms        Room[]
-  ratings      Rating[]
   photos       Photo[]
   location     Location?
   house_rules  String
+  favorited    Favorite[]
+  ratings      Rating[]
+  date_created DateTime?  @default(now())
+}
+
+model Room {
+  id             String    @id @unique @default(uuid())
+  lodging        Lodging   @relation(fields: [lodging_id], references: [id])
+  lodging_id     String
+  occupant_count Int
+  specification  String
+  add_ons        String
+  bed_count      Int
+  photos         Photo[]
+  price          Price?
+  date_created   DateTime? @default(now())
+}
+
+model Price {
+  room         Room      @relation(fields: [id], references: [id])
+  id           String    @id
+  per_hour     Decimal
+  per_six_hour Decimal
+  per_12_hours Decimal
+  per_night    Decimal
+  per_monrh    Decimal
   date_created DateTime? @default(now())
 }
 
 model Location {
-  id                String  @id @unique
-  lodging           Lodging @relation(fields: [id], references: [id])
+  id                String    @id @unique
+  lodging           Lodging   @relation(fields: [id], references: [id])
   address           String
   street            String?
   province          String
@@ -55,17 +81,21 @@ model Location {
   barangay          String
   latitude          Decimal
   longitude         Decimal
+  date_created      DateTime? @default(now())
 }
 
-model Room {
-  id             String    @id @unique @default(uuid())
-  lodging        Lodging   @relation(fields: [lodging_id], references: [id])
-  lodging_id     String
-  price          Int
-  occupant_count Int
-  specification  String
-  photos         Photo[]
-  date_created   DateTime? @default(now())
+model Photo {
+  id           String    @id @unique @default(uuid())
+  photo_url    String
+  width        Int?
+  height       Int?
+  User         User?     @relation(fields: [user_id], references: [id])
+  user_id      String?   @unique
+  Lodging      Lodging?  @relation(fields: [lodging_id], references: [id])
+  lodging_id   String?
+  room         Room?     @relation(fields: [room_id], references: [id])
+  room_id      String?
+  date_created DateTime? @default(now())
 }
 
 model Rating {
@@ -78,18 +108,13 @@ model Rating {
   date_created DateTime? @default(now())
 }
 
-model Photo {
+model Favorite {
   id           String    @id @unique @default(uuid())
-  photo_url    String
-  width        Int?
-  height       Int?
-  User         User?     @relation(fields: [user_id], references: [id])
-  user_id      String?   @unique
+  user         User      @relation(fields: [user_id], references: [id])
+  user_id      String
+  lodging      Lodging   @relation(fields: [lodging_id], references: [id])
+  lodging_id   String
   date_created DateTime? @default(now())
-  Lodging      Lodging?  @relation(fields: [lodging_id], references: [id])
-  lodging_id   String?
-  Room         Room?     @relation(fields: [room_id], references: [id])
-  room_id      String?
 }
 
 model Otp {
