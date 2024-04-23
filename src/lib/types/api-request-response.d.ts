@@ -8,6 +8,7 @@ export type APIStatusResponseType =
   | "OUT_OF_BOUND"
   | "REQUEST_TIMEOUT"
   | "CONFLICT"
+  | "BAD_REQUEST"
   | undefined;
 
 export type NextPageTokenType = string;
@@ -17,5 +18,5 @@ export type APIResponseType = {
   message: string;
   next_page_token?: NextPageTokenType;
   data: LodgingDetailsType[] | LodgingDetailsType | UserDetailType;
-  otp?: string
+  otp?: string;
 };

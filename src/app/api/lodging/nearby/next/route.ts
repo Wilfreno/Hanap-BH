@@ -32,10 +32,7 @@ export async function GET(request: NextRequest) {
     const nominatim_data: NominatimReverseAPiResponse =
       await nomitatim_response.json();
 
-    if (
-      nominatim_data.address.country !== "Philippines" ||
-      nominatim_data.address.country_code !== "ph"
-    ) {
+    if (nominatim_data.address.country_code !== "ph") {
       return NextResponse.json(
         { status: "OUT_OF_BOUND", message: "location out of bound" },
         { status: 400 }
@@ -72,7 +69,7 @@ export async function GET(request: NextRequest) {
           street: "",
           latitude: results[i].geometry.location.lat,
           longitude: results[i].geometry.location.lng,
-          date_created: null
+          date_created: null,
         },
         house_rules: [],
         photos: results[i].photos
@@ -120,7 +117,7 @@ export async function GET(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    if (process.env.NODE_ENV === "development") throw error;
+    if (process.env.NODE_ENV === "development") console.error(error);
     return NextResponse.json(
       { status: "INTERNAL_SERVER_ERROR", message: error },
       { status: 500 }

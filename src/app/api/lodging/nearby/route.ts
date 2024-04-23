@@ -35,10 +35,7 @@ export async function GET(request: NextRequest) {
     const nominatim_data: NominatimReverseAPiResponse =
       await nomitatim_response.json();
 
-    if (
-      nominatim_data.address.country !== "Philippines" ||
-      nominatim_data.address.country_code !== "ph"
-    ) {
+    if (nominatim_data.address.country_code !== "ph") {
       return NextResponse.json(
         {
           status: "OUT_OF_BOUND",
@@ -141,7 +138,7 @@ export async function GET(request: NextRequest) {
         ratings: true,
         photos: true,
         location: true,
-        favorited: true
+        favorited: true,
       },
       relationLoadStrategy: "join",
     });

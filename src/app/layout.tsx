@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import NextAuthProvider from "@/components/page/auth/NextAuthProvider";
 import ReduxProvidex from "@/components/ReduxProvidex";
 import { Toaster } from "@/components/ui/toaster";
+import FetchNearbyLodging from "@/components/FetchNearbyLodgingsAPI";
 
 const poppins = Manrope({
   subsets: ["latin"],

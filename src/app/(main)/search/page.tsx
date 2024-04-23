@@ -6,7 +6,7 @@ import { useState } from "react";
 import NoSearchResults from "@/components/page/error/NoSearchResults";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { APIStatusResponseType } from "@/lib/types/api-request-response";
-import useNearbyLodgingAPI from "@/components/hooks/useNearbyLodgingsAPI";
+import useNearbyLodgingAPI from "@/components/FetchNearbyLodgingsAPI";
 
 export default function Page() {
   const { nearby_lodgings } = useNearbyLodgingAPI();
