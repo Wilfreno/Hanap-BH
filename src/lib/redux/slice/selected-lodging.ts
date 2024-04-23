@@ -17,8 +17,9 @@ const initialState: LodgingDetailsType = {
     street: "",
     latitude: 0,
     longitude: 0,
+    date_created: null
   },
-  house_rules: "",
+  house_rules: [],
   date_created: null,
 };
 

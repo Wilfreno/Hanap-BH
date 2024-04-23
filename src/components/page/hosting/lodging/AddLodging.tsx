@@ -60,9 +60,12 @@ export default function AddLodging({
         municipality_city: "",
         barangay: "",
         street: "",
+        date_created: null,
       },
-      house_rules: "",
-    } as Omit<LodgingDetailsType, "id" | "location.id">);
+      house_rules: [],
+      database: "POSTGERSQL",
+      date_created: null,
+    } as Omit<LodgingDetailsType, "id">);
 
     const lodging_data = lodging.data as LodgingDetailsType;
     dispatch(setNewLodging({ ...new_lodging, ...lodging_data }));

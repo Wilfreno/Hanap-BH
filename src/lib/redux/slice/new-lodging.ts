@@ -6,7 +6,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 interface NewLodgingType
   extends Omit<
     LodgingDetailsType,
-     | "distance" | "date_created" | "photos" | "rooms" | "ratings"
+    "distance" | "date_created" | "photos" | "rooms" | "ratings"
   > {
   photos?: Omit<Photo, "date_created">[];
   rooms?: Omit<Room, "date_created">[];
@@ -14,7 +14,7 @@ interface NewLodgingType
 
 const initialState: NewLodgingType = {
   id: "",
-  house_rules: "",
+  house_rules: [],
   lodging_type: "",
   owner_id: "",
   name: "",
@@ -27,6 +27,7 @@ const initialState: NewLodgingType = {
     street: "",
     longitude: 0,
     latitude: 0,
+    date_created: null,
   },
   database: "POSTGERSQL",
 };

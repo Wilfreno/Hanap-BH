@@ -11,9 +11,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 export default function HostingHouseRules({ lodging }: { lodging: DBLodging }) {
-  const [house_rules, setHouseRules] = useState(
-    lodging?.house_rules ? [...JSON.parse(lodging!.house_rules)] : [""]
-  );
+  const [house_rules, setHouseRules] = useState(lodging.house_rules);
 
   const dispatch = useDispatch<AppDispatch>();
   const new_lodging = useAppSelector((state) => state.new_lodging_reducer);
@@ -22,7 +20,7 @@ export default function HostingHouseRules({ lodging }: { lodging: DBLodging }) {
     dispatch(
       setNewLodging({
         ...new_lodging,
-        house_rules: JSON.stringify(new_array),
+        house_rules: new_array,
       })
     );
   }
@@ -31,7 +29,7 @@ export default function HostingHouseRules({ lodging }: { lodging: DBLodging }) {
 
   useEffect(() => {
     function handleSubmit() {
-      setShowError(!house_rules[0]);
+      setShowError(house_rules.length < 1);
     }
     document.addEventListener("submit", handleSubmit);
 
@@ -41,15 +39,15 @@ export default function HostingHouseRules({ lodging }: { lodging: DBLodging }) {
   return (
     <div className="space-y-5 relative">
       <Label
-        htmlFor={`house_rules_${house_rules.length - 1}`}
+        htmlFor={`house_rules_${house_rules?.length! - 1}`}
         className="font-bold text-lg"
       >
         House Rules
       </Label>
-      {house_rules.map((_, index) => (
+      {house_rules?.map((rules, index: number) => (
         <div key={index} className="space-y-1">
           <Label
-            htmlFor={`house_rules_${index}`}
+            htmlFor={`house_rules?_${index}`}
             className="text-xs text-muted-foreground"
           >
             House Rule #{index + 1}
@@ -57,25 +55,25 @@ export default function HostingHouseRules({ lodging }: { lodging: DBLodging }) {
           <div className="flex space-x-3">
             <Input
               autoFocus={
-                index === house_rules.length - 1 && house_rules.length > 1
+                index === house_rules?.length - 1 && house_rules?.length > 1
               }
-              value={house_rules[index]}
+              value={rules}
               className={cn(
                 "text-base",
                 show_error &&
-                  !house_rules[0] &&
+                  house_rules.length < 1 &&
                   "focus-visible:ring-red-500 border-red-500"
               )}
               onChange={(e) => {
                 const new_array = [...house_rules];
                 new_array[index] = e.currentTarget.value;
-                setHouseRules(new_array);
+                setHouseRules(new_array!);
               }}
               onKeyDown={(e) => {
                 if (
                   e.code === "Enter" &&
                   e.currentTarget.value &&
-                  index === house_rules.length - 1
+                  index === house_rules?.length - 1
                 ) {
                   dispatchHouseRules(house_rules);
                   setHouseRules((prev) => [...prev, ""]);
@@ -87,11 +85,11 @@ export default function HostingHouseRules({ lodging }: { lodging: DBLodging }) {
               variant="destructive"
               className={cn(
                 "aspect-square p-2",
-                house_rules.length === 1 && "hidden",
-                index === house_rules.length - 1 && "hidden"
+                house_rules?.length === 1 && "hidden",
+                index === house_rules?.length - 1 && "hidden"
               )}
               onClick={() => {
-                if (house_rules.length > 1) {
+                if (house_rules?.length > 1) {
                   const new_array = [...house_rules];
                   new_array.splice(index, 1);
                   if (!new_array[new_array.length - 1])
@@ -104,11 +102,11 @@ export default function HostingHouseRules({ lodging }: { lodging: DBLodging }) {
               <TrashIcon className="h-full" />
             </Button>
             <Button
-              disabled={!house_rules[index]}
+              disabled={!rules}
               variant="secondary"
               className={cn(
                 "aspect-square p-2",
-                index !== house_rules.length - 1 && "hidden"
+                index !== house_rules?.length - 1 && "hidden"
               )}
               onClick={() => {
                 dispatchHouseRules(house_rules);
@@ -121,7 +119,7 @@ export default function HostingHouseRules({ lodging }: { lodging: DBLodging }) {
         </div>
       ))}
 
-      {show_error && !house_rules[0] && (
+      {show_error && house_rules.length < 1 && (
         <p className="absolute -bottom-5 -left-1  text-red-600 text-xs">
           Atleast provide 1 image
         </p>
