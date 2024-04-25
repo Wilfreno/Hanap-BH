@@ -12,15 +12,15 @@ export async function GET(request: NextRequest) {
   if (!api_key) throw new Error("NEXT_PUBLIC_GOOGLE_PLACE_API_KEY is missing");
 
   const search_params = request.nextUrl.searchParams;
-  const page_token = search_params.get("page_token");
+  const next_page_token = search_params.get("next_page_token");
   const latitude = search_params.get("latitude");
   const longitude = search_params.get("longitude");
 
-  if (!page_token || !latitude || !longitude)
+  if (!next_page_token || !latitude || !longitude)
     return NextResponse.json(
       {
         status: "BAD_REQUEST",
-        message: "page_token, latitude, & longitude url parameter is required",
+        message: "next_page_token, latitude, & longitude url parameter is required",
       },
       { status: 400 }
     );
@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
       );
     }
     const next_page_response = await fetch(
-      `https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=${page_token}&key=${api_key}`
+      `https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=${next_page_token}&key=${api_key}`
     );
     const next_page_data =
       (await next_page_response.json()) as PlacesAPIResponse;
