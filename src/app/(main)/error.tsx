@@ -3,10 +3,12 @@
 import {
   AlertDialog,
   AlertDialogContent,
+  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { ReloadIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";
 
 export default function Error({
@@ -24,9 +26,13 @@ export default function Error({
     <AlertDialog open>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Oops Something Went Wrong!</AlertDialogTitle>
-          <Button onClick={() => reset()}> Try again</Button>
+          <AlertDialogTitle>Oops! Something Went Wrong</AlertDialogTitle>
         </AlertDialogHeader>
+        <AlertDialogFooter>
+          <Button onClick={() => reset()} className="font-bold">
+            Try again <ReloadIcon className="h-5 mx-1 stroke-2" />
+          </Button>
+        </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );

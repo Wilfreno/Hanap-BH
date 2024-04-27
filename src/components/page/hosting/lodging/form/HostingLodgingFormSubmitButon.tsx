@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/lib/redux/store";
-import { DBLodging } from "@/lib/server/getLodging";
+import { DBLodging } from "@/lib/server/actions/getLodging";
 
 export default function HostingLodgingFormSubmitButon({
   lodging,

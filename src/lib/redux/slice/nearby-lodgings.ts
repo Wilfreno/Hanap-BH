@@ -4,10 +4,12 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 type T = {
   data: LodgingDetailsType[];
+  status: APIStatusResponseType | "FETCHING";
   next_page_token: string;
 };
 const initialState: T = {
   data: [],
+  status: "FETCHING",
   next_page_token: "",
 };
 

@@ -14,7 +14,7 @@ import { HeartIcon } from "@radix-ui/react-icons";
 import LogoImg from "@/components/layout/header/logo/LogoImg";
 import HeaderMenu from "@/components/layout/header/menu/HeaderMenu";
 import HostingNavigation from "@/components/page/hosting/HostingNavigation";
-import { getLodgings } from "@/lib/server/getLodgings";
+import { getLodgings } from "@/lib/server/actions/getLodgings";
 
 export default async function page() {
   const data = await getServerSession(auth_options);

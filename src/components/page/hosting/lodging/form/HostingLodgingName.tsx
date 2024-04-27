@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { setNewLodging } from "@/lib/redux/slice/new-lodging";
 import { AppDispatch, useAppSelector } from "@/lib/redux/store";
-import { DBLodging } from "@/lib/server/getLodging";
+import { DBLodging } from "@/lib/server/actions/getLodging";
 import { cn } from "@/lib/utils";
 import { PencilIcon } from "@heroicons/react/24/outline";
 import { useEffect, useRef, useState } from "react";

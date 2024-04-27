@@ -4,11 +4,9 @@ import HostingLodgingLocation from "@/components/page/hosting/lodging/form/Hosti
 import HostingLodgingName from "@/components/page/hosting/lodging/form/HostingLodgingName";
 import HostingLodgingType from "@/components/page/hosting/lodging/form/HostingLodgingType";
 import HostingPhotos from "@/components/page/hosting/lodging/form/photos/HostingLodgingPhotos";
-import { getLodging } from "@/lib/server/getLodging";
+import { getLodging } from "@/lib/server/actions/getLodging";
 
 import { redirect } from "next/navigation";
-
-
 
 export default async function page({ params }: { params: { id: string } }) {
   const lodging = await getLodging(params.id);

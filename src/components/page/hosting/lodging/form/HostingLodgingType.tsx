@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select";
 import { setNewLodging } from "@/lib/redux/slice/new-lodging";
 import { AppDispatch, useAppSelector } from "@/lib/redux/store";
-import { DBLodging } from "@/lib/server/getLodging";
+import { DBLodging } from "@/lib/server/actions/getLodging";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";

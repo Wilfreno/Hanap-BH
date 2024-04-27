@@ -1,5 +1,5 @@
 "use client";
-import FetchNearbyLodging from "@/components/FetchNearbyLodgingsAPI";
+import FetchNearbyLodging from "@/components/FetchNearbyLodging";
 import LocationAccesDenied from "@/components/LocationAccessDenied";
 import Header from "@/components/layout/header/Header";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -18,6 +18,7 @@ function MainLayout({
 
   return (
     <LocationAccesDenied>
+      <FetchNearbyLodging />
       {children}
       {path_name.startsWith("/login") || path_name.startsWith("/signup")
         ? auth

@@ -1,5 +1,5 @@
 "use server";
-import prisma from "../prisma/client";
+import prisma from "../../prisma/client";
 
 export async function getLodgings(user_id: string) {
   try {

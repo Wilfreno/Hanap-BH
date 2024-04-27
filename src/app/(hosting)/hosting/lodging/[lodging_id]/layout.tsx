@@ -1,7 +1,7 @@
 import LogoImg from "@/components/layout/header/logo/LogoImg";
 import HeaderMenu from "@/components/layout/header/menu/HeaderMenu";
 import HostingLodgingNavigation from "@/components/page/hosting/lodging/HostingLodgingNavigation";
-import { getLodging } from "@/lib/server/getLodging";
+import { getLodging } from "@/lib/server/actions/getLodging";
 import Link from "next/link";
 import React from "react";
 

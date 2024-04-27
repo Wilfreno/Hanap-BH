@@ -8,6 +8,8 @@ import { useAppSelector } from "@/lib/redux/store";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import LodgingImagePreview from "./LodgingImagePreview";
+import LogoImg from "@/components/layout/header/logo/LogoImg";
+import Link from "next/link";
 
 export default function LodgingModal({ id }: { id: string }) {
   const router = useRouter();
@@ -19,10 +21,14 @@ export default function LodgingModal({ id }: { id: string }) {
     <AlertDialog defaultOpen onOpenChange={(e) => !e && router.push("/nearby")}>
       <AlertDialogContent className="max-w-screen max-h-screen w-full h-full sm:rounded-none border-none p-0">
         <section className="flex relative">
-          <AlertDialogCancel className="border-none hover:bg-transparent bg-transparent absolute top-2 left-2 focus-visible:ring-0 z-50 shadow-none">
-            <XMarkIcon className="h-6 cursor-pointer" />
-          </AlertDialogCancel>
-
+          <div className="absolute top-2 left-2 z-50 flex items-center justify-start space-x-10">
+            <AlertDialogCancel className="border-none hover:bg-transparent bg-transparent  focus-visible:ring-0 shadow-none">
+              <XMarkIcon className="h-6 cursor-pointer" />
+            </AlertDialogCancel>
+            <Link href="/" className="bg-">
+              <LogoImg />
+            </Link>
+          </div>
           <LodgingImagePreview
             photos={lodging?.photos!}
             database={lodging?.database!}
