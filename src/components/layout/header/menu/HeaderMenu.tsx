@@ -8,7 +8,7 @@ import { UserIcon } from "@heroicons/react/24/outline";
 import MenuContent from "./menu-content/MenuContent";
 import { useSession } from "next-auth/react";
 
-export default function Menu() {
+export default function HeaderMenu() {
   const { data, status } = useSession();
   return (
     <DropdownMenu>

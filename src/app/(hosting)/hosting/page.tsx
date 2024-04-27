@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { HeartIcon } from "@radix-ui/react-icons";
 import LogoImg from "@/components/layout/header/logo/LogoImg";
-import Menu from "@/components/layout/header/menu/Menu";
+import HeaderMenu from "@/components/layout/header/menu/HeaderMenu";
 import HostingNavigation from "@/components/page/hosting/HostingNavigation";
 import { getLodgings } from "@/lib/server/getLodgings";
 
@@ -39,7 +39,7 @@ export default async function page() {
               </h1>
             </Link>
           </nav>
-          <Menu />
+          <HeaderMenu />
         </div>
         <HostingNavigation />
       </header>

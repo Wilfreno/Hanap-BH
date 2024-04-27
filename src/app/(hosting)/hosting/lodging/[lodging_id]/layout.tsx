@@ -1,5 +1,5 @@
 import LogoImg from "@/components/layout/header/logo/LogoImg";
-import Menu from "@/components/layout/header/menu/Menu";
+import HeaderMenu from "@/components/layout/header/menu/HeaderMenu";
 import HostingLodgingNavigation from "@/components/page/hosting/lodging/HostingLodgingNavigation";
 import { getLodging } from "@/lib/server/getLodging";
 import Link from "next/link";
@@ -39,7 +39,7 @@ export default async function layout({
               {lodging.name}
             </Link>
           </nav>
-          <Menu />
+          <HeaderMenu />
         </div>
         <HostingLodgingNavigation lodging_id={params.lodging_id} />
       </header>

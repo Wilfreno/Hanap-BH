@@ -2,9 +2,8 @@
 
 import NoSearchResults from "@/components/page/error/NoSearchResults";
 import { AppDispatch, useAppSelector } from "@/lib/redux/store";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setSelectedLodging } from "@/lib/redux/slice/selected-lodging";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import MainContentCard from "@/components/page/main/MainContentCard";
@@ -67,13 +66,13 @@ export default function Page() {
               href={`/lodging/${lodging.id}`}
               as={`/lodging/${lodging.id}`}
               prefetch
-              onClick={() => dispatch(setSelectedLodging({ ...lodging }))}
               onViewportEnter={
                 index === nearby_lodgings.data.length - 1
                   ? handleScroll
                   : () => null
               }
               whileHover={{ scale: 1.05 }}
+              whileTap={{ opacity: 0.5 }}
             >
               <Card
                 key={lodging.name}

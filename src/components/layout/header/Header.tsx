@@ -1,7 +1,7 @@
 "use client";
 import Logo from "./logo/Logo";
 import AddPlace from "./add-place/AddPlace";
-import Menu from "./menu/Menu";
+import HeaderMenu from "./menu/HeaderMenu";
 import HeaderNavigation from "./HeaderNavigation";
 
 export default function Header() {
@@ -11,7 +11,7 @@ export default function Header() {
         <div className="w-full sm:hidden">
           <div className="w-full flex items-center justify-between p-3 px-5">
             <Logo />
-            <Menu />
+            <HeaderMenu />
           </div>
           <HeaderNavigation />
         </div>
@@ -19,7 +19,7 @@ export default function Header() {
           <Logo />
           <HeaderNavigation />
           <AddPlace />
-          <Menu />
+          <HeaderMenu />
         </div>
       </>
     </header>
