@@ -12,7 +12,7 @@ import Map from "@/components/Map";
 import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/lib/redux/store";
 import { setNewLodging } from "@/lib/redux/slice/new-lodging";
-import UserMarker from "../../../map/markers/UserMarker";
+import UserMarker from "../../../main/map/markers/UserMarker";
 import { PhilippinesPlaces } from "@/lib/types/psgc-types";
 import {
   AlertDialog,

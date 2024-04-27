@@ -1,6 +1,6 @@
 "use client";
-import Markers from "@/components/page/map/markers/Markers";
-import Search from "@/components/page/search/Search";
+import Markers from "@/components/page/main/map/markers/Markers";
+import Search from "@/components/page/main/search/Search";
 import Map from "@/components/Map";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { ControlPosition, MapControl, useMap } from "@vis.gl/react-google-maps";

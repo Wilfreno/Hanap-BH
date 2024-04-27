@@ -1,6 +1,6 @@
 "use client";
 
-import Search from "@/components/page/search/Search";
+import Search from "@/components/page/main/search/Search";
 import MainContent from "@/components/page/main/MainContent";
 import { useState } from "react";
 import NoSearchResults from "@/components/page/error/NoSearchResults";

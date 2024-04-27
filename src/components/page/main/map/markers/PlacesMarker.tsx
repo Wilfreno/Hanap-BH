@@ -9,7 +9,7 @@ import { AdvancedMarker, useMap } from "@vis.gl/react-google-maps";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import CustomImage from "@/components/CustomImage";
-import LodgingGoogleMessage from "../../lodging/LodgingGoogleMessage";
+import LodgingGoogleMessage from "../../../lodging/LodgingGoogleMessage";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 
 export default function PlacesMarker({

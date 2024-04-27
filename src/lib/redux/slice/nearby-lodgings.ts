@@ -4,13 +4,11 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 type T = {
   data: LodgingDetailsType[];
-  status: APIStatusResponseType | "";
-  next_page_token: string
+  next_page_token: string;
 };
 const initialState: T = {
   data: [],
-  status: "",
-  next_page_token: ""
+  next_page_token: "",
 };
 
 export const nearby_lodgings = createSlice({

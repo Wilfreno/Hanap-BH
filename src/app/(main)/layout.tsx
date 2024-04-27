@@ -18,7 +18,6 @@ function MainLayout({
 
   return (
     <LocationAccesDenied>
-      <FetchNearbyLodging />
       {children}
       {path_name.startsWith("/login") || path_name.startsWith("/signup")
         ? auth

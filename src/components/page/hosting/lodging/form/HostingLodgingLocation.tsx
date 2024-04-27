@@ -2,7 +2,7 @@
 
 import Map from "@/components/Map";
 import PhilippinesPlacesMenu from "@/components/PhilippinesPlacesMenu";
-import UserMarker from "@/components/page/map/markers/UserMarker";
+import UserMarker from "@/components/page/main/map/markers/UserMarker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
