@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import {
   AdjustmentsHorizontalIcon,
   MagnifyingGlassIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import PlaceFilterMenu from "@/components/PlaceFilterMenu";
 import { useEffect, useState } from "react";
@@ -29,56 +30,66 @@ export default function Search({
 }) {
   const http_request = UseHTTPRequest();
   const user_location = useAppSelector((state) => state.user_location_reducer);
-  const [search, setSearch] = useState<LodgingSearchType>();
-  const debounced_value = UseInputDebounce(search);
-
-  useEffect(() => {
-    async function getData() {
-      if (
-        !debounced_value?.search_value &&
-        !debounced_value?.location &&
-        !debounced_value?.lodging_type
-      ) {
-        if (result) result(undefined!);
-        return;
-      }
-
-      const r = await http_request.post("/api/place/search", {
-        ...debounced_value!,
-        latitude: user_location?.latitude,
-        longitude: user_location?.longitude,
-      });
-
-      if (r.status === "OK" && result) result!(r.data as LodgingDetailsType[]);
-      if (status) status(r.status);
-    }
-
-    if (search) getData();
-  }, [debounced_value]);
+  const [search, setSearch] = useState<LodgingSearchType>({
+    latitude: user_location?.latitude!,
+    longitude: user_location.longitude,
+    location: {
+      barangay: { code: "", name: "" },
+      municipality_city: { code: "", name: "" },
+      province: { code: "", name: "" },
+    },
+    lodging_type: "",
+    search_value: "",
+  });
 
   return (
     <form
       autoFocus={false}
       autoComplete="off"
       key="form"
-      className="flex items-center self-center justify-self-center w-fit mt-10 border rounded-full px-2 "
+      className="flex items-center self-center justify-self-center w-[30rem] my-10 border rounded-full px-2"
+      onSubmit={async (e) => {
+        e.preventDefault();
+        if (!search.search_value && !search.location && !search.lodging_type) {
+          if (result) result(undefined!);
+          return;
+        }
+
+        const r = await http_request.post("/api/place/search", {
+          ...search,
+        });
+
+        if (r.status === "OK" && result)
+          result!(r.data as LodgingDetailsType[]);
+        if (status) status(r.status);
+      }}
     >
-      <div className="flex items-center">
+      <div className="flex items-center grow text-base ">
         <Input
           disabled={disable}
           placeholder="Search"
           className="border-none focus-visible:ring-0"
-          value={search?.search_value ? search.search_value : ""}
+          value={search.search_value}
           onChange={(e) =>
-            setSearch!((prev) => ({ ...prev!, autocomplete: e.target.value }))
+            setSearch((prev) => ({ ...prev!, search_value: e.target.value }))
           }
         />
-        <MagnifyingGlassIcon
-          className={cn(
-            "h-5 w-auto text-muted",
-            search?.search_value && "text-primary"
-          )}
-        />
+
+        {search.search_value && (
+          <XMarkIcon
+            className="h-6 w-auto hover:stroke-2 mx-2 cursor-pointer"
+            onClick={() => setSearch((prev) => ({ ...prev, search_value: "" }))}
+          />
+        )}
+        <Button
+          disabled={!search.search_value}
+          size="icon"
+          variant="ghost"
+          className="aspect-square h-fit rounded-full p-1"
+          type="submit"
+        >
+          <MagnifyingGlassIcon className="h-5 w-auto stroke-2" />
+        </Button>
       </div>
       <Dialog>
         <DialogTrigger asChild disabled={disable}>
@@ -91,7 +102,7 @@ export default function Search({
           </Button>
         </DialogTrigger>
         <DialogContent className="space-y-5 grid">
-          <PlaceFilterMenu search={search!} setSearch={setSearch!} />
+          <PlaceFilterMenu search={search!} setSearch={setSearch} />
         </DialogContent>
       </Dialog>
     </form>

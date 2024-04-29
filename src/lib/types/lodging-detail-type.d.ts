@@ -7,6 +7,7 @@ import {
   Rating,
   Room,
 } from "@prisma/client";
+import { PhilippinesPlaces } from "./psgc-types";
 
 export interface LodgingDetailsType extends Omit<Lodging, "house_rules"> {
   distance?: number;

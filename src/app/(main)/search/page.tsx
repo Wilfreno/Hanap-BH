@@ -16,9 +16,9 @@ export default function Page() {
   );
 
   return (
-    <main className="grid grid-rows-2">
+    <main className="grid grid-rows-[auto_1fr]">
       <Search result={(r) => setResult(r)} status={(s) => setStatus(s)} />
-      <section>
+      <section className="flex flex-wrap my-10 justify-center">
         {status === "NO_RESULT" ? (
           <NoSearchResults />
         ) : result ? (

@@ -14,7 +14,7 @@ export default function PlaceFilterMenu({
   setSearch,
 }: {
   search: LodgingSearchType;
-  setSearch: Dispatch<SetStateAction<LodgingSearchType | undefined>>;
+  setSearch: Dispatch<SetStateAction<LodgingSearchType>>;
 }) {
   const [location, setLocation] = useState<PhilippinesPlaces>();
   const [lodging_type, setLodgingType] = useState<string>();
@@ -63,7 +63,11 @@ export default function PlaceFilterMenu({
         }
         asChild
       >
-        <Button className="font-semibold" disabled={!lodging_type && !location}>
+        <Button
+          className="font-semibold"
+          disabled={!lodging_type && !location}
+          type="submit"
+        >
           search
           <MagnifyingGlassIcon className="h-4 w-auto rotate-90 mx-1" />
         </Button>
