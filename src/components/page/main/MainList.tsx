@@ -5,7 +5,7 @@ import { useEffect, useTransition } from "react";
 import { useDispatch } from "react-redux";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
-import MainContentCard from "@/components/page/main/MainContentCard";
+import LodgingCard from "@/components/page/main/LodgingCard";
 import useHTTPRequest from "@/components/hooks/useHTTPRequest";
 import { setNearbyLodgings } from "@/lib/redux/slice/nearby-lodgings";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
@@ -83,7 +83,7 @@ export default function MainList({
                 key={lodging.name}
                 className="cursor-pointer border-none shadow-none"
               >
-                <MainContentCard lodging={lodging} />
+                <LodgingCard lodging={lodging} />
               </Card>
             </MotionLink>
           ))}

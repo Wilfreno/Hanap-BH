@@ -3,7 +3,7 @@ import NoImageSvg from "./svg/NoImageSvg";
 import { cn } from "@/lib/utils";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { CldImage } from "next-cloudinary";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 
 export default function CustomImage({
   url,
@@ -17,6 +17,7 @@ export default function CustomImage({
   const api_key = process.env.NEXT_PUBLIC_GOOGLE_PLACE_API_KEY;
   if (!api_key) throw new Error("NEXT_PUBLIC_GOOGLE_PLACE_API_KEY is missing");
 
+  const [loading, setLoading] = useState(true);
   return url ? (
     <Suspense
       fallback={
@@ -30,7 +31,12 @@ export default function CustomImage({
           height={1080}
           width={1920}
           priority
-          className={cn("w-full h-full", className)}
+          className={cn(
+            "w-full h-full",
+            className,
+            loading && "bg-muted-foreground animate-pulse"
+          )}
+          onLoad={() => setLoading(false)}
         />
       ) : (
         <CldImage
@@ -38,7 +44,12 @@ export default function CustomImage({
           height="1080"
           src={url}
           alt={url}
-          className={cn("h-full w-full", className)}
+          className={cn(
+            "h-full w-full",
+            className,
+            loading && "bg-muted-foreground animate-pulse"
+          )}
+          onLoad={() => setLoading(false)}
         />
       )}
     </Suspense>

@@ -1,29 +1,40 @@
 "use client";
 
 import Search from "@/components/page/main/search/Search";
-import MainContent from "@/components/page/main/MainContent";
 import { useState } from "react";
 import NoSearchResults from "@/components/page/error/NoSearchResults";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { APIStatusResponseType } from "@/lib/types/api-request-response";
-import useNearbyLodgingAPI from "@/components/FetchNearbyLodgingsAPI";
+import { useAppSelector } from "@/lib/redux/store";
+import LodgingCard from "@/components/page/main/LodgingCard";
 
 export default function Page() {
-  const { nearby_lodgings } = useNearbyLodgingAPI();
   const [result, setResult] = useState<LodgingDetailsType[]>();
   const [status, setStatus] = useState<APIStatusResponseType>();
+  const nearby_lodgings = useAppSelector(
+    (state) => state.nearby_lodging_reducer
+  );
 
   return (
-    <>
-      {status === "NO_RESULT" ? (
-        <NoSearchResults>
-          <Search result={(r) => setResult(r)} status={(s) => setStatus(s)} />
-        </NoSearchResults>
-      ) : (
-        <MainContent lodgings={result ? result : nearby_lodgings}>
-          <Search result={(r) => setResult(r)} status={(s) => setStatus(s)} />
-        </MainContent>
-      )}
-    </>
+    <main className="grid grid-rows-2">
+      <Search result={(r) => setResult(r)} status={(s) => setStatus(s)} />
+      <section>
+        {status === "NO_RESULT" ? (
+          <NoSearchResults />
+        ) : result ? (
+          [...result]
+            .sort((a, b) => a.distance! - b.distance!)
+            .map((lodging, index) => (
+              <LodgingCard index={index} lodging={lodging} key={lodging.name} />
+            ))
+        ) : (
+          [...nearby_lodgings.data]
+            .sort((a, b) => a.distance! - b.distance!)
+            .map((lodging, index) => (
+              <LodgingCard index={index} lodging={lodging} key={lodging.name} />
+            ))
+        )}
+      </section>
+    </main>
   );
 }

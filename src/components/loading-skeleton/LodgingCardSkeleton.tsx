@@ -1,8 +1,8 @@
 import { Card, CardContent } from "../ui/card";
 
-export default function MainListSkeleton() {
-  return Array.from({ length: 4 }).map((_, index) => (
-    <Card key={index} className="cursor-pointer border-none shadow-none">
+export default function LodgingCardSkeleton() {
+  return (
+    <Card className="cursor-pointer border-none shadow-none">
       <CardContent>
         <div className="w-full h-auto rounded-lg flex">
           <div className="aspect-square w-full h-auto rounded-lg bg-muted-foreground animate-pulse" />
@@ -15,5 +15,5 @@ export default function MainListSkeleton() {
         </div>
       </CardContent>
     </Card>
-  ));
+  );
 }

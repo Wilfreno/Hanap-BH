@@ -2,21 +2,9 @@ import { cn } from "@/lib/utils";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import React from "react";
 
-export default function NoSearchResults({
-  children,
-}: {
-  children?: React.ReactNode;
-}) {
+export default function NoSearchResults() {
   return (
-    <section
-      className={cn(
-        "grid",
-        children
-          ? "grid-rows-[auto_1fr]"
-          : " place-self-center place-items-center"
-      )}
-    >
-      {children}
+    <div className="self-center justify-self-center">
       <XMarkIcon className="h-[5rem] stroke-[4]" />
       <div>
         <p className="text-lg ">
@@ -28,6 +16,6 @@ export default function NoSearchResults({
           <span className="underline font-bold">browse</span> for places
         </p>
       </div>
-    </section>
+    </div>
   );
 }
