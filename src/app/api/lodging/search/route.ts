@@ -5,7 +5,6 @@ import {
   LodgingDetailsType,
   LodgingSearchType,
 } from "@/lib/types/lodging-detail-type";
-import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -25,7 +24,13 @@ export async function POST(request: Request) {
           },
         ],
         AND: {
-          location: { address: { contains: query.location } },
+          location: {
+            OR: [
+              { province: query.location.province.name },
+              { municipality_city: query.location.municipality_city.name },
+              { barangay: query.location.barangay.name },
+            ],
+          },
           lodging_type: { contains: query.lodging_type },
         },
       },
@@ -35,6 +40,7 @@ export async function POST(request: Request) {
         rooms: {
           include: {
             photos: true,
+            price: true,
           },
         },
         ratings: true,

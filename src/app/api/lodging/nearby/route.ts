@@ -1,8 +1,8 @@
 import getDistance from "@/lib/google-api/distance";
 import prisma from "@/lib/prisma/client";
+import { GeocodeResponseType } from "@/lib/types/google-geocode-api-type";
 
 import {
-  NominatimReverseAPiResponse,
   PlacesAPIResponse,
   PlacesAPIResult,
 } from "@/lib/types/google-places-api-type";
@@ -11,8 +11,16 @@ import { type NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const api_key = process.env.NEXT_PUBLIC_GOOGLE_PLACE_API_KEY;
-  if (!api_key) throw new Error("NEXT_PUBLIC_GOOGLE_PLACE_API_KEY is missing");
+  const places_api_key = process.env.NEXT_PUBLIC_GOOGLE_PLACE_API_KEY;
+  if (!places_api_key)
+    throw new Error(
+      "NEXT_PUBLIC_GOOGLE_PLACE_API_KEY is missing from your .env.local file"
+    );
+  const geocode_api_key = process.env.NEXT_PUBLIC_GOOGLE_GEOCODE_API_KEY;
+  if (!geocode_api_key)
+    throw new Error(
+      "NEXT_PUBLIC_GOOGLE_GEOCODE_API_KEY is missing from your .env.local file"
+    );
 
   try {
     const search_params = request.nextUrl.searchParams;
@@ -28,26 +36,31 @@ export async function GET(request: NextRequest) {
         { status: 400 }
       );
 
-    const nomitatim_response = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`,
-      { cache: "no-store" }
+    const geocode_response = await fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?key=${geocode_api_key}&latlng=${latitude},${longitude}&result_type=locality`
     );
-    const nominatim_data: NominatimReverseAPiResponse =
-      await nomitatim_response.json();
+    const geocode_response_json =
+      (await geocode_response.json()) as GeocodeResponseType;
 
-    if (nominatim_data.address.country_code !== "ph") {
+    if (
+      !geocode_response_json.results[0].formatted_address.includes(
+        "Philippines"
+      ) &&
+      geocode_response_json.results[0].address_components.find((r) =>
+        r.types.includes("country")
+      )?.short_name !== "PH"
+    )
       return NextResponse.json(
         {
           status: "OUT_OF_BOUND",
           message:
-            "location out of bound; the app can only be used in the philippines",
+            "location out of bound; the application is only available in the Philippines",
         },
         { status: 400 }
       );
-    }
 
     const places_api_response = await fetch(
-      `https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=${api_key}&location=${latitude}%2C${longitude}&type=lodging&rankby=distance`,
+      `https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=${places_api_key}&location=${latitude}%2C${longitude}&type=lodging&rankby=distance`,
       { cache: "no-store" }
     );
 
@@ -66,8 +79,7 @@ export async function GET(request: NextRequest) {
 
     for (let i = 0; i < results.length; i++) {
       if (results[i].business_status !== "OPERATIONAL") continue;
-
-      nearby_lodgings.push({
+      !nearby_lodgings.push({
         id: results[i].place_id,
         owner_id: "",
         name: results[i].name,
@@ -123,9 +135,8 @@ export async function GET(request: NextRequest) {
       where: {
         location: {
           address: {
-            contains: nominatim_data.address.city
-              ? nominatim_data.address.city
-              : nominatim_data.address.town,
+            contains:
+              geocode_response_json.results[0].address_components[0].long_name,
           },
         },
       },
@@ -133,6 +144,7 @@ export async function GET(request: NextRequest) {
         rooms: {
           include: {
             photos: true,
+            price: true,
           },
         },
         ratings: true,

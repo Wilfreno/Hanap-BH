@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 import getDistance from "@/lib/google-api/distance";
+import { GeocodeResponseType } from "@/lib/types/google-geocode-api-type";
 import {
   NominatimReverseAPiResponse,
   PlacesAPIResponse,
@@ -10,6 +11,11 @@ import { type NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   const api_key = process.env.NEXT_PUBLIC_GOOGLE_PLACE_API_KEY;
   if (!api_key) throw new Error("NEXT_PUBLIC_GOOGLE_PLACE_API_KEY is missing");
+  const geocode_api_key = process.env.NEXT_PUBLIC_GOOGLE_GEOCODE_API_KEY;
+  if (!geocode_api_key)
+    throw new Error(
+      "NEXT_PUBLIC_GOOGLE_GEOCODE_API_KEY is missing from your .env.local file"
+    );
 
   const search_params = request.nextUrl.searchParams;
   const next_page_token = search_params.get("next_page_token");
@@ -20,24 +26,32 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       {
         status: "BAD_REQUEST",
-        message: "next_page_token, latitude, & longitude url parameter is required",
+        message:
+          "next_page_token, latitude, & longitude url parameter is required",
       },
       { status: 400 }
     );
 
   try {
-    const nomitatim_response = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+    const geocode_response = await fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?key=${geocode_api_key}&latlng=${latitude},${longitude}&result_type=locality`
     );
-    const nominatim_data: NominatimReverseAPiResponse =
-      await nomitatim_response.json();
+    const geocode_response_json =
+      (await geocode_response.json()) as GeocodeResponseType;
 
-    if (nominatim_data.address.country_code !== "ph") {
+    if (
+      !geocode_response_json.results[0].formatted_address.includes(
+        "Philippines"
+      ) &&
+      geocode_response_json.results[0].address_components.find((r) =>
+        r.types.includes("country")
+      )?.short_name !== "PH"
+    )
       return NextResponse.json(
-        { status: "OUT_OF_BOUND", message: "location out of bound" },
+        { status: "OUT_OF_BOUND", message: "location out of bound; the application is only available in the Philippines" },
         { status: 400 }
       );
-    }
+
     const next_page_response = await fetch(
       `https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=${next_page_token}&key=${api_key}`
     );

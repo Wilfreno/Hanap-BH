@@ -1,23 +1,22 @@
-import { Button } from "./ui/button";
-import { DialogClose } from "./ui/dialog";
-import { Label } from "./ui/label";
-import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
-import LodgingTypes from "./LodgingTypes";
-import PhilippinesPlacesMenu from "./PhilippinesPlacesMenu";
-import { Dispatch, SetStateAction, useState } from "react";
+"use client";
+import { Button } from "../../../ui/button";
+import { DialogClose } from "../../../ui/dialog";
+import { Label } from "../../../ui/label";
+import { RadioGroup, RadioGroupItem } from "../../../ui/radio-group";
+import LodgingTypes from "../../../LodgingTypes";
+import PhilippinesPlacesMenu from "../../../PhilippinesPlacesMenu";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { PhilippinesPlaces } from "@/lib/types/psgc-types";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { LodgingSearchType } from "@/lib/types/lodging-detail-type";
 
-export default function PlaceFilterMenu({
+export default function SearchFilterMenu({
   search,
   setSearch,
 }: {
   search: LodgingSearchType;
   setSearch: Dispatch<SetStateAction<LodgingSearchType>>;
 }) {
-  const [location, setLocation] = useState<PhilippinesPlaces>();
-  const [lodging_type, setLodgingType] = useState<string>();
   const lodging_types = LodgingTypes();
 
   return (
@@ -27,7 +26,9 @@ export default function PlaceFilterMenu({
         <RadioGroup
           defaultValue={search?.lodging_type}
           className="flex flex-wrap"
-          onValueChange={(e) => setLodgingType(e)}
+          onValueChange={(e) =>
+            setSearch((prev) => ({ ...prev, lodging_type: e }))
+          }
         >
           {lodging_types.map((lodging) => (
             <div
@@ -50,22 +51,21 @@ export default function PlaceFilterMenu({
       </div>
       <div className="grid space-y-5">
         <h1 className="text-xl font-bold">Location</h1>
-        <PhilippinesPlacesMenu selected={(e) => setLocation(e)} />
+        <PhilippinesPlacesMenu
+          selected={(e) => {
+            setSearch((prev) => ({ ...prev, location: e }));
+          }}
+        />
       </div>
-      <DialogClose
-        className="justify-self-end"
-        onClick={() =>
-          setSearch((prev) => ({
-            ...prev!,
-            location: location!,
-            lodging_type: lodging_type!,
-          }))
-        }
-        asChild
-      >
+      <DialogClose className="justify-self-end" asChild>
         <Button
           className="font-semibold"
-          disabled={!lodging_type && !location}
+          disabled={
+            !search.lodging_type &&
+            !search.location.province.name &&
+            !search.location.municipality_city.name &&
+            !search.location.barangay.name
+          }
           type="submit"
         >
           search

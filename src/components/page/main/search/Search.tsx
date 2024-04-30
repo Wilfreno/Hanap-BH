@@ -7,7 +7,7 @@ import {
   MagnifyingGlassIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import PlaceFilterMenu from "@/components/PlaceFilterMenu";
+import SearchFilterMenu from "@/components/page/main/search/SearchFilterMenu";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import UseHTTPRequest from "@/components/hooks/useHTTPRequest";
@@ -102,7 +102,7 @@ export default function Search({
           </Button>
         </DialogTrigger>
         <DialogContent className="space-y-5 grid">
-          <PlaceFilterMenu search={search!} setSearch={setSearch} />
+          <SearchFilterMenu search={search!} setSearch={setSearch} />
         </DialogContent>
       </Dialog>
     </form>

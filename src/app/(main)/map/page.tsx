@@ -6,10 +6,8 @@ import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { ControlPosition, MapControl, useMap } from "@vis.gl/react-google-maps";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import useNearbyLodgingAPI from "@/components/FetchNearbyLodgingsAPI";
 
 export default function Page() {
-  const { nearby_lodgings } = useNearbyLodgingAPI();
   const [result, setResult] = useState<LodgingDetailsType[]>();
   const router = useRouter();
   if (result && result.length > 0)
