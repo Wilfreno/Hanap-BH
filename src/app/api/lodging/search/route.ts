@@ -70,6 +70,17 @@ export async function POST(request: Request) {
           longitude: Number(db_data[i].location?.longitude),
           date_created: null,
         },
+        rooms: db_data[i].rooms.map((room) => ({
+          ...room,
+          price: {
+            ...room.price!,
+            per_12_hours: Number(room.price?.per_12_hours),
+            per_hour: Number(room.price?.per_hour),
+            per_month: Number(room.price?.per_month),
+            per_night: Number(room.price?.per_night),
+            per_six_hour: Number(room.price?.per_six_hour),
+          },
+        })),
         distance: getDistance(
           {
             latitude: Number(query.latitude)!,

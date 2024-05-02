@@ -67,7 +67,7 @@ model Price {
   per_six_hour Decimal
   per_12_hours Decimal
   per_night    Decimal
-  per_monrh    Decimal
+  per_month    Decimal
   date_created DateTime? @default(now())
 }
 

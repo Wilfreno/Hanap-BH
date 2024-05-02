@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import NoSearchResults from "@/components/page/error/NoSearchResults";
 import { useAppSelector } from "@/lib/redux/store";
 import { useState } from "react";

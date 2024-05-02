@@ -16,10 +16,12 @@ export async function GET(request: NextRequest) {
     throw new Error(
       "NEXT_PUBLIC_GOOGLE_PLACE_API_KEY is missing from your .env.local file"
     );
-  const geocode_api_key = process.env.NEXT_PUBLIC_GOOGLE_GEOCODE_API_KEY;
+
+  const geocode_api_key = process.env.GOOGLE_GEOCODE_API_KEY;
+
   if (!geocode_api_key)
     throw new Error(
-      "NEXT_PUBLIC_GOOGLE_GEOCODE_API_KEY is missing from your .env.local file"
+      "GOOGLE_GEOCODE_API_KEY is missing from your .env.local file"
     );
 
   try {
@@ -37,10 +39,14 @@ export async function GET(request: NextRequest) {
       );
 
     const geocode_response = await fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?key=${geocode_api_key}&latlng=${latitude},${longitude}&result_type=locality`
+      `https://maps.googleapis.com/maps/api/geocode/json?key=${geocode_api_key}&latlng=${latitude},${longitude}&result_type=locality`,
+      { cache: "no-store" }
     );
     const geocode_response_json =
       (await geocode_response.json()) as GeocodeResponseType;
+
+
+
 
     if (
       !geocode_response_json.results[0].formatted_address.includes(
@@ -176,6 +182,17 @@ export async function GET(request: NextRequest) {
           longitude: Number(db_data[i].location?.longitude),
           date_created: null,
         },
+        rooms: db_data[i].rooms.map((room) => ({
+          ...room,
+          price: {
+            ...room.price!,
+            per_hour: Number(room.price?.per_hour),
+            per_six_hour: Number(room.price?.per_six_hour),
+            per_12_hours: Number(room.price?.per_12_hours),
+            per_night: Number(room.price?.per_night),
+            per_month: Number(room.price?.per_month),
+          },
+        })),
         distance: getDistance(
           { latitude: Number(latitude)!, longitude: Number(longitude)! },
           {

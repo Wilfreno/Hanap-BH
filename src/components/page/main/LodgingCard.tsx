@@ -4,14 +4,20 @@ import CustomImage from "@/components/CustomImage";
 import { Card, CardContent } from "@/components/ui/card";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { StarIcon } from "@heroicons/react/24/outline";
-import { Dispatch, SetStateAction, useState } from "react";
-import { motion } from "framer-motion";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { AppDispatch, useAppSelector } from "@/lib/redux/store";
 import { useDispatch } from "react-redux";
 import useHTTPRequest from "@/components/hooks/useHTTPRequest";
 import Link from "next/link";
 import { setNearbyLodgings } from "@/lib/redux/slice/nearby-lodgings";
+import { cn } from "@/lib/utils";
 
+type PriceList = {
+  frequency: string;
+  min?: number;
+  max?: number;
+};
 export default function LodgingCard({
   lodging,
   index,
@@ -21,7 +27,11 @@ export default function LodgingCard({
   index: number;
   setFetching?: Dispatch<SetStateAction<boolean>>;
 }) {
+  const [prices_list_min_max, setPricesListMinMax] = useState<PriceList[]>([]);
+  const [price_list_view_index, setPriceListViewindex] = useState(0);
+
   const user_location = useAppSelector((state) => state.user_location_reducer);
+
   const dispatch = useDispatch<AppDispatch>();
   const nearby_lodgings = useAppSelector(
     (state) => state.nearby_lodging_reducer
@@ -61,6 +71,75 @@ export default function LodgingCard({
     count--;
   }
 
+  useEffect(() => {
+    let per_month = {
+      frequency: "month",
+      min: lodging.rooms?.[0].price!.per_month,
+      max: lodging.rooms?.[0].price!.per_month,
+    };
+
+    let per_night = {
+      frequency: "night",
+      min: lodging.rooms?.[0].price!.per_night,
+      max: lodging.rooms?.[0].price!.per_night,
+    };
+
+    let per_12_hour = {
+      frequency: "12 hours",
+      min: lodging.rooms?.[0].price!.per_12_hours,
+      max: lodging.rooms?.[0].price!.per_12_hours,
+    };
+
+    let per_six_hour = {
+      frequency: "6 hours",
+      min: lodging.rooms?.[0].price!.per_six_hour,
+      max: lodging.rooms?.[0].price!.per_six_hour,
+    };
+
+    let per_hour = {
+      frequency: "hour",
+      min: lodging.rooms?.[0].price!.per_hour,
+      max: lodging.rooms?.[0].price!.per_hour,
+    };
+
+    lodging.rooms?.forEach((room) => {
+      per_month.min = Math.min(per_month.min!, room.price.per_month);
+      per_month.max = Math.max(per_month.max!, room.price.per_month);
+
+      per_night.max = Math.max(per_night.max!, room.price.per_night);
+      per_night.min = Math.min(per_night.min!, room.price.per_night);
+
+      per_12_hour.max = Math.max(per_12_hour.max!, room.price.per_12_hours);
+      per_12_hour.min = Math.min(per_12_hour.min!, room.price.per_12_hours);
+
+      per_six_hour.max = Math.max(per_six_hour.max!, room.price.per_six_hour);
+      per_six_hour.min = Math.min(per_six_hour.min!, room.price.per_six_hour);
+
+      per_hour.max = Math.max(per_hour.max!, room.price.per_hour);
+      per_hour.min = Math.min(per_hour.min!, room.price.per_hour);
+    });
+    setPricesListMinMax([
+      per_month,
+      per_night,
+      per_12_hour,
+      per_six_hour,
+      per_hour,
+    ]);
+  }, []);
+
+  useEffect(() => {
+    if (prices_list_min_max.length < 1) return;
+    const id = setInterval(
+      () =>
+        setPriceListViewindex(
+          (prev) => (prev + 1) % prices_list_min_max.length
+        ),
+      5000
+    );
+
+    return () => clearInterval(id);
+  }, [prices_list_min_max]);
+
   return (
     <MotionLink
       key={lodging.name}
@@ -91,22 +170,52 @@ export default function LodgingCard({
             <GoogleMark database={lodging.database} />
             <FavoriteMark
               lodging={lodging}
-              className="h-6 w-auto absolute top-2 right-2"
+              className={cn(
+                "h-6 w-auto absolute top-2 right-2",
+                lodging.database === "GOOGLE" && "hidden"
+              )}
             />
           </div>
-          <div className="my-2 space-y-5">
+          <div className="my-3 space-y-5">
             <div>
-              <h1 className="font-bold sm:text-sm truncate">{lodging.name}</h1>
-              <h2 className="text-xs text-muted-foreground truncate">
+              <h1 className="font-bold text-base truncate">{lodging.name}</h1>
+              <h2 className="text-sm text-muted-foreground truncate">
                 {lodging?.location.address}
               </h2>
             </div>
-            <div className="flex items-center justify-between text-xs font-semibold p-1">
-              <p>{lodging?.distance?.toFixed(2)} Km away</p>
-              <p className="flex items-center space-x-2">
+            <div className="flex items-center justify-between p-1">
+              <p className="text-sm">{lodging?.distance?.toFixed(2)} Km away</p>
+              <p className="flex items-center space-x-2 font-bold ">
                 {lodging?.ratings?.reduce((a, b) => a + Number(b.value), 0)}
                 <StarIcon className="h-4 w-auto" />
               </p>
+            </div>
+            <div className="flex space-x-5">
+              <AnimatePresence>
+                <motion.p
+                  className="flex space-x-3 items-center"
+                  key={prices_list_min_max[price_list_view_index]?.min}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {prices_list_min_max[price_list_view_index]?.min! &&
+                    prices_list_min_max[price_list_view_index].min}
+                  ~
+                  {prices_list_min_max[price_list_view_index]?.max! &&
+                    prices_list_min_max[price_list_view_index].max}
+                </motion.p>
+                <motion.p
+                  initial={{ x: 50, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: -50, opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  key={prices_list_min_max[price_list_view_index]?.frequency}
+                >
+                  {prices_list_min_max[price_list_view_index]?.frequency}
+                </motion.p>
+              </AnimatePresence>
             </div>
           </div>
         </CardContent>

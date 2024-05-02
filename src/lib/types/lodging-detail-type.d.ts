@@ -8,6 +8,7 @@ import {
   Room,
 } from "@prisma/client";
 import { PhilippinesPlaces } from "./psgc-types";
+import { RoomDetailsType } from "./room-detail-type";
 
 export interface LodgingDetailsType extends Omit<Lodging, "house_rules"> {
   distance?: number;
@@ -16,6 +17,7 @@ export interface LodgingDetailsType extends Omit<Lodging, "house_rules"> {
   location: LodgingLocationType;
   ratings?: LodgingRating[];
   favorited?: Favorite[];
+  rooms?: RoomDetailsType[];
   database: "GOOGLE" | "POSTGERSQL";
 }
 
