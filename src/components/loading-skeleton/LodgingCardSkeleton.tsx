@@ -1,8 +1,11 @@
 import { Card, CardContent } from "../ui/card";
 
 export default function LodgingCardSkeleton() {
-  return (
-    <Card className="cursor-pointer border-none shadow-none">
+  return Array.from({ length: 4 }).map((_, index) => (
+    <Card
+      key={index}
+      className="cursor-pointer border-none shadow-none w-[20rem]"
+    >
       <CardContent>
         <div className="w-full h-auto rounded-lg flex">
           <div className="aspect-square w-full h-auto rounded-lg bg-muted-foreground animate-pulse" />
@@ -15,5 +18,5 @@ export default function LodgingCardSkeleton() {
         </div>
       </CardContent>
     </Card>
-  );
+  ));
 }

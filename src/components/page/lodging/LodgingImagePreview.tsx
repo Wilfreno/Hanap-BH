@@ -15,27 +15,35 @@ export default function LodgingImagePreview({
 
   return (
     <div className="w-[70%] grid relative group">
-      <Button
-        className="hidden absolute top-1/2 -translate-y-1/2 left-7 rounded-full z-50 p-1 hover:left-6  group-hover:inline-flex"
-        variant="ghost"
-        size="lg"
-      >
-        <ChevronLeftIcon className="h-9  hover:text-primary" />
-      </Button>
+      {photos?.length! > 1 && (
+        <Button
+          className="hidden absolute top-1/2 -translate-y-1/2 left-7 rounded-full aspect-square h-12 z-50 p-1 hover:left-6  group-hover:inline-flex"
+          variant="secondary"
+          size="lg"
+          onClick={() =>
+            setIndex((prev) => (prev - 1 + photos?.length!) % photos?.length!)
+          }
+        >
+          <ChevronLeftIcon className="h-full " />
+        </Button>
+      )}
       <div className="aspect-video h-full w-auto max-w-full rounded-sm overflow-hidden justify-self-center self-center relative">
         <CustomImage
           database={database!}
-          url={photos?.length! > 0 ? photos?.[0].photo_url : undefined}
+          url={photos?.length! > 0 ? photos?.[index].photo_url : undefined}
           className="object-contain"
         />
       </div>
-      <Button
-        className="hidden  absolute top-1/2 -translate-y-1/2 right-7 rounded-full z-50 p-1 hover:right-6  group-hover:inline-flex "
-        variant="ghost"
-        size="lg"
-      >
-        <ChevronRightIcon className="h-9  hover:text-primary" />
-      </Button>
+      {photos?.length! > 1 && (
+        <Button
+          className="hidden  absolute top-1/2 -translate-y-1/2 right-7 rounded-full aspect-square h-12 z-50 p-1 hover:right-6  group-hover:inline-flex "
+          variant="secondary"
+          size="lg"
+          onClick={() => setIndex((prev) => (prev + 1) % photos?.length!)}
+        >
+          <ChevronRightIcon className="h-9  hover:text-primary" />
+        </Button>
+      )}{" "}
     </div>
   );
 }

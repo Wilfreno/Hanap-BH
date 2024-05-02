@@ -10,6 +10,7 @@ import FetchingSkeleton from "@/components/loading-skeleton/FetchingSkeleton";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
 import { APIStatusResponseType } from "@/lib/types/api-request-response";
 import Search from "@/components/page/main/search/Search";
+import LodgingCardSkeleton from "@/components/loading-skeleton/LodgingCardSkeleton";
 
 export default function Page() {
   const nearby_lodgings = useAppSelector(
@@ -28,26 +29,30 @@ export default function Page() {
           <NoSearchResults />
         ) : (
           <div className="flex flex-wrap justify-center">
-            {result
-              ? [...result]
-                  .sort((a, b) => a.distance! - b.distance!)
-                  .map((lodging, index) => (
-                    <LodgingCard
-                      index={index}
-                      lodging={lodging}
-                      key={lodging.name}
-                    />
-                  ))
-              : [...nearby_lodgings.data]
-                  .sort((a, b) => a.distance! - b.distance!)
-                  .map((lodging, index) => (
-                    <LodgingCard
-                      index={index}
-                      lodging={lodging}
-                      setFetching={setFetching}
-                      key={lodging.id}
-                    />
-                  ))}
+            {nearby_lodgings.status === "FETCHING" ? (
+              <LodgingCardSkeleton />
+            ) : result ? (
+              [...result]
+                .sort((a, b) => a.distance! - b.distance!)
+                .map((lodging, index) => (
+                  <LodgingCard
+                    index={index}
+                    lodging={lodging}
+                    key={lodging.name}
+                  />
+                ))
+            ) : (
+              [...nearby_lodgings.data]
+                .sort((a, b) => a.distance! - b.distance!)
+                .map((lodging, index) => (
+                  <LodgingCard
+                    index={index}
+                    lodging={lodging}
+                    setFetching={setFetching}
+                    key={lodging.id}
+                  />
+                ))
+            )}
           </div>
         )}
         {fetching && <FetchingSkeleton />}

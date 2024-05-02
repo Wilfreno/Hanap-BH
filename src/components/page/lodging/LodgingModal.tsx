@@ -18,7 +18,10 @@ export default function LodgingModal({ id }: { id: string }) {
   );
 
   return (
-    <AlertDialog defaultOpen onOpenChange={(e) => !e && router.push("/nearby")}>
+    <AlertDialog
+      defaultOpen
+      onOpenChange={(e) => !e && router.push("/nearby", { scroll: false })}
+    >
       <AlertDialogContent className="max-w-screen max-h-screen w-full h-full sm:rounded-none border-none p-0">
         <section className="flex relative">
           <div className="absolute top-2 left-2 z-50 flex items-center justify-start space-x-10">
