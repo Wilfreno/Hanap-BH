@@ -8,10 +8,8 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import SearchFilterMenu from "@/components/page/main/search/SearchFilterMenu";
-import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
+import { useState } from "react";
 import UseHTTPRequest from "@/components/hooks/useHTTPRequest";
-import UseInputDebounce from "@/components/hooks/useInputDebounce";
 import {
   LodgingDetailsType,
   LodgingSearchType,
@@ -31,8 +29,8 @@ export default function Search({
   const http_request = UseHTTPRequest();
   const user_location = useAppSelector((state) => state.user_location_reducer);
   const [search, setSearch] = useState<LodgingSearchType>({
-    latitude: user_location?.latitude!,
-    longitude: user_location.longitude,
+    latitude: undefined,
+    longitude: undefined,
     location: {
       barangay: { code: "", name: "" },
       municipality_city: { code: "", name: "" },
@@ -54,11 +52,15 @@ export default function Search({
           if (result) result(undefined!);
           return;
         }
+        console.log("submit", search);
 
-        const r = await http_request.post("/api/place/search", {
+        const r = await http_request.post("/api/lodging/search", {
           ...search,
+          latitude: user_location?.latitude!,
+          longitude: user_location?.longitude!,
         });
 
+        console.log(r.status);
         if (r.status === "OK" && result)
           result!(r.data as LodgingDetailsType[]);
         if (status) status(r.status);

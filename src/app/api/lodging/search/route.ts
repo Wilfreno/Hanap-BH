@@ -49,50 +49,52 @@ export async function POST(request: Request) {
       relationLoadStrategy: "join",
     });
 
-    for (let i = 0; i < db_data!?.length; i++) {
-      search_result.push({
-        ...db_data[i],
-        ratings: db_data[i].ratings.map((rating) => ({
-          ...rating,
-          value: Number(rating.value),
-        })),
-        house_rules: db_data[i].house_rules
-          ? JSON.parse(db_data[i].house_rules)
-          : [],
-        location: {
-          id: db_data[i].id,
-          address: db_data[i].location?.address!,
-          province: db_data[i].location?.province!,
-          municipality_city: db_data[i].location?.municipality_city!,
-          barangay: db_data[i].location?.barangay!,
-          street: db_data[i].location?.street!,
-          latitude: Number(db_data[i].location?.latitude),
-          longitude: Number(db_data[i].location?.longitude),
-          date_created: null,
-        },
-        rooms: db_data[i].rooms.map((room) => ({
-          ...room,
-          price: {
-            ...room.price!,
-            per_12_hours: Number(room.price?.per_12_hours),
-            per_hour: Number(room.price?.per_hour),
-            per_month: Number(room.price?.per_month),
-            per_night: Number(room.price?.per_night),
-            per_six_hour: Number(room.price?.per_six_hour),
+    if (db_data.length > 1) {
+      for (let i = 0; i < db_data.length; i++) {
+        search_result.push({
+          ...db_data[i],
+          ratings: db_data[i].ratings.map((rating) => ({
+            ...rating,
+            value: Number(rating.value),
+          })),
+          house_rules: db_data[i].house_rules
+            ? JSON.parse(db_data[i].house_rules)
+            : [],
+          location: {
+            id: db_data[i].id,
+            address: db_data[i].location?.address!,
+            province: db_data[i].location?.province!,
+            municipality_city: db_data[i].location?.municipality_city!,
+            barangay: db_data[i].location?.barangay!,
+            street: db_data[i].location?.street!,
+            latitude: Number(db_data[i].location?.latitude),
+            longitude: Number(db_data[i].location?.longitude),
+            date_created: null,
           },
-        })),
-        distance: getDistance(
-          {
-            latitude: Number(query.latitude)!,
-            longitude: Number(query.longitude)!,
-          },
-          {
-            longitude: Number(db_data[i]?.location?.longitude),
-            latitude: Number(db_data[i]?.location?.latitude),
-          }
-        ),
-        database: "POSTGERSQL",
-      });
+          rooms: db_data[i].rooms.map((room) => ({
+            ...room,
+            price: {
+              ...room.price!,
+              per_12_hours: Number(room.price?.per_12_hours),
+              per_hour: Number(room.price?.per_hour),
+              per_month: Number(room.price?.per_month),
+              per_night: Number(room.price?.per_night),
+              per_six_hour: Number(room.price?.per_six_hour),
+            },
+          })),
+          distance: getDistance(
+            {
+              latitude: Number(query.latitude)!,
+              longitude: Number(query.longitude)!,
+            },
+            {
+              longitude: Number(db_data[i]?.location?.longitude),
+              latitude: Number(db_data[i]?.location?.latitude),
+            }
+          ),
+          database: "POSTGERSQL",
+        });
+      }
     }
 
     const response = await fetch(
@@ -101,61 +103,66 @@ export async function POST(request: Request) {
 
     const { predictions } = await response.json();
 
-    for (let i = 0; i < predictions.length - 1; i++) {
-      const places_api_response = await fetch(
-        `https://maps.googleapis.com/maps/api/place/details/json?key=${api_key}&place_id=${predictions[i].place_id}`
-      );
-      const json = await places_api_response.json();
-      const result: PlacesAPIResult = json.result;
-      search_result.push({
-        id: result.place_id,
-        owner_id: "",
-        name: result.name,
-        photos: result.photos.map((photo) => ({
-          id: photo.photo_reference,
-          user_id: null,
-          lodging_id: null,
-          room_id: null,
-          photo_url: photo.photo_reference,
-          width: null,
-          height: null,
-          date_created: null,
-        })),
-        location: {
+    if (predictions.length > 1) {
+      for (let i = 0; i < predictions.length - 1; i++) {
+        const places_api_response = await fetch(
+          `https://maps.googleapis.com/maps/api/place/details/json?key=${api_key}&place_id=${predictions[i].place_id}`
+        );
+        const json = await places_api_response.json();
+        const result: PlacesAPIResult = json.result;
+
+        search_result.push({
           id: result.place_id,
-          address: result.vicinity,
-          province: "",
-          municipality_city: "",
-          barangay: "",
-          street: "",
-          longitude: result.geometry.location.lng,
-          latitude: result.geometry.location.lat,
-          date_created: null,
-        },
-        house_rules: [],
-        ratings: [
-          {
-            id: "",
-            value: result.rating,
-            user_id: "",
-            lodging_id: result.place_id,
+          owner_id: "",
+          name: result.name,
+          photos: result.photos
+            ? result.photos.map((photo) => ({
+                id: photo.photo_reference,
+                user_id: null,
+                lodging_id: null,
+                room_id: null,
+                photo_url: photo.photo_reference,
+                width: null,
+                height: null,
+                date_created: null,
+              }))
+            : [],
+          location: {
+            id: result.place_id,
+            address: result.vicinity,
+            province: "",
+            municipality_city: "",
+            barangay: "",
+            street: "",
+            longitude: result.geometry.location.lng,
+            latitude: result.geometry.location.lat,
             date_created: null,
           },
-        ],
-        distance: getDistance(
-          {
-            latitude: Number(query.latitude),
-            longitude: Number(query.longitude),
-          },
-          {
-            longitude: result.geometry?.location?.lng,
-            latitude: result.geometry?.location?.lat,
-          }
-        ),
-        lodging_type: "",
-        database: "GOOGLE",
-        date_created: null,
-      });
+          house_rules: [],
+          ratings: [
+            {
+              id: "",
+              value: result.rating,
+              user_id: "",
+              lodging_id: result.place_id,
+              date_created: null,
+            },
+          ],
+          distance: getDistance(
+            {
+              latitude: Number(query.latitude),
+              longitude: Number(query.longitude),
+            },
+            {
+              longitude: result.geometry?.location?.lng,
+              latitude: result.geometry?.location?.lat,
+            }
+          ),
+          lodging_type: "",
+          database: "GOOGLE",
+          date_created: null,
+        });
+      }
     }
 
     return search_result.length > 0

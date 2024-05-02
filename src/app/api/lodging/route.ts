@@ -1,10 +1,9 @@
 import getDistance from "@/lib/google-api/distance";
+import prisma from "@/lib/prisma/client";
 import { PlacesAPIResult } from "@/lib/types/google-places-api-type";
 import { LodgingDetailsType } from "@/lib/types/lodging-detail-type";
-import { PrismaClient } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
 import { type NextRequest, NextResponse } from "next/server";
-import { json } from "stream/consumers";
 
 export async function GET(request: NextRequest) {
   const api_key = process.env.NEXT_PUBLIC_GOOGLE_PLACE_API_KEY;
@@ -25,7 +24,6 @@ export async function GET(request: NextRequest) {
         { status: 400 }
       );
 
-    const prisma = new PrismaClient();
     let data;
 
     data = await prisma.lodging.findFirst({
@@ -116,7 +114,6 @@ export async function POST(request: Request) {
   try {
     const lodging: LodgingDetailsType = await request.json();
 
-    const prisma = new PrismaClient();
     const new_lodging = await prisma.lodging.create({
       data: {
         owner_id: lodging.owner_id,

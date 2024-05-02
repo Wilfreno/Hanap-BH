@@ -194,7 +194,7 @@ export default function LodgingCard({
               <AnimatePresence>
                 <motion.p
                   className="flex space-x-3 items-center"
-                  key={prices_list_min_max[price_list_view_index]?.min}
+                  key={price_list_view_index}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}

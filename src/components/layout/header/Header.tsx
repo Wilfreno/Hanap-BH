@@ -8,6 +8,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 w-full bg-background sm:px-10 sm:py-2 z-40 border-b">
       <>
+        {/* mobile */}
         <div className="w-full sm:hidden">
           <div className="w-full flex items-center justify-between p-3 px-5">
             <Logo />
@@ -15,6 +16,7 @@ export default function Header() {
           </div>
           <HeaderNavigation />
         </div>
+        {/* pc */}
         <div className="hidden sm:flex items-center my-auto">
           <Logo />
           <HeaderNavigation />

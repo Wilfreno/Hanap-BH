@@ -11,10 +11,11 @@ import { type NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   const api_key = process.env.NEXT_PUBLIC_GOOGLE_PLACE_API_KEY;
   if (!api_key) throw new Error("NEXT_PUBLIC_GOOGLE_PLACE_API_KEY is missing");
-  const geocode_api_key = process.env.NEXT_PUBLIC_GOOGLE_GEOCODE_API_KEY;
+
+  const geocode_api_key = process.env.GOOGLE_GEOCODE_API_KEY;
   if (!geocode_api_key)
     throw new Error(
-      "NEXT_PUBLIC_GOOGLE_GEOCODE_API_KEY is missing from your .env.local file"
+      "GOOGLE_GEOCODE_API_KEY is missing from your .env.local file"
     );
 
   const search_params = request.nextUrl.searchParams;
@@ -48,7 +49,11 @@ export async function GET(request: NextRequest) {
       )?.short_name !== "PH"
     )
       return NextResponse.json(
-        { status: "OUT_OF_BOUND", message: "location out of bound; the application is only available in the Philippines" },
+        {
+          status: "OUT_OF_BOUND",
+          message:
+            "location out of bound; the application is only available in the Philippines",
+        },
         { status: 400 }
       );
 
