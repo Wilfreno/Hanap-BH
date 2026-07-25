@@ -1,0 +1,23 @@
+{
+  "name": "@repo/themes",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "check-types": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/react": "19.2.2",
+    "eslint": "^9.39.1",
+    "react-native": "0.86.0",
+    "typescript": "5.9.2"
+  },
+  "peerDependencies": {
+    "react-native": ">=0.86.0"
+  }
+}
