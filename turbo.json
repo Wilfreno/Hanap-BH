@@ -1,6 +1,14 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
   "ui": "tui",
+  "globalPassThroughEnv": [
+    "JAVA_HOME",
+    "ANDROID_HOME",
+    "ANDROID_SDK_ROOT",
+    "ANDROID_NDK_HOME",
+    "GRADLE_USER_HOME",
+    "GRADLE_OPTS"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
@@ -27,6 +35,26 @@
       "persistent": true
     },
     "dev:ios": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "persistent": true
+    },
+    "build:android": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "persistent": true
+    },
+    "build:ios": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "persistent": true
+    },
+    "build:android:clean": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "persistent": true
+    },
+    "build:ios:clean": {
       "dependsOn": ["^build"],
       "cache": false,
       "persistent": true

@@ -1,3 +1,20 @@
 packages:
   - "apps/*"
   - "packages/*"
+
+allowBuilds:
+  sharp: false
+  unrs-resolver: false
+
+# Flatten node_modules instead of using pnpm's symlinked isolated store.
+#
+# The isolated layout pushes native build paths past CMake's 250-char
+# CMAKE_OBJECT_PATH_MAX on Windows. react-native-worklets resolved to
+#   node_modules/.pnpm/react-native-worklets@0.10._<hash>/node_modules/react-native-worklets
+# leaving its .cxx object dir at 226 chars, so the Android build died with
+#   ninja: error: manifest 'build.ninja' still dirty after 100 tries
+# Hoisting drops ~80 characters from that path.
+#
+# A flat layout is also what React Native's Gradle autolinking and Metro
+# expect, so this avoids symlink resolution issues there too.
+nodeLinker: hoisted

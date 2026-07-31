@@ -8,6 +8,8 @@
     "dev:mobile:android": "turbo run mobile#dev:android server#dev",
     "dev:mobile:ios": "turbo run mobile#dev:ios server#dev",
     "dev:web": "turbo run dev --filter=web --filter=server",
+    "mobile:android:build": "turbo run mobile#build:android server#dev",
+    "mobile:ios:build": "turbo run mobile#build:ios server#dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
