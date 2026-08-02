@@ -1,9 +1,9 @@
 import { Text, View } from 'react-native'
 
-export default function Login() {
+export default function PageLoading() {
   return (
     <View>
-      <Text>login</Text>
+      <Text>PageLoading</Text>
     </View>
   )
 }

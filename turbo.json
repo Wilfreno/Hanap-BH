@@ -29,6 +29,16 @@
       "cache": false,
       "persistent": true
     },
+    // Internal packages compile to dist/, which is what @repo/* imports
+    // resolve against. `watch` keeps that output in sync while an app dev
+    // server runs. It is deliberately named differently from `dev` so the
+    // dev:mobile:* scripts can glob every package with --filter=./packages/*
+    // without also sweeping in an app's own `dev` task.
+    "watch": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "persistent": true
+    },
     "dev:android": {
       "dependsOn": ["^build"],
       "cache": false,

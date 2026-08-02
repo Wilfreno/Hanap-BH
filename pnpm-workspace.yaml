@@ -3,6 +3,7 @@ packages:
   - "packages/*"
 
 allowBuilds:
+  bcrypt: false
   sharp: false
   unrs-resolver: false
 

@@ -10,11 +10,11 @@ export enum Suffix {
 }
 
 export enum UserStatus {
-  OFFLINE,
-  ONLINE,
+  OFFLINE = 'OFFLINE',
+  ONLINE = 'ONLINE',
 }
 
 export enum UserRole {
-  OWNER,
-  OCCUPANT,
+  OWNER = 'OWNER',
+  OCCUPANT = 'OCCUPANT',
 }

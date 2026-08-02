@@ -1,9 +1,10 @@
 import { axiosInstance } from '@/libs/axios-instance'
+import { AuthStatus } from '@repo/enums/auth.enums'
 import { User } from '@repo/schemas/user.schema'
 import { isAxiosError } from 'axios'
-import { createContext, ReactNode, useEffect, useState } from 'react'
-import Toast from 'react-native-toast-message'
 import * as SecureStore from 'expo-secure-store'
+import { createContext, ReactNode, useContext, useState } from 'react'
+import Toast from 'react-native-toast-message'
 type Credentials = {
   email: string
   password: string
@@ -16,18 +17,14 @@ type LoginResponseData = {
 
 type AuthContext = {
   session?: User
-  isLoading: boolean
-  isAuthenticated: boolean
-  getSession: () => void
-  logIn: () => Promise<void>
+  status: AuthStatus
+  logIn: (credentials: Credentials) => Promise<void>
   logOut: () => Promise<void>
   sigUp: (credentials: Credentials) => Promise<void>
 }
 
 const AuthContext = createContext<AuthContext>({
-  isLoading: false,
-  isAuthenticated: false,
-  getSession: () => {},
+  status: AuthStatus.LOADING,
   logIn: async () => {},
   logOut: async () => {},
   sigUp: async () => {},
@@ -35,14 +32,31 @@ const AuthContext = createContext<AuthContext>({
 
 const ACCESS_TOKEN_KEY = 'access-token-key'
 
+export function useAuth() {
+  return useContext(AuthContext)
+}
+
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<User>()
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [isAuthenticated, setIsAthenticated] = useState<boolean>(false)
+  const [status, setStatus] = useState<AuthStatus>(AuthStatus.UNAUTHENTICATED)
 
-  function getSession() {
+  async function getSession() {
     try {
-    } catch (error) {}
+      setStatus(AuthStatus.LOADING)
+
+      const token = await SecureStore.getItemAsync(ACCESS_TOKEN_KEY)
+
+      if (!token) throw new Error('User is not logged in')
+
+      axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`
+
+      const { data } = await axiosInstance.get<User>('/user/session')
+
+      setSession(data)
+      setStatus(AuthStatus.AUTHENTICATED)
+    } catch (error) {
+      setStatus(AuthStatus.UNAUTHENTICATED)
+    }
   }
 
   async function sigUp(credentials: Credentials) {
@@ -60,36 +74,47 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   }
   async function logIn(credentials: Credentials) {
     try {
-      setIsLoading(true)
+      setStatus(AuthStatus.LOADING)
       const { data } = await axiosInstance.post<LoginResponseData>('/user/login', credentials)
 
       setSession(data.session)
-      setIsAthenticated(true)
+      setStatus(AuthStatus.AUTHENTICATED)
 
-      axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
-
-      await SecureStore
+      await SecureStore.setItemAsync(ACCESS_TOKEN_KEY, data.token)
     } catch (error) {
+      setStatus(AuthStatus.UNAUTHENTICATED)
+
       Toast.show({
         type: 'error',
         text2: 'Email or Password is incorrect',
         position: 'top',
         visibilityTime: 3000,
       })
-    } finally {
-      setIsLoading(false)
     }
   }
 
-  async function logOut() {}
+  async function logOut() {
+    try {
+      await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY)
 
-  useEffect(() => {
-    if (!session) getSession()
-  }, [])
+      axiosInstance.defaults.headers.common['Authorization'] = ''
 
-  return (
-    <AuthContext.Provider value={{ session, isLoading, isAuthenticated, getSession, logIn, logOut, sigUp }}>
-      {children}
-    </AuthContext.Provider>
-  )
+      setSession(undefined)
+      setStatus(AuthStatus.UNAUTHENTICATED)
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Oops!',
+        text2: 'Something went wrong',
+        position: 'top',
+        visibilityTime: 3000,
+      })
+    }
+  }
+
+  //   useEffect(() => {
+  //     if (!session) getSession()
+  //   }, [])
+
+  return <AuthContext.Provider value={{ session, status, logIn, logOut, sigUp }}>{children}</AuthContext.Provider>
 }

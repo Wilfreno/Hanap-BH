@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './v1/users/users.module';
+import { HTTPExceptionFilter } from './common/http-exception.filter';
 
+import { ResponseInterceptor } from './interceptors/response.interceptor';
+import { UsersModule } from './v1/users/users.module';
 
 @Module({
   imports: [
@@ -28,6 +31,10 @@ import { UsersModule } from './v1/users/users.module';
     UsersModule,
   ],
   controllers: [AppController],
-  providers: [AppService,],
+  providers: [
+    AppService,
+    { provide: APP_INTERCEPTOR, useClass: ResponseInterceptor },
+    { provide: APP_FILTER, useClass: HTTPExceptionFilter },
+  ],
 })
 export class AppModule {}
